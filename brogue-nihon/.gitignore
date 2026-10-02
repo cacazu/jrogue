@@ -1,0 +1,33 @@
+*.o
+bin/*.brogue*
+bin/BrogueHighScores.txt
+bin/brogue*
+bin/*.png
+vars
+
+# Release dirs and archives
+BrogueCE-*
+*.zip
+
+.vscode
+.gdb_history
+
+*.su
+*.gcda
+*.gcno
+*.gcov
+*.desktop
+gmon.out
+
+# Local Windows dependency and build outputs
+.deps/
+.build/
+*.obj
+*.pdb
+*.ilk
+bin/*.dll
+bin/validation/
+!bin/brogue-ja.cmd
+!bin/brogue-nihon.cmd
+!bin/brogue-cmd.bat
+__pycache__/

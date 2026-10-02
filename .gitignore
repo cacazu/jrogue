@@ -1,0 +1,16 @@
+# Local dependency and compiler caches across games
+**/node_modules/
+**/target/
+**/em-cache/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+
+# Local acquisition archives and historical backups
+/investigation-*/
+/*-backup-*/
+
+# Local credentials
+.env
+.env.local
+.env.*.local
