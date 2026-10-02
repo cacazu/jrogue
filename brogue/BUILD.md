@@ -1,3 +1,24 @@
+# 日本語対応版のWindowsビルド
+
+Python 3とVisual StudioのC/C++ビルドツールを使用します。`brogue/` から実行します。
+
+```text
+python tools/setup-windows-deps.py
+python tools/build-windows.py
+bin\brogue-ja.cmd
+```
+
+依存ライブラリは固定バージョンのSDL2、SDL2_image、SDL2_ttfです。配布元の
+VC開発パッケージを取得し、SHA-256を検証して `.deps/` に展開します。
+ビルドスクリプトは日本語JSONからCの辞書を生成し、実行ファイルとDLLを `bin/` に作ります。
+コンパイラ設定は `BROGUE_VCVARS` で `vcvars64.bat` の絶対パスを指定できます。
+未指定時はVisual Studio Installerのvswhereでインストールを検索します。
+
+コード検証は `python tools/build-windows.py --probe`、`python tools/verify-locale-catalogs.py`、
+`python tools/generate-locale-audit.py`、`python tools/verify-generated-text.py --from-game` です。
+全アイテム・全モンスターの説明文と全表示用原文を検査します。詳細は [locales/README.md](locales/README.md) にあります。
+従来のSDLビルドでも `SDL2_ttf` が追加で必要です。
+
 Building Brogue CE
 ==================
 

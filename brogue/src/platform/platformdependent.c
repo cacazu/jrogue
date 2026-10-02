@@ -27,7 +27,12 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
 #include <dirent.h>
+#endif
 
 #include "platform.h"
 #include "GlobalsBase.h"
@@ -647,7 +652,21 @@ static fileEntry *commitFilelist(struct filelist *list, char **namebuffer) {
 fileEntry *listFiles(short *fileCount, char **namebuffer) {
     struct filelist *list = newFilelist();
 
-    // windows: FindFirstFile/FindNextFile
+#ifdef _WIN32
+    WIN32_FIND_DATAA entry;
+    HANDLE search = FindFirstFileA("./*", &entry);
+    if (search != INVALID_HANDLE_VALUE) {
+        do {
+            if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) continue;
+            struct stat statbuf;
+            if (!stat(entry.cFileName, &statbuf)) {
+                fileEntry *file = addfile(list, entry.cFileName);
+                if (file) file->date = *localtime(&statbuf.st_mtime);
+            }
+        } while (FindNextFileA(search, &entry));
+        FindClose(search);
+    }
+#else
     DIR *dp= opendir ("./");
 
     if (dp != NULL) {
@@ -673,6 +692,7 @@ fileEntry *listFiles(short *fileCount, char **namebuffer) {
         *fileCount = 0;
         return NULL;
     }
+#endif
 
     fileEntry *files = commitFilelist(list, namebuffer);
 
@@ -697,4 +717,3 @@ boolean isApplicationActive(void) {
     // FIXME: finish
     return true;
 }
-

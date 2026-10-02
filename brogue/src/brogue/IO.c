@@ -400,7 +400,7 @@ static short actionMenu(short x, boolean playingBack) {
         buttonCount++;
 
         for (i=0; i<buttonCount; i++) {
-            longestName = max(longestName, strLenWithoutEscapes(buttons[i].text));
+            longestName = max(longestName, localeDisplayWidth(buttons[i].text));
         }
         if (x + longestName >= COLS) {
             x = COLS - longestName - 1;
@@ -409,7 +409,7 @@ static short actionMenu(short x, boolean playingBack) {
         for (i=0; i<buttonCount; i++) {
             buttons[i].x = x;
             buttons[i].y = y + i;
-            for (j = strLenWithoutEscapes(buttons[i].text); j < longestName; j++) {
+            for (j = localeDisplayWidth(buttons[i].text); j < longestName; j++) {
                 strcat(buttons[i].text, " "); // Schlemiel the Painter, but who cares.
             }
         }
@@ -520,7 +520,7 @@ static void initializeMenuButtons(buttonState *state, brogueButton buttons[5]) {
     x = mapToWindowX(0);
     for (i=0; i<5; i++) {
         buttons[i].x = x;
-        x += strLenWithoutEscapes(buttons[i].text) + 2; // Gap between buttons.
+        x += localeDisplayWidth(buttons[i].text) + 2; // Gap between buttons.
     }
 
     initializeButtonState(state,
@@ -1968,6 +1968,19 @@ void restoreDisplayBuffer(const SavedDisplayBuffer *savedBuf) {
 
 // draws overBuf over the current display with per-cell pseudotransparency as specified in overBuf.
 void overlayDisplayBuffer(const screenDisplayBuffer *overBuf) {
+    /* A wide character is indivisible when an overlay replaces either half. */
+    for (int y = 0; y < ROWS; y++) {
+        for (int x = 0; x + 1 < COLS; x++) {
+            int glyph = displayBuffer.cells[x][y].character;
+            if (glyph <= LOCALIZED_GLYPH_BASE || localeCodepointWidth(glyph - LOCALIZED_GLYPH_BASE) != 2) continue;
+            const cellDisplayBuffer *left = &overBuf->cells[x][y];
+            const cellDisplayBuffer *right = &overBuf->cells[x + 1][y];
+            if ((left->opacity && left->character != ' ') || (right->opacity && right->character != ' ')) {
+                displayBuffer.cells[x][y].character = ' ';
+                displayBuffer.cells[x + 1][y].character = ' ';
+            }
+        }
+    }
     for (int i=0; i<COLS; i++) {
         for (int j=0; j<ROWS; j++) {
             if (overBuf->cells[i][j].opacity != 0) {
@@ -2115,6 +2128,8 @@ void funkyFade(screenDisplayBuffer *displayBuf, const color *colorStart,
     enum displayGlyph tempChar;
     short **distanceMap;
     boolean fastForward;
+    uint32_t messageGlyphs[COLS];
+    size_t messageWidth = localeDisplayGlyphs(displayedMessage[0], messageGlyphs, COLS);
 
     assureCosmeticRNG;
 
@@ -2174,8 +2189,8 @@ void funkyFade(screenDisplayBuffer *displayBuf, const color *colorStart,
 
                 if (j == (MESSAGE_LINES - 1)
                     && i >= mapToWindowX(0)
-                    && i < mapToWindowX(strLenWithoutEscapes(displayedMessage[MESSAGE_LINES - j - 1]))) {
-                    tempChar = displayedMessage[MESSAGE_LINES - j - 1][windowToMapX(i)];
+                    && i < mapToWindowX(messageWidth)) {
+                    tempChar = (enum displayGlyph)messageGlyphs[windowToMapX(i)];
                 } else {
                     tempChar = displayBuf->cells[i][j].character;
 
@@ -2451,6 +2466,15 @@ void executeMouseClick(rogueEvent *theEvent) {
 void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKey) {
     short direction = -1;
 
+    if (keystroke == LANGUAGE_KEY) {
+        localeToggleLanguage();
+        displayLevel();
+        refreshSideBar(-1, -1, false);
+        displayRecentMessages();
+        updateFlavorText();
+        refreshScreen();
+        return; // Display preference changes consume no turn and enter no recording.
+    }
     confirmMessages();
     stripShiftFromMovementKeystroke(&keystroke);
 
@@ -2739,10 +2763,10 @@ boolean getInputTextString(char *inputText,
 
     // x and y mark the origin for text entry.
     if (useDialogBox) {
-        x = (COLS - max(maxLength, strLenWithoutEscapes(prompt))) / 2;
+        x = (COLS - max(maxLength, localeDisplayWidth(prompt))) / 2;
         y = ROWS / 2 - 1;
         clearDisplayBuffer(&dbuf);
-        rectangularShading(x - 1, y - 2, max(maxLength, strLenWithoutEscapes(prompt)) + 2,
+        rectangularShading(x - 1, y - 2, max(maxLength, localeDisplayWidth(prompt)) + 2,
                            4, &interfaceBoxColor, INTERFACE_OPACITY, &dbuf);
         rbuf = saveDisplayBuffer();
         overlayDisplayBuffer(&dbuf);
@@ -2753,7 +2777,7 @@ boolean getInputTextString(char *inputText,
         printString(defaultEntry, x, y, &white, &black, 0);
     } else {
         confirmMessages();
-        x = mapToWindowX(strLenWithoutEscapes(prompt));
+        x = mapToWindowX(localeDisplayWidth(prompt));
         y = MESSAGE_LINES - 1;
         temporaryMessage(prompt, 0);
         printString(defaultEntry, x, y, &white, &black, 0);
@@ -2839,7 +2863,7 @@ boolean getInputTextString(char *inputText,
 }
 
 void displayCenteredAlert(char *message) {
-    printString(message, (COLS - strLenWithoutEscapes(message)) / 2, ROWS / 2, &teal, &black, 0);
+    printString(message, (COLS - localeDisplayWidth(message)) / 2, ROWS / 2, &teal, &black, 0);
 }
 
 // Flashes a message on the screen starting at (x, y) lasting for the given time (in ms) and with the given colors.
@@ -2860,7 +2884,9 @@ void flashMessage(char *message, short x, short y, int time, const color *fColor
     rogue.RNG = RNG_COSMETIC;
     //assureCosmeticRNG;
 
-    messageLength = strLenWithoutEscapes(message);
+    uint32_t messageGlyphs[COLS];
+    x = max(0, min(x, COLS - 1));
+    messageLength = (int)localeDisplayGlyphs(message, messageGlyphs, COLS - x);
     fastForward = false;
 
     for (j=0; j<messageLength; j++) {
@@ -2881,7 +2907,7 @@ void flashMessage(char *message, short x, short y, int time, const color *fColor
                 backColor = backColors[j];
                 applyColorAverage(&backColor, bColor, 100 - percentComplete);
                 if (percentComplete < 50) {
-                    dchar = message[j];
+                    dchar = (enum displayGlyph)messageGlyphs[j];
                     foreColor = *fColor;
                     applyColorAverage(&foreColor, &backColor, percentComplete * 2);
                 } else {
@@ -2904,7 +2930,7 @@ void flashMessage(char *message, short x, short y, int time, const color *fColor
 }
 
 void flashTemporaryAlert(char *message, int time) {
-    flashMessage(message, (COLS - strLenWithoutEscapes(message)) / 2, ROWS / 2, time, &teal, &black);
+    flashMessage(message, (COLS - localeDisplayWidth(message)) / 2, ROWS / 2, time, &teal, &black);
 }
 
 void waitForAcknowledgment() {
@@ -3023,17 +3049,18 @@ static archivedMessage *getArchivedMessage(short back) {
 }
 
 static int formatCountedMessage(char *buffer, size_t size, archivedMessage *m) {
-    int length;
+    char english[COLS*4];
 
     if (m->count <= 1) {
-        length = snprintf(buffer, size, "%s", m->message);
+        snprintf(english, sizeof english, "%s", m->message);
     } else if (m->count >= MAX_MESSAGE_REPEATS) {
-        length = snprintf(buffer, size, "%s (many)", m->message);
+        snprintf(english, sizeof english, "%s (many)", m->message);
     } else {
-        length = snprintf(buffer, size, "%s (x%d)", m->message, m->count);
+        snprintf(english, sizeof english, "%s (x%d)", m->message, m->count);
     }
 
-    return length;
+    localeDisplay(buffer, size, english);
+    return (int)strlen(buffer);
 }
 
 // Select and write one or more recent messages to the buffer for further
@@ -3044,7 +3071,7 @@ static int formatCountedMessage(char *buffer, size_t size, archivedMessage *m) {
 static short foldMessages(char buffer[COLS*20], short offset, unsigned long *turnOutput) {
     short i, folded, messageLength, lineLength, length;
     unsigned long turn;
-    char counted[COLS*2];
+    char counted[COLS*4];
     archivedMessage *m;
 
     folded = 0;
@@ -3060,7 +3087,7 @@ static short foldMessages(char buffer[COLS*20], short offset, unsigned long *tur
     }
 
     if (!(m->flags & FOLDABLE)) {
-        formatCountedMessage(buffer, COLS*2, m);
+        formatCountedMessage(buffer, COLS*20, m);
         return folded;
     }
 
@@ -3076,22 +3103,24 @@ static short foldMessages(char buffer[COLS*20], short offset, unsigned long *tur
     buffer[length] = '\0';
     for (i = folded; i >= 1; i--) {
         m = getArchivedMessage(offset + i);
-        formatCountedMessage(counted, COLS*2, m);
-        messageLength = strLenWithoutEscapes(counted);
+        formatCountedMessage(counted, sizeof counted, m);
+        messageLength = localeDisplayWidth(counted);
 
         if (length == 0) {
             length = snprintf(buffer, COLS*20, "%s", counted);
             lineLength = messageLength;
         } else if (lineLength + 3 + messageLength <= DCOLS) {  // + 3 for semi-colon, space and final period
-            length += snprintf(&buffer[length], COLS*20 - length, "; %s", counted);
+            length += snprintf(&buffer[length], COLS*20 - length,
+                !strcmp(localeLanguage(), "ja") ? " %s" : "; %s", counted);
             lineLength += 2 + messageLength;
         } else {
-            length += snprintf(&buffer[length], COLS*20 - length, ".\n%s", counted);
+            length += snprintf(&buffer[length], COLS*20 - length,
+                !strcmp(localeLanguage(), "ja") ? "\n%s" : ".\n%s", counted);
             lineLength = messageLength;
         }
     }
 
-    snprintf(&buffer[length], COLS*20 - length, ".");
+    if (strcmp(localeLanguage(), "ja")) snprintf(&buffer[length], COLS*20 - length, ".");
 
     return folded;
 }
@@ -3140,7 +3169,7 @@ static void splitLines(short lines, char wrapped[COLS*20], char buffer[][COLS*2]
 
             if (bufferCursor + 1 - lines + linesSeen >= 0) {
                 strncpy(line, color, 5);
-                strncat(line, start, COLS*2 - strlen(line) - 1);
+                localeCopyText(line + strlen(line), sizeof line - strlen(line), start);
                 line[COLS*2-1] = '\0';
                 strncpy(buffer[bufferCursor + 1 - lines + linesSeen], line, COLS*2);
                 line[0] = '\0';
@@ -3152,7 +3181,7 @@ static void splitLines(short lines, char wrapped[COLS*20], char buffer[][COLS*2]
     }
 
     strncpy(line, color, 5);
-    strncat(line, start, COLS*2 - strlen(line) - 1);
+    localeCopyText(line + strlen(line), sizeof line - strlen(line), start);
     line[COLS*2-1] = '\0';
     strncpy(buffer[bufferCursor], line, COLS*2);
 }
@@ -3166,7 +3195,7 @@ static void splitLines(short lines, char wrapped[COLS*20], char buffer[][COLS*2]
 void formatRecentMessages(char buffer[][COLS*2], size_t height, short *linesFormatted, short *latestMessageLines) {
     short lines, bufferCursor, messagesFolded, messagesFormatted;
     unsigned long turn;
-    char folded[COLS*20], wrapped[COLS*20];
+    char folded[TEXT_MAX_LENGTH], wrapped[TEXT_MAX_LENGTH];
 
     bufferCursor = height - 1;
     messagesFormatted = 0;
@@ -3430,7 +3459,7 @@ void flavorMessage(const char *msg) {
     upperCase(&(text[i]));
 
     printString(text, mapToWindowX(0), ROWS - 2, &flavorTextColor, &black, 0);
-    for (i = strLenWithoutEscapes(text); i < DCOLS; i++) {
+    for (i = localeDisplayWidth(text); i < DCOLS; i++) {
         plotCharWithColor(' ', (windowpos) { mapToWindowX(i), ROWS - 2 }, &black, &black);
     }
 }
@@ -3515,7 +3544,7 @@ void message(const char *msg, unsigned long flags) {
 
 // Only used for the "you die..." message, to enable posthumous inventory viewing.
 void displayMoreSignWithoutWaitingForAcknowledgment() {
-    if (strLenWithoutEscapes(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
+    if (localeDisplayWidth(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
         printString("--MORE--", COLS - 8, MESSAGE_LINES-1, &black, &white, 0);
     } else {
         printString("--MORE--", COLS - 8, MESSAGE_LINES, &black, &white, 0);
@@ -3529,7 +3558,7 @@ void displayMoreSign() {
         return;
     }
 
-    if (strLenWithoutEscapes(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
+    if (localeDisplayWidth(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
         printString("--MORE--", COLS - 8, MESSAGE_LINES-1, &black, &white, 0);
         waitForAcknowledgment();
         printString("        ", COLS - 8, MESSAGE_LINES-1, &black, &black, 0);
@@ -3610,30 +3639,39 @@ const color *messageColorFromVictim(creature *monst) {
 }
 
 void updateMessageDisplay() {
-    short i, j, m;
+    short i, j;
     color messageColor;
 
     for (i=0; i<MESSAGE_LINES; i++) {
         messageColor = white;
 
         if (i >= messagesUnconfirmed) {
-            applyColorAverage(&messageColor, &black, 50);
-            applyColorAverage(&messageColor, &black, 75 * i / MESSAGE_LINES);
+            applyColorAverage(&messageColor, &black, !strcmp(localeLanguage(),"ja") ? 25 : 50);
+            applyColorAverage(&messageColor, &black, (!strcmp(localeLanguage(),"ja") ? 35 : 75) * i / MESSAGE_LINES);
         }
 
-        for (j = m = 0; displayedMessage[i][m] && j < DCOLS; j++, m++) {
+        size_t m = 0;
+        for (j = 0; displayedMessage[i][m] && j < DCOLS;) {
 
             while (displayedMessage[i][m] == COLOR_ESCAPE) {
-                m = decodeMessageColor(displayedMessage[i], m, &messageColor); // pulls the message color out and advances m
+                m = decodeMessageColor(displayedMessage[i], (short)m, &messageColor);
                 if (i >= messagesUnconfirmed) {
-                    applyColorAverage(&messageColor, &black, 50);
-                    applyColorAverage(&messageColor, &black, 75 * i / MESSAGE_LINES);
+                    applyColorAverage(&messageColor, &black, !strcmp(localeLanguage(),"ja") ? 25 : 50);
+                    applyColorAverage(&messageColor, &black, (!strcmp(localeLanguage(),"ja") ? 35 : 75) * i / MESSAGE_LINES);
                 }
             }
 
-            plotCharWithColor(displayedMessage[i][m], (windowpos){ mapToWindowX(j), MESSAGE_LINES - i - 1 },
+            uint32_t cp = localeDecode(displayedMessage[i], &m);
+            int cells = localeCodepointWidth(cp);
+            if (!cells) continue;
+            if (j + cells > DCOLS) break;
+            enum displayGlyph glyph = (enum displayGlyph)(cp < 128 ? cp : LOCALIZED_GLYPH_BASE + cp);
+            plotCharWithColor(glyph, (windowpos){ mapToWindowX(j), MESSAGE_LINES - i - 1 },
                               &messageColor,
                               &black);
+            if (cells == 2) plotCharWithColor((enum displayGlyph)LOCALIZED_CONTINUATION,
+                (windowpos){mapToWindowX(j + 1), MESSAGE_LINES - i - 1}, &messageColor, &black);
+            j += cells;
         }
         for (; j < DCOLS; j++) {
             plotCharWithColor(' ', (windowpos){ mapToWindowX(j), MESSAGE_LINES - i - 1 }, &black, &black);
@@ -3912,19 +3950,23 @@ void refreshSideBar(short focusX, short focusY, boolean focusedEntityMustGoFirst
 }
 
 void printString(const char *theString, short x, short y, const color *foreColor, const color *backColor, screenDisplayBuffer *dbuf) {
-    short i;
-
+    char localized[TEXT_MAX_LENGTH];
+    localeDisplay(localized, sizeof localized, theString);
+    size_t i = 0;
     color fColor = *foreColor;
-
-    for (i=0; theString[i] != '\0' && x < COLS; i++, x++) {
-        while (theString[i] == COLOR_ESCAPE) {
-            i = decodeMessageColor(theString, i, &fColor);
-            if (!theString[i]) {
-                return;
-            }
+    while (localized[i] && x < COLS) {
+        if ((unsigned char)localized[i] == COLOR_ESCAPE) {
+            i = decodeMessageColor(localized, (short)i, &fColor);
+            continue;
         }
-
-        plotCharToBuffer(theString[i], (windowpos){ x, y }, &fColor, backColor, dbuf);
+        uint32_t cp = localeDecode(localized, &i);
+        int width = localeCodepointWidth(cp);
+        if (!width) continue;
+        if (x + width > COLS) break;
+        enum displayGlyph glyph = (enum displayGlyph)(cp < 128 ? cp : LOCALIZED_GLYPH_BASE + cp);
+        plotCharToBuffer(glyph, (windowpos){ x, y }, &fColor, backColor, dbuf);
+        if (width == 2) plotCharToBuffer((enum displayGlyph)LOCALIZED_CONTINUATION, (windowpos){x + 1, y}, &fColor, backColor, dbuf);
+        x += width;
     }
 }
 
@@ -3971,6 +4013,14 @@ static void breakUpLongWordsIn(char *sourceText, short width, boolean useHyphens
 // Returns the number of lines, including the newlines already in the text.
 // Puts the output in "to" only if we receive a "to" -- can make it null and just get a line count.
 short wrapText(char *to, const char *sourceText, short width) {
+    if (!strcmp(localeLanguage(), "ja")) {
+        char localized[TEXT_MAX_LENGTH];
+        localeDisplay(localized, sizeof localized, sourceText);
+        char wrapped[TEXT_MAX_LENGTH];
+        short lines = (short)localeWrap(wrapped, sizeof wrapped, localized, width);
+        if (to) strcpy(to, wrapped);
+        return lines;
+    }
     short i, w, textLength, lineCount;
     char printString[TEXT_MAX_LENGTH];
     short spaceLeftOnLine, wordWidth;
@@ -4019,38 +4069,21 @@ short wrapText(char *to, const char *sourceText, short width) {
 // returns the y-coordinate of the last line
 short printStringWithWrapping(const char *theString, short x, short y, short width, const color *foreColor,
                               const color *backColor, screenDisplayBuffer *dbuf) {
-    color fColor;
-    char printString[TEXT_MAX_LENGTH];
-    short i, px, py;
-
-    wrapText(printString, theString, width); // inserts newlines as necessary
-
-    // display the string
-    px = x; //px and py are the print insertion coordinates; x and y remain the top-left of the text box
-    py = y;
-    fColor = *foreColor;
-
-    for (i=0; printString[i] != '\0'; i++) {
-        if (printString[i] == '\n') {
-            px = x; // back to the leftmost column
-            if (py < ROWS - 1) { // don't advance below the bottom of the screen
-                py++; // next line
-            } else {
-                break; // If we've run out of room, stop.
-            }
-            continue;
-        } else if (printString[i] == COLOR_ESCAPE) {
-            i = decodeMessageColor(printString, i, &fColor) - 1;
-            continue;
+    char wrapped[TEXT_MAX_LENGTH];
+    wrapText(wrapped, theString, width);
+    char *line = wrapped;
+    color foreground = *foreColor;
+    for (short py = y; py < ROWS; py++) {
+        char *end = strchr(line, '\n');
+        if (end) *end = 0;
+        printString(line, x, py, &foreground, backColor, dbuf);
+        for (size_t index = 0; line[index]; index++) {
+            if ((unsigned char)line[index] == COLOR_ESCAPE) index = decodeMessageColor(line, (short)index, &foreground) - 1;
         }
-
-        if (locIsInWindow((windowpos){ px, py })) {
-            plotCharToBuffer(printString[i], (windowpos){ px, py }, &fColor, backColor, dbuf);
-        }
-
-        px++;
+        if (!end) return py;
+        line = end + 1;
     }
-    return py;
+    return ROWS - 1;
 }
 
 char nextKeyPress(boolean textInput) {
@@ -4090,7 +4123,7 @@ void printHelpScreen() {
         "              A  ****autopilot (control-A: fast forward)",
         "              M  ****display old messages",
         "              G  ****toggle graphical tiles (when available)",
-        "",
+        "             F2  ****Switch language",
         "              S  ****save and exit",
         "              Q  ****quit and abandon game",
         "",
@@ -4197,7 +4230,7 @@ void displayFeatsScreen() {
     // Title
     char buf[COLS*2] = "-- FEATS --";
     short y = 1;
-    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), y, &flavorTextColor, &black, &dbuf);
+    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - localeDisplayWidth(buf)) / 2), y, &flavorTextColor, &black, &dbuf);
 
     // List of feats, color-coded by status
     char featColorEscape[5] = "", featStatusChar[2];
@@ -4218,12 +4251,12 @@ void displayFeatsScreen() {
 
     // Legend
     strcpy(buf,"-- LEGEND --");
-    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-5, &gray, &black, &dbuf);
+    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - localeDisplayWidth(buf)) / 2), ROWS-5, &gray, &black, &dbuf);
     sprintf(buf, "%sFailed(-)  %sAchieved(+)  ", failedColorEscape, achievedColorEscape);
-    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-4, &white, &black, &dbuf);
+    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - localeDisplayWidth(buf)) / 2), ROWS-4, &white, &black, &dbuf);
 
     strcpy(buf,KEYBOARD_LABELS ? "-- press any key to continue --" : "-- touch anywhere to continue --");
-    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-2, &itemMessageColor, &black, &dbuf);
+    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - localeDisplayWidth(buf)) / 2), ROWS-2, &itemMessageColor, &black, &dbuf);
 
     // Set the opacity
     for (int i=0; i<COLS; i++) {
@@ -4290,8 +4323,8 @@ void printHighScores(boolean hiliteMostRecent) {
     blackOutScreen();
 
     for (i = 0; i < HIGH_SCORES_COUNT && list[i].score > 0; i++) {
-        if (strLenWithoutEscapes(list[i].description) > maxLength) {
-            maxLength = strLenWithoutEscapes(list[i].description);
+        if (localeDisplayWidth(list[i].description) > maxLength) {
+            maxLength = localeDisplayWidth(list[i].description);
         }
     }
 
@@ -4329,7 +4362,7 @@ void printHighScores(boolean hiliteMostRecent) {
     applyColorAverage(&scoreColor, &goodMessageColor, 100);
 
     printString(KEYBOARD_LABELS ? "Press space to continue." : "Touch anywhere to continue.",
-                (COLS - strLenWithoutEscapes(KEYBOARD_LABELS ? "Press space to continue." : "Touch anywhere to continue.")) / 2,
+                (COLS - localeDisplayWidth(KEYBOARD_LABELS ? "Press space to continue." : "Touch anywhere to continue.")) / 2,
                 ROWS - 1, &scoreColor, &black, 0);
 
     commitDraws();
@@ -4407,7 +4440,8 @@ void printSeed() {
 }
 
 void printProgressBar(short x, short y, const char barLabel[COLS], long amtFilled, long amtMax, const color *fillColor, boolean dim) {
-    char barText[] = "                    "; // string length is 20
+    enum displayGlyph barText[20];
+    for (int column = 0; column < 20; column++) barText[column] = ' ';
     short i, labelOffset;
     color currentFillColor, textColor, progressBarColor, darkenedBarColor;
 
@@ -4434,9 +4468,18 @@ void printProgressBar(short x, short y, const char barLabel[COLS], long amtFille
     darkenedBarColor = progressBarColor;
     applyColorAverage(&darkenedBarColor, &black, 75);
 
-    labelOffset = (20 - strlen(barLabel)) / 2;
-    for (i = 0; i < (short) strlen(barLabel); i++) {
-        barText[i + labelOffset] = barLabel[i];
+    char localized[COLS*4];
+    localeDisplay(localized, sizeof localized, barLabel);
+    labelOffset = max(0, (20 - localeTextWidth(localized)) / 2);
+    size_t offset = 0;
+    for (int column = labelOffset; localized[offset] && column < 20;) {
+        if ((unsigned char)localized[offset] == COLOR_ESCAPE) { offset += 4; continue; }
+        uint32_t cp = localeDecode(localized, &offset);
+        int cells = localeCodepointWidth(cp);
+        if (!cells) continue;
+        if (column + cells > 20) break;
+        barText[column++] = (enum displayGlyph)(cp < 128 ? cp : LOCALIZED_GLYPH_BASE + cp);
+        if (cells == 2) barText[column++] = (enum displayGlyph)LOCALIZED_CONTINUATION;
     }
 
     amtFilled = clamp(amtFilled, 0, amtMax);
@@ -4573,19 +4616,13 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
         && monst->mutationIndex >= 0
         && (!player.status[STATUS_HALLUCINATING] || rogue.playbackOmniscience)) {
 
-        strcpy(buf, "                    ");
-        sprintf(buf2, "xxxx(%s)", mutationCatalog[monst->mutationIndex].title);
+        sprintf(buf2, "(%s)", mutationCatalog[monst->mutationIndex].title);
         tempColor = *mutationCatalog[monst->mutationIndex].textColor;
         if (dim) {
             applyColorAverage(&tempColor, &black, 50);
         }
-        encodeMessageColor(buf2, 0, &tempColor);
-        strcpy(buf + ((strLenWithoutEscapes(buf) - strLenWithoutEscapes(buf2)) / 2), buf2);
-        for (i = strlen(buf); i < 20 + 4; i++) {
-            buf[i] = ' ';
-        }
-        buf[24] = '\0';
-        printString(buf, 0, y++, (dim ? &gray : &white), &black, 0);
+        printString("                    ",0,y,&white,&black,0);
+        printString(buf2,max(0,(20-localeDisplayWidth(buf2))/2),y++,&tempColor,&black,0);
     }
 
     // hit points
@@ -4689,13 +4726,13 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
             }
             //buf[20] = '\0';
             printString("                    ", 0, y, &white, &black, 0);
-            printString(buf, (20 - strLenWithoutEscapes(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
+            printString(buf, (20 - localeDisplayWidth(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
         }
         if (y < ROWS - 1 && rogue.gold) {
             sprintf(buf, "Gold: %li", rogue.gold);
             buf[20] = '\0';
             printString("                    ", 0, y, &white, &black, 0);
-            printString(buf, (20 - strLenWithoutEscapes(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
+            printString(buf, (20 - localeDisplayWidth(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
         }
         if (y < ROWS - 1) {
             tempColorEscape[0] = '\0';
@@ -4986,15 +5023,25 @@ short printTextBox(char *textBuf, short x, short y, short width,
         x2 = x;
     }
 
-    while (((lineCount = wrapText(NULL, textBuf, width)) + y2) >= ROWS - 2 && width < COLS-5) {
-        // While the text doesn't fit and the width doesn't fill the screen, increase the width.
-        width++;
-        if (x2 + (width / 2) > COLS / 2) {
-            // If the horizontal midpoint of the text box is on the right half of the screen,
-            // move the box one space to the left.
-            x2--;
-        }
+    width = max(1,min(width,COLS-2));
+    for (i=0; i<buttonCount; i++) {
+        if (buttons[i].flags & B_DRAW) width = min(COLS-2,max(width,localeDisplayWidth(buttons[i].text)+2));
     }
+    for (;;) {
+        lineCount = wrapText(NULL,textBuf,width);
+        int remaining = width, rows = buttonCount ? 1 : 0;
+        for (i=0; i<buttonCount; i++) {
+            if (!(buttons[i].flags & B_DRAW)) continue;
+            int cells = localeDisplayWidth(buttons[i].text)+2;
+            if (cells > remaining) { rows++; remaining = width; }
+            remaining -= cells;
+        }
+        padLines = rows*2;
+        if (lineCount+padLines <= ROWS-2 || width >= COLS-2) break;
+        width++;
+    }
+    x2 = max(1,min(x2,COLS-width-1));
+    y2 = max(1,min(y2,ROWS-lineCount-padLines-1));
 
     if (buttonCount > 0) {
         padLines = 2;
@@ -5002,12 +5049,12 @@ short printTextBox(char *textBuf, short x, short y, short width,
         by = y2 + lineCount + 1;
         for (i=0; i<buttonCount; i++) {
             if (buttons[i].flags & B_DRAW) {
-                bx -= strLenWithoutEscapes(buttons[i].text) + 2;
+                bx -= localeDisplayWidth(buttons[i].text) + 2;
                 buttons[i].x = bx;
                 buttons[i].y = by;
                 if (bx < x2) {
                     // Buttons can wrap to the next line (though are double-spaced).
-                    bx = x2 + width - (strLenWithoutEscapes(buttons[i].text) + 2);
+                    bx = x2 + width - (localeDisplayWidth(buttons[i].text) + 2);
                     by += 2;
                     padLines += 2;
                     buttons[i].x = bx;
@@ -5026,7 +5073,7 @@ short printTextBox(char *textBuf, short x, short y, short width,
     overlayDisplayBuffer(&dbuf);
 
     if (buttonCount > 0) {
-        return buttonInputLoop(buttons, buttonCount, x2, y2, width, by - y2 + 1 + padLines, NULL);
+        return buttonInputLoop(buttons, buttonCount, x2, y2, width, lineCount + padLines, NULL);
     } else {
         return -1;
     }

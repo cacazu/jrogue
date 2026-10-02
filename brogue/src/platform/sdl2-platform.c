@@ -43,6 +43,9 @@ static boolean eventFromKey(rogueEvent *event, SDL_Keycode key) {
     event->param1 = -1;
 
     switch (key) {
+        case SDLK_F2:
+            event->param1 = LANGUAGE_KEY;
+            return true;
         case SDLK_ESCAPE:
             event->param1 = ESCAPE_KEY;
             return true;
@@ -299,6 +302,7 @@ static void _delayUpTo(short ms) {
 
 static boolean _pauseForMilliseconds(short ms, PauseBehavior behavior) {
     updateScreen();
+    if (localeVerifyScreens) return false;
     _delayUpTo(ms);
 
     if (lastEvent.eventType != EVENT_ERROR
@@ -314,6 +318,13 @@ static boolean _pauseForMilliseconds(short ms, PauseBehavior behavior) {
 
 static void _nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsDance) {
     updateScreen();
+    if (localeVerifyScreens && verificationInputScene) {
+        captureVerificationScene(verificationInputScene);
+        verificationInputScene = NULL;
+        if (localeVerificationStopInputLoop) rogue.gameHasEnded = true;
+        *returnEvent = (rogueEvent){.eventType = KEYSTROKE, .param1 = ESCAPE_KEY};
+        return;
+    }
 
     if (lastEvent.eventType != EVENT_ERROR) {
         *returnEvent = lastEvent;
@@ -342,6 +353,7 @@ from the text font sheet, 256+ are from the tiles sheet.
 */
 static int fontIndex(enum displayGlyph glyph) {
     // These are the only non-ASCII glyphs which always come from the font sheet
+    if ((int)glyph >= LOCALIZED_GLYPH_BASE) return (int)glyph;
     if (glyph == G_UP_ARROW) return 0x90;
     if (glyph == G_DOWN_ARROW) return 0x91;
 

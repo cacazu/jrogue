@@ -18,6 +18,8 @@ boolean isCsvFormat = false;
 
 static void printCommandlineHelp() {
     printf("%s",
+    "--language en|ja           select display language (F2 toggles in game)\n"
+    "--verify-localization      render deterministic validation screenshots\n"
     "--help         -h          print this help message and exit \n"
     "--version      -V          print the version and exit\n"
     "--scores                   dump scores to output and exit\n"
@@ -100,6 +102,8 @@ int main(int argc, char *argv[])
     currentConsole = nullConsole;
 #endif
 
+    const char *preferredLanguage = getenv("BROGUE_LANGUAGE");
+    if (preferredLanguage) localeSetLanguage(preferredLanguage);
     rogue.nextGame = NG_NOTHING;
     rogue.nextGamePath[0] = '\0';
     rogue.nextGameSeed = 0;
@@ -111,6 +115,20 @@ int main(int argc, char *argv[])
 
     int i;
     for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--language") == 0) {
+            if (++i == argc || !localeSetLanguage(argv[i])) {
+                fprintf(stderr, "--language requires en or ja\n"); return 1;
+            }
+            continue;
+        }
+        if (strcmp(argv[i], "--test-localization") == 0) return localeRunTextTests();
+        if (strcmp(argv[i], "--verify-localization") == 0) { localeVerifyScreens = 1; continue; }
+        if (strcmp(argv[i], "--audit-localization-game") == 0) {
+            localeAuditGameText = 1;
+            rogue.nextGame = NG_NEW_GAME_WITH_SEED;
+            rogue.nextGameSeed = 42;
+            continue;
+        }
         if (strcmp(argv[i], "--scores") == 0) {
             // just dump the scores and quit!
             dumpScores();
@@ -344,6 +362,18 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    if (localeAuditGameText) currentConsole = nullConsole;
+    #ifdef BROGUE_SDL
+    if (!localeAuditGameText && (localeVerifyScreens || !strcmp(localeLanguage(), "ja")) && currentConsole.gameLoop != sdlConsole.gameLoop) {
+        fprintf(stderr, "Japanese display and screen verification require the SDL backend.\n");
+        return 1;
+    }
+    #else
+    if (localeVerifyScreens || !strcmp(localeLanguage(), "ja")) {
+        fprintf(stderr, "Japanese display and screen verification require the SDL backend.\n");
+        return 1;
+    }
+    #endif
     hasGraphics = (currentConsole.setGraphicsMode != NULL);
     // Now actually set graphics. We do this to ensure there is exactly one
     // call, whether true or false
@@ -354,4 +384,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-

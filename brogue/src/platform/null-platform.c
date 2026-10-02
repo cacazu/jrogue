@@ -9,6 +9,11 @@ static boolean null_pauseForMilliseconds(short milliseconds, PauseBehavior behav
 }
 
 static void null_nextKeyOrMouseEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsDance) {
+    if (localeAuditGameText) {
+        returnEvent->eventType = KEYSTROKE;
+        returnEvent->param1 = ' ';
+        returnEvent->controlKey = returnEvent->shiftKey = false;
+    }
     return;
 }
 

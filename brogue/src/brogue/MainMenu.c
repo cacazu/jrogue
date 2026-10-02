@@ -26,6 +26,9 @@
 #include "Globals.h"
 #include <time.h>
 #include <limits.h>
+#ifdef BROGUE_SDL
+#include "tiles.h"
+#endif
 
 #define MENU_FLAME_PRECISION_FACTOR     10
 #define MENU_FLAME_RISE_SPEED           50
@@ -44,23 +47,24 @@ static void drawMenuFlames(signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADD
     color tempColor = {0};
     const color *maskColor = &black;
     char gameModeString[COLS] = "";
-    char dchar;
+    enum displayGlyph dchar;
+    uint32_t versionGlyphs[COLS], modeGlyphs[COLS];
 
-    versionStringLength = strLenWithoutEscapes(gameConst->versionString);
+    versionStringLength = (short)localeDisplayGlyphs(gameConst->versionString,versionGlyphs,COLS);
 
     if (WIZARD_MODE) {
         strcpy(gameModeString, "Wizard Mode");
     } else if (rogue.mode == GAME_MODE_EASY) {
         strcpy(gameModeString, "Easy Mode");
     }
-    gameModeStringLength = strLenWithoutEscapes(gameModeString);
+    gameModeStringLength = (short)localeDisplayGlyphs(gameModeString,modeGlyphs,COLS);
 
     for (j=0; j<ROWS; j++) {
         for (i=0; i<COLS; i++) {
             if (j == ROWS - 1 && i >= COLS - versionStringLength) {
-                dchar = gameConst->versionString[i - (COLS - versionStringLength)];
-            } else if (gameModeStringLength && j == ROWS - 1 && i <= gameModeStringLength) {
-                dchar = gameModeString[i];
+                dchar = (enum displayGlyph)versionGlyphs[i - (COLS - versionStringLength)];
+            } else if (gameModeStringLength && j == ROWS - 1 && i < gameModeStringLength) {
+                dchar = (enum displayGlyph)modeGlyphs[i];
             } else {
                 dchar = ' ';
             }
@@ -326,7 +330,7 @@ static void initializeMenu(buttonState *menu, brogueButton *buttons, short butto
     // determine the button frame size and position (upper-left)
     for (int i = 0; i < buttonCount; i++) {
         minX = min(minX, buttons[i].x);
-        maxX = max(maxX, buttons[i].x + strLenWithoutEscapes(buttons[i].text));
+        maxX = max(maxX, buttons[i].x + localeDisplayWidth(buttons[i].text));
         minY = min(minY, buttons[i].y);
         maxY = max(maxY, buttons[i].y);
     }
@@ -505,6 +509,8 @@ static void redrawMainMenuButtons(buttonState *menu, screenDisplayBuffer *button
 #define FLYOUT_X 59
 
 static void titleMenu() {
+    int verificationMenuFrame = 0;
+    if (localeVerifyScreens) localeSetLanguage("en");
     signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3]; // red, green and blue
     signed short colorSources[MENU_FLAME_COLOR_SOURCE_COUNT][4]; // red, green, blue, and rand, one for each color source (no more than MENU_FLAME_COLOR_SOURCE_COUNT).
     const color *colors[COLS][(ROWS + MENU_FLAME_ROW_PADDING)];
@@ -554,7 +560,7 @@ static void titleMenu() {
         // Inner input loop until the user selects a button or presses a key. For mouse input, a button
         // is considered selected only on the MOUSE_UP event.
         do {
-            if (isApplicationActive()) {
+            if (localeVerifyScreens || isApplicationActive()) {
                 // Update the display.
                 updateMenuFlames(colors, colorSources, flames);
                 drawMenuFlames(flames, mask);
@@ -576,11 +582,29 @@ static void titleMenu() {
                     mainMenu.buttonDepressed = -1;
                     mainMenu.buttonFocused = -1;
                 }
+                #ifdef BROGUE_SDL
+                if (localeVerifyScreens) {
+                    captureVerificationScene(verificationMenuFrame ? "menu-ja" : "menu-en");
+                    if (verificationMenuFrame++) {
+                        rogue.nextGame = NG_NEW_GAME_WITH_SEED;
+                        rogue.nextGameSeed = 42;
+                        return;
+                    }
+                    localeSetLanguage("ja");
+                    initializeMainMenu(&mainMenu, mainButtons, quitButtonPosition, &mainShadowBuf);
+                    continue;
+                }
+                #endif
                 // Pause briefly.
                 if (pauseBrogue(MENU_FLAME_UPDATE_DELAY, (PauseBehavior){.interuptForMouseMove = true})) {
                     // There was input during the pause! Get the input.
                     nextBrogueEvent(&theEvent, true, false, true);
 
+                    if (theEvent.eventType == KEYSTROKE && theEvent.param1 == LANGUAGE_KEY) {
+                        localeToggleLanguage();
+                        initializeMainMenu(&mainMenu, mainButtons, quitButtonPosition, &mainShadowBuf);
+                        continue;
+                    }
                     // quickstart a new game
                     if (theEvent.eventType == KEYSTROKE && (theEvent.param1 == 'n' || theEvent.param1 == 'N')) {
                         rogue.nextGame = NG_NEW_GAME;
@@ -701,7 +725,7 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
     suffixLength = strlen(suffix);
     files = listFiles(&count, &membuf);
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
-    maxPathLength = strLenWithoutEscapes(prompt);
+    maxPathLength = localeDisplayWidth(prompt);
 
     // First, we want to filter the list by stripping out any filenames that do not end with suffix.
     // i is the entry we're testing, and j is the entry that we move it to if it qualifies.
@@ -1060,7 +1084,7 @@ static void viewGameStats(void) {
     applyColorAverage(&continueColor, &goodMessageColor, 100);
 
     printString(KEYBOARD_LABELS ? "Press space or click to continue." : "Touch anywhere to continue.",
-                (COLS - strLenWithoutEscapes(KEYBOARD_LABELS ? "Press space or click to continue." : "Touch anywhere to continue.")) / 2,
+                (COLS - localeDisplayWidth(KEYBOARD_LABELS ? "Press space or click to continue." : "Touch anywhere to continue.")) / 2,
                 ROWS - 1, &continueColor, &black, 0);
 
     commitDraws();
@@ -1174,10 +1198,21 @@ void mainBrogueJunction() {
                 }
 
                 rogue.nextGame = NG_NOTHING;
+                if (localeAuditGameText) fprintf(stderr,"Audit: initialize game\n");
                 initializeRogue(rogue.nextGameSeed);
+                if (localeAuditGameText) fprintf(stderr,"Audit: start level\n");
                 startLevel(rogue.depthLevel, 1); // descending into level 1
+                if (localeAuditGameText) fprintf(stderr,"Audit: generate descriptions\n");
 
-                mainInputLoop();
+                if (localeAuditGameText) {
+                    localeAuditGeneratedText();
+                    rogue.nextGame = NG_QUIT;
+                } else if (localeVerifyScreens) {
+                    localeVerifyGameScreens();
+                    rogue.nextGame = NG_QUIT;
+                } else {
+                    mainInputLoop();
+                }
                 if(serverMode) {
                     rogue.nextGame = NG_QUIT;
                 }

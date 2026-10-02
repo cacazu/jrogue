@@ -2935,7 +2935,7 @@ char displayInventory(unsigned short categoryMask,
         }
 
         // Keep track of the maximum width needed:
-        maxLength = max(maxLength, strLenWithoutEscapes(buttons[i].text));
+        maxLength = max(maxLength, localeDisplayWidth(buttons[i].text));
 
         //      itemList[itemNumber] = theItem;
         //
@@ -2963,14 +2963,14 @@ char displayInventory(unsigned short categoryMask,
                     grayColorEscapeSequence,
                     (magicDetected ? "  " : ""));
         }
-        maxLength = max(maxLength, (strLenWithoutEscapes(buttons[itemNumber + extraLineCount].text)));
+        maxLength = max(maxLength, (localeDisplayWidth(buttons[itemNumber + extraLineCount].text)));
         extraLineCount++;
 
         sprintf(buttons[itemNumber + extraLineCount].text,
                 KEYBOARD_LABELS ? "%s%s -- press (a-z) for more info -- " : "%s%s -- touch an item for more info -- ",
                 grayColorEscapeSequence,
                 (magicDetected ? "  " : ""));
-        maxLength = max(maxLength, (strLenWithoutEscapes(buttons[itemNumber + extraLineCount].text)));
+        maxLength = max(maxLength, (localeDisplayWidth(buttons[itemNumber + extraLineCount].text)));
         extraLineCount++;
     }
     if (equippedItemCount) {
@@ -2989,7 +2989,7 @@ char displayInventory(unsigned short categoryMask,
 
         // Pad the button label with space, so the button reaches to the right edge of the screen.
         m = strlen(buttons[i].text);
-        for (j=buttons[i].x + strLenWithoutEscapes(buttons[i].text); j < COLS; j++) {
+        for (j=buttons[i].x + localeDisplayWidth(buttons[i].text); j < COLS; j++) {
             buttons[i].text[m] = ' ';
             m++;
         }

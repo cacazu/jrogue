@@ -46,7 +46,9 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, screenDis
     short oldRNG = rogue.RNG;
     rogue.RNG = RNG_COSMETIC;
 
-    const int width = strLenWithoutEscapes(button->text);
+    char localized[TEXT_MAX_LENGTH];
+    localeDisplay(localized, sizeof localized, button->text);
+    const int width = localeTextWidth(localized);
     color bColorBase = button->buttonColor;
     color fColorBase = ((button->flags & B_ENABLED) ? white : gray);
 
@@ -76,10 +78,11 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, screenDis
     }
 
     short symbolNumber = 0;
+    size_t textLoc = 0;
 
-    for (int i = 0, textLoc = 0; i < width && i + button->x < COLS; i++, textLoc++) {
-        while (button->text[textLoc] == COLOR_ESCAPE) {
-            textLoc = decodeMessageColor(button->text, textLoc, &fColorBase);
+    for (int i = 0; i < width && i + button->x < COLS;) {
+        while (localized[textLoc] == COLOR_ESCAPE) {
+            textLoc = decodeMessageColor(localized, (short)textLoc, &fColorBase);
         }
 
         color fColor = fColorBase;
@@ -102,8 +105,12 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, screenDis
         bakeColor(&bColor);
         separateColors(&fColor, &bColor);
 
-        enum displayGlyph displayCharacter = button->text[textLoc];
-        if (button->text[textLoc] == '*') {
+        uint32_t codepoint = localeDecode(localized, &textLoc);
+        int cells = localeCodepointWidth(codepoint);
+        if (!cells) continue;
+        if (button->x + i + cells > COLS) break;
+        enum displayGlyph displayCharacter = (enum displayGlyph)(codepoint < 128 ? codepoint : LOCALIZED_GLYPH_BASE + codepoint);
+        if (codepoint == '*') {
             if (button->symbol[symbolNumber]) {
                 displayCharacter = button->symbol[symbolNumber];
             }
@@ -112,11 +119,16 @@ void drawButton(brogueButton *button, enum buttonDrawStates highlight, screenDis
 
         if (locIsInWindow((windowpos){ button->x + i, button->y })) {
             plotCharToBuffer(displayCharacter, (windowpos){ button->x + i, button->y }, &fColor, &bColor, dbuf);
+            if (cells == 2 && button->x + i + 1 < COLS) {
+                plotCharToBuffer((enum displayGlyph)LOCALIZED_CONTINUATION, (windowpos){button->x + i + 1, button->y}, &fColor, &bColor, dbuf);
+                if (dbuf) dbuf->cells[button->x + i + 1][button->y].opacity = opacity;
+            }
             if (dbuf) {
                 // Only buffers can have opacity set.
                 dbuf->cells[button->x + i][button->y].opacity = opacity;
             }
         }
+        i += cells;
     }
     restoreRNG;
 }
@@ -223,7 +235,7 @@ short processButtonInput(buttonState *state, boolean *canceled, rogueEvent *even
                 && (state->buttons[focusIndex].flags & B_ENABLED)
                 && (state->buttons[focusIndex].y == y || ((state->buttons[focusIndex].flags & B_WIDE_CLICK_AREA) && abs(state->buttons[focusIndex].y - y) <= 1))
                 && x >= state->buttons[focusIndex].x
-                && x < state->buttons[focusIndex].x + strLenWithoutEscapes(state->buttons[focusIndex].text)) {
+                && x < state->buttons[focusIndex].x + localeDisplayWidth(state->buttons[focusIndex].text)) {
 
                 state->buttonFocused = focusIndex;
                 if (event->eventType == MOUSE_DOWN) {

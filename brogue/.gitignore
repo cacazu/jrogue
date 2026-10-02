@@ -18,3 +18,14 @@ BrogueCE-*
 *.gcov
 *.desktop
 gmon.out
+
+# Local Windows dependency and build outputs
+.deps/
+.build/
+*.obj
+*.pdb
+*.ilk
+bin/*.dll
+bin/validation/
+!bin/brogue-ja.cmd
+__pycache__/

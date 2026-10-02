@@ -496,6 +496,7 @@ static void specialHit(creature *attacker, creature *defender, short damage) {
 }
 
 static boolean forceWeaponHit(creature *defender, item *theItem) {
+    /* Retain complete English messages; the display layer wraps the translation. */
     short forceDamage;
     char buf[DCOLS*3], buf2[COLS], monstName[DCOLS];
     creature *otherMonster = NULL;
@@ -513,7 +514,7 @@ static boolean forceWeaponHit(creature *defender, item *theItem) {
         && !cellHasTerrainFlag(newLoc, T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmapAt(newLoc)->flags & (HAS_MONSTER | HAS_PLAYER))) {
         sprintf(buf, "you launch %s backward with the force of your blow", monstName);
-        buf[DCOLS] = '\0';
+
         combatMessage(buf, messageColorFromVictim(defender));
         autoID = true;
     }
@@ -543,7 +544,7 @@ static boolean forceWeaponHit(creature *defender, item *theItem) {
                         monstName,
                         (defender->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies",
                         buf2);
-                buf[DCOLS] = '\0';
+
                 combatMessage(buf, messageColorFromVictim(defender));
                 autoID = true;
             }
@@ -553,7 +554,7 @@ static boolean forceWeaponHit(creature *defender, item *theItem) {
                 sprintf(buf, "%s slams against %s",
                         monstName,
                         buf2);
-                buf[DCOLS] = '\0';
+
                 combatMessage(buf, messageColorFromVictim(defender));
                 autoID = true;
             }
@@ -572,7 +573,7 @@ static boolean forceWeaponHit(creature *defender, item *theItem) {
                             (otherMonster->info.flags & MONST_INANIMATE) ? "is destroyed" : "dies",
                             monstName);
                     resolvePronounEscapes(buf, otherMonster);
-                    buf[DCOLS] = '\0';
+
                     combatMessage(buf, messageColorFromVictim(otherMonster));
                     autoID = true;
                 }
@@ -646,7 +647,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
             case W_SPEED:
                 if (player.ticksUntilTurn != -1) {
                     sprintf(buf, "your %s trembles and time freezes for a moment", theItemName);
-                    buf[DCOLS] = '\0';
+
                     combatMessage(buf, 0);
                     player.ticksUntilTurn = -1; // free turn!
                     autoID = true;
@@ -658,7 +659,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
                 sprintf(buf, "%s suddenly %s",
                         monstName,
                         (defender->info.flags & MONST_INANIMATE) ? "shatters" : "dies");
-                buf[DCOLS] = '\0';
+
                 combatMessage(buf, messageColorFromVictim(defender));
                 killCreature(defender, false);
                 autoID = true;
@@ -668,7 +669,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
                 defender->maxStatus[STATUS_PARALYZED] = defender->status[STATUS_PARALYZED];
                 if (canDirectlySeeMonster(defender)) {
                     sprintf(buf, "%s is frozen in place", monstName);
-                    buf[DCOLS] = '\0';
+
                     combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
                 }
@@ -679,7 +680,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
                         (weaponImageCount(enchant) == 1 ? "a " : ""),
                         (weaponImageCount(enchant) == 1 ? "" : "s"),
                         (weaponImageCount(enchant) == 1 ? "s" : ""));
-                buf[DCOLS] = '\0';
+
 
                 for (i = 0; i < (weaponImageCount(enchant)); i++) {
                     newMonst = generateMonster(MK_SPECTRAL_IMAGE, true, false);
@@ -743,7 +744,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
                 slow(defender, weaponSlowDuration(enchant));
                 if (canDirectlySeeMonster(defender)) {
                     sprintf(buf, "%s slows down", monstName);
-                    buf[DCOLS] = '\0';
+
                     combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
                 }
@@ -753,7 +754,7 @@ void magicWeaponHit(creature *defender, item *theItem, boolean backstabbed) {
                 defender->maxStatus[STATUS_CONFUSED] = defender->status[STATUS_CONFUSED];
                 if (canDirectlySeeMonster(defender)) {
                     sprintf(buf, "%s looks very confused", monstName);
-                    buf[DCOLS] = '\0';
+
                     combatMessage(buf, messageColorFromVictim(defender));
                     autoID = true;
                 }

@@ -30,6 +30,7 @@
 #include <stdint.h>
 #include <time.h>
 #include "PlatformDefines.h"
+#include "LocalizedText.h"
 
 // unicode: comment this line to revert to ASCII
 #define USE_UNICODE

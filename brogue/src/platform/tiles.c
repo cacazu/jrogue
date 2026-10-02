@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include "platform.h"
 #include "tiles.h"
 
@@ -34,11 +35,127 @@ static const char TileProcessing[TILE_ROWS][TILE_COLS+1] = {
 typedef struct ScreenTile {
     short foreRed, foreGreen, foreBlue; // foreground color (0..100)
     short backRed, backGreen, backBlue; // background color (0..100)
-    short charIndex;    // index of the glyph to draw
+    int charIndex;    // atlas index or tagged Unicode codepoint
     short needsRefresh; // true if the tile has changed since the last screen refresh, else false
 } ScreenTile;
 
 static SDL_Window *Win = NULL;      // the SDL window
+static SDL_Surface *requestedCapture;
+static TTF_Font *unicodeFont;
+static int unicodeFontSize;
+static SDL_Rect unicodeReferenceInk;
+static int missingGlyphs;
+static char fontPath[1024];
+typedef struct UnicodeGlyph {
+    Uint32 codepoint;
+    SDL_Texture *texture;
+    SDL_Rect ink;
+    int advance;
+    struct UnicodeGlyph *next;
+} UnicodeGlyph;
+static UnicodeGlyph *unicodeGlyphs;
+const char *verificationInputScene;
+
+static SDL_Rect glyphInk(SDL_Surface *surface) {
+    SDL_Rect ink = {surface->w, surface->h, 0, 0};
+    int right = -1, bottom = -1;
+    SDL_LockSurface(surface);
+    for (int y = 0; y < surface->h; y++) {
+        Uint32 *row = (Uint32 *)((Uint8 *)surface->pixels + y * surface->pitch);
+        for (int x = 0; x < surface->w; x++) {
+            Uint8 r,g,b,a;
+            SDL_GetRGBA(row[x],surface->format,&r,&g,&b,&a);
+            if (!a) continue;
+            ink.x = min(ink.x,x); ink.y = min(ink.y,y);
+            right = max(right,x); bottom = max(bottom,y);
+        }
+    }
+    SDL_UnlockSurface(surface);
+    if (right >= 0) { ink.w = right-ink.x+1; ink.h = bottom-ink.y+1; }
+    return ink;
+}
+
+static void resetUnicodeFont(int size) {
+    while (unicodeGlyphs) {
+        UnicodeGlyph *next = unicodeGlyphs->next;
+        SDL_DestroyTexture(unicodeGlyphs->texture);
+        free(unicodeGlyphs);
+        unicodeGlyphs = next;
+    }
+    if (unicodeFont) TTF_CloseFont(unicodeFont);
+    unicodeFont = NULL;
+    if (!TTF_WasInit() && TTF_Init() < 0) {
+        fprintf(stderr, "Failed to initialize SDL_ttf: %s\n", TTF_GetError());
+        exit(EXIT_STATUS_FAILURE_PLATFORM_ERROR);
+    }
+    const char *configured = getenv("BROGUE_FONT");
+    const char *paths[] = {configured,
+#ifdef _WIN32
+        "C:/Windows/Fonts/meiryo.ttc", "C:/Windows/Fonts/msgothic.ttc",
+#else
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansJP-Regular.ttf",
+        "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc",
+#endif
+        NULL};
+    for (int i = 0; i < (int)(sizeof paths / sizeof *paths) - 1; i++) {
+        if (!paths[i]) continue;
+        unicodeFont = TTF_OpenFont(paths[i], size);
+        if (unicodeFont) { snprintf(fontPath, sizeof fontPath, "%s", paths[i]); break; }
+    }
+    if (!unicodeFont) {
+        fprintf(stderr, "No Japanese font found. Set BROGUE_FONT to a CJK TTF/OTF font.\n");
+        exit(EXIT_STATUS_FAILURE_PLATFORM_ERROR);
+    }
+    unicodeFontSize = size;
+    SDL_Surface *reference = TTF_RenderGlyph32_Blended(unicodeFont,0x56fd,(SDL_Color){255,255,255,255});
+    if (!reference) { fprintf(stderr,"Cannot measure Japanese font.\n"); exit(1); }
+    unicodeReferenceInk = glyphInk(reference);
+    SDL_FreeSurface(reference);
+}
+
+static void drawUnicode(SDL_Renderer *renderer, ScreenTile *tile, SDL_Rect cell) {
+    Uint32 cp = tile->charIndex - LOCALIZED_GLYPH_BASE;
+    if (!cp) return; /* second cell of a wide character */
+    if (!unicodeFont) resetUnicodeFont(max(8, cell.h - 4));
+    UnicodeGlyph *glyph;
+    for (glyph = unicodeGlyphs; glyph && glyph->codepoint != cp; glyph = glyph->next) {}
+    if (!glyph) {
+        if (!TTF_GlyphIsProvided32(unicodeFont, cp)) {
+            fprintf(stderr, "Missing font glyph: U+%04X\n", cp);
+            missingGlyphs++;
+        }
+        SDL_Surface *surface = TTF_RenderGlyph32_Blended(unicodeFont, cp, (SDL_Color){255,255,255,255});
+        if (!surface) { fprintf(stderr, "Failed to render U+%04X: %s\n", cp, TTF_GetError()); exit(1); }
+        glyph = calloc(1, sizeof *glyph);
+        if (!glyph) exit(1);
+        glyph->codepoint = cp;
+        glyph->ink = glyphInk(surface);
+        TTF_GlyphMetrics32(unicodeFont,cp,NULL,NULL,NULL,NULL,&glyph->advance);
+        glyph->texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+        if (!glyph->texture) { fprintf(stderr, "Failed to upload Unicode glyph: %s\n", SDL_GetError()); exit(1); }
+        SDL_SetTextureBlendMode(glyph->texture, SDL_BLENDMODE_BLEND);
+        glyph->next = unicodeGlyphs; unicodeGlyphs = glyph;
+    }
+    int width = cell.w * localeCodepointWidth(cp);
+    if (!glyph->ink.w || !glyph->ink.h) return;
+    /* Fit visible outlines, not SDL_ttf's padded line box. One common scale
+       and baseline keep punctuation small and adjacent Japanese letters aligned. */
+    double scale = fmin((double)max(1,cell.h-2) / max(1,unicodeReferenceInk.h),
+                        (double)max(1,cell.w*2-2) / max(1,unicodeReferenceInk.w));
+    scale = fmin(scale,(double)max(1,width-2)/glyph->ink.w);
+    scale = fmin(scale,(double)max(1,cell.h-2)/glyph->ink.h);
+    SDL_Rect dest = {cell.x,cell.y,max(1,(int)round(glyph->ink.w*scale)),max(1,(int)round(glyph->ink.h*scale))};
+    dest.x += (width - (int)round(glyph->advance*scale))/2 + (int)round(glyph->ink.x*scale);
+    dest.y += (cell.h - (int)round(unicodeReferenceInk.h*scale))/2 + (int)round((glyph->ink.y-unicodeReferenceInk.y)*scale);
+    dest.x = max(cell.x+1,min(dest.x,cell.x+width-dest.w-1));
+    dest.y = max(cell.y+1,min(dest.y,cell.y+cell.h-dest.h-1));
+    SDL_SetTextureColorMod(glyph->texture, round(2.55 * tile->foreRed), round(2.55 * tile->foreGreen), round(2.55 * tile->foreBlue));
+    if (SDL_RenderCopy(renderer, glyph->texture, &glyph->ink, &dest) < 0) { fprintf(stderr, "Unicode draw failed: %s\n", SDL_GetError()); exit(1); }
+}
+
+int verificationMissingGlyphs(void) { return missingGlyphs; }
 static SDL_Surface *TilesPNG;       // source PNG
 static SDL_Texture *Textures[4];    // textures used by the renderer to draw tiles
 static int numTextures = 0;         // how many textures are available in `Textures`
@@ -350,7 +467,7 @@ static double downscaleTile(SDL_Surface *surface, int tileWidth, int tileHeight,
 /// This is a slow function (takes ~2 minutes) so the results are saved to disk and reloaded when Brogue starts.
 /// After you modify the PNG, you should also delete "tiles.bin" and run Brogue so that the new tiles get optimized.
 static void optimizeTiles() {
-    SDL_Window *window = SDL_CreateWindow("Brogue", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 300, 0);
+    SDL_Window *window = SDL_CreateWindow(!strcmp(localeLanguage(),"ja") ? "bログ" : "Brogue", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 300, 0);
 
     for (int row = 0; row < TILE_ROWS; row++) {
         for (int column = 0; column < TILE_COLS; column++) {
@@ -360,7 +477,8 @@ static void optimizeTiles() {
             // show what we are doing
             char title[100];
             sprintf(title, "Brogue - Optimizing tile %d / %d ...\n", row * TILE_COLS + column + 1, TILE_ROWS * TILE_COLS);
-            SDL_SetWindowTitle(window, title);
+            char localizedTitle[200];localeDisplay(localizedTitle,sizeof localizedTitle,title);
+            SDL_SetWindowTitle(window, localizedTitle);
             SDL_Surface *winSurface = SDL_GetWindowSurface(window);
             if (!winSurface) sdlfatal(__FILE__, __LINE__);
             if (SDL_BlitSurface(TilesPNG, &(SDL_Rect){.x=column*TILE_WIDTH, .y=row*TILE_HEIGHT, .w=TILE_WIDTH, .h=TILE_HEIGHT},
@@ -587,7 +705,7 @@ static void createTextures(SDL_Renderer *renderer, int outputWidth, int outputHe
 /// \param backGreen green component of the background color (0..100)
 /// \param backBlue blue component of the background color (0..100)
 ///
-void updateTile(int row, int column, short charIndex,
+void updateTile(int row, int column, int charIndex,
     short foreRed, short foreGreen, short foreBlue,
     short backRed, short backGreen, short backBlue)
 {
@@ -620,6 +738,12 @@ void updateTile(int row, int column, short charIndex,
 ///
 void updateScreen() {
     if (!Win) return;
+    static int titleLanguage = -1;
+    int currentTitleLanguage = !strcmp(localeLanguage(),"ja");
+    if(titleLanguage != currentTitleLanguage) {
+        SDL_SetWindowTitle(Win,currentTitleLanguage ? "bログ" : "Brogue");
+        titleLanguage = currentTitleLanguage;
+    }
 
     SDL_Renderer *renderer = SDL_GetRenderer(Win);
     if (!renderer) {
@@ -664,9 +788,7 @@ void updateScreen() {
                 if (tileHeight == 0) continue;
 
                 ScreenTile *tile = &screenTiles[y][x];
-                if (softwareRendering && !tile->needsRefresh) {
-                    continue; // software rendering does not use double-buffering, so the tile is still on screen
-                }
+                /* Repaint backgrounds for wide glyphs before their foregrounds. */
 
                 if (step < 0) {
                     if (!softwareRendering && tile->backRed == 0 && tile->backGreen == 0 && tile->backBlue == 0) {
@@ -692,6 +814,7 @@ void updateScreen() {
                         continue; // this tile uses another texture and gets painted at another step
                     }
 
+                    if (tile->charIndex >= LOCALIZED_GLYPH_BASE) continue;
                     int tileRow    = tile->charIndex / 16;
                     int tileColumn = tile->charIndex % 16;
 
@@ -723,6 +846,22 @@ void updateScreen() {
         }
     }
 
+    if (unicodeFont && unicodeFontSize != max(8, (outputHeight / ROWS) - 4))
+        resetUnicodeFont(max(8, (outputHeight / ROWS) - 4));
+    /* Draw wide glyphs after all cell backgrounds, including their second cells. */
+    for (int y = 0; y < ROWS; y++) {
+        for (int x = 0; x < COLS; x++) {
+            ScreenTile *tile = &screenTiles[y][x];
+            if (tile->charIndex > LOCALIZED_GLYPH_BASE) {
+                SDL_Rect cell = {x * outputWidth / COLS, y * outputHeight / ROWS,
+                    (x + 1) * outputWidth / COLS - x * outputWidth / COLS,
+                    (y + 1) * outputHeight / ROWS - y * outputHeight / ROWS};
+                drawUnicode(renderer, tile, cell);
+            }
+        }
+    }
+    if (requestedCapture && SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888,
+            requestedCapture->pixels, requestedCapture->pitch) < 0) sdlfatal(__FILE__, __LINE__);
     SDL_RenderPresent(renderer);
 
     // the screen is now up to date
@@ -752,9 +891,10 @@ void resizeWindow(int width, int height) {
 
     if (Win == NULL) {
         // create the window
-        Win = SDL_CreateWindow("Brogue",
+        Win = SDL_CreateWindow(!strcmp(localeLanguage(),"ja") ? "bログ" : "Brogue",
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
-            SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (fullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+            SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (localeVerifyScreens ? SDL_WINDOW_HIDDEN : 0)
+                | (fullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
         if (!Win) sdlfatal(__FILE__, __LINE__);
 
         // set its icon
@@ -807,6 +947,30 @@ SDL_Surface *captureScreen() {
     // take a screenshot
     SDL_Surface *screenshot = SDL_CreateRGBSurfaceWithFormat(0, outputWidth, outputHeight, 32, SDL_PIXELFORMAT_ARGB8888);
     if (!screenshot) sdlfatal(__FILE__, __LINE__);
-    if (SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, screenshot->pixels, outputWidth * 4) < 0) sdlfatal(__FILE__, __LINE__);
+    requestedCapture = screenshot;
+    updateScreen(); /* read the completed back buffer before Present invalidates it */
+    requestedCapture = NULL;
     return screenshot;
+}
+
+void captureVerificationScene(const char *name) {
+    commitDraws();
+    SDL_Surface *surface = captureScreen();
+    if (!surface) { fprintf(stderr, "Cannot capture verification scene: %s\n", name); exit(1); }
+    char filename[1024];
+    snprintf(filename, sizeof filename, "%s.png", name);
+    if (IMG_SavePNG(surface, filename) < 0) imgfatal(__FILE__, __LINE__);
+    SDL_FreeSurface(surface);
+    snprintf(filename, sizeof filename, "%s.cells.tsv", name);
+    FILE *file = fopen(filename, "w");
+    if (!file) exit(1);
+    fprintf(file, "x\ty\tglyph\tred\tgreen\tblue\n");
+    for (int y = 0; y < ROWS; y++) for (int x = 0; x < COLS; x++) {
+        ScreenTile *tile = &screenTiles[y][x];
+        fprintf(file, "%d\t%d\t%d\t%d\t%d\t%d\n", x, y, tile->charIndex, tile->foreRed, tile->foreGreen, tile->foreBlue);
+    }
+    fclose(file);
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(SDL_GetRenderer(Win), &info);
+    fprintf(stderr, "Captured %s (%s, font=%s, missing=%d)\n", name, info.name, fontPath, missingGlyphs);
 }

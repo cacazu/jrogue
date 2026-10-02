@@ -41,7 +41,7 @@ ifeq ($(GRAPHICS),YES)
 sources += $(addprefix src/platform/,sdl2-platform.c tiles.c)
 cflags += $(shell $(SDL_CONFIG) --cflags)
 cppflags += -DBROGUE_SDL
-libs += $(shell $(SDL_CONFIG) --libs) -lSDL2_image
+libs += $(shell $(SDL_CONFIG) --libs) -lSDL2_image -lSDL2_ttf
 endif
 
 ifeq ($(WEBBROGUE),YES)
@@ -73,6 +73,11 @@ objects += $(sources:.c=.o)
 
 include make/*.mk
 .DEFAULT_GOAL := bin/brogue$(.exe)
+
+src/brogue/LocalizedTextData.h: $(wildcard locales/ja/*.json locales/en/*.json) tools/compile-locales.py tools/locale-source.py tools/extract-text-catalogs.py
+	python3 tools/compile-locales.py
+
+src/brogue/LocalizedText.o: src/brogue/LocalizedTextData.h
 
 clean:
 	$(warning 'make clean' is no longer needed in many situations, so is not supported. Use 'make -B' to force rebuild something.)

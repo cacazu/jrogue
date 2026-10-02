@@ -7,4 +7,13 @@ This repository currently contains the source code of Brogue: Community Edition 
 - License: GNU Affero General Public License v3; see `brogue/LICENSE.txt`.
 - Build instructions: see `brogue/BUILD.md`.
 
-The Brogue source is imported unchanged. Original copyright and license notices are retained.
+Original copyright and license notices are retained. The SDL port now supports
+English/Japanese display switching while the game data, recordings, and diagnostic
+output remain in English.
+
+English text catalogs are available in [`brogue/locales/`](brogue/locales/README.md),
+including game text, diagnostic text (kept in English), and non-translatable
+internal strings. The display dictionary is compiled from all five Japanese category catalogs,
+`display.json`, and `composed.json`. Source coverage and actual item/monster
+descriptions across all three variants are audited without screen automation.
+See the locale README for usage and verification.
