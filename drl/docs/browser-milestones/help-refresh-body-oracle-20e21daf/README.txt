@@ -1,0 +1,1 @@
+Native English Help body, title, fixed controls, and later frames were present. The test compared a two-line paragraph as contiguous glyphs, including the native scrollbar between its rows. The oracle now requires both exact source lines separately. Core runtime unchanged.

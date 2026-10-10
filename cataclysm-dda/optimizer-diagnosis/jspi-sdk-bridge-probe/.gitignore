@@ -1,0 +1,4 @@
+build/
+profiles/
+output/
+parent-slot.lock

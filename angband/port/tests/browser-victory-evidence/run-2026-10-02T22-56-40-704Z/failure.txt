@@ -1,0 +1,32 @@
+You sense a giant firefly (unhurt, asleep), 10 S, 77 E.
+Human
+Novice
+Mage
+LEVEL      1                                       H
+NXT       10
+AU       325
+|    ~
+STR:      14
+INT:   18/10
+WIS:      10                                                                      I
+DEX:      10
+CON:      14
+
+Cur AC   100               s                        h
+HP   10/  10
+SP    2/   2
+                 D      D
+[**********]
+
+
+
+4950' (L99)
+
+
+
+
+
+
+
+
+Press '?' for help.

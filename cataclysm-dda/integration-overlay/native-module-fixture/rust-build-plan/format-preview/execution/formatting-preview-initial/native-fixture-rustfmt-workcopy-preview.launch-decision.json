@@ -1,0 +1,9 @@
+{
+  "stage": "native-fixture-rustfmt-workcopy-preview",
+  "decision": "launch",
+  "freshCounters": {
+    "physicalFreeBytes": 5296877568,
+    "exactCommitHeadroomBytes": 8580911104,
+    "counter": "GlobalMemoryStatusEx + GetPerformanceInfo exact committed/limit pages"
+  }
+}

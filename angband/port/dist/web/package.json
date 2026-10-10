@@ -1,0 +1,1 @@
+{"name":"jrogue-angband-browser-host","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test host.test.mjs"}}

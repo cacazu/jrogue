@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "locale": "ja",
+  "entries": {
+    "cdda.core.achievement.achievement_reach_balthazar.name": {
+      "parameters": {},
+      "other": "地下壕のロボット"
+    },
+    "cdda.core.item.roller_blades.name": {
+      "parameters": {},
+      "other": "インラインスケート(一足)"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "entries": {
+    "angband.message_recall.layout.space_one": {
+      "parameters": [],
+      "role": "layout"
+    },
+    "angband.message_recall.layout.space_two": {
+      "parameters": [],
+      "role": "layout"
+    },
+    "angband.message_recall.layout.divider": {
+      "parameters": [],
+      "role": "layout"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Original takeoff selection has no starter melee weapon\n    at wieldUseCast (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:408:10)\n    at async file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:568:3"
+  ],
+  "consoleErrors": []
+}

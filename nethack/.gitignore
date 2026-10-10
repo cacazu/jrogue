@@ -1,0 +1,17 @@
+/archives/
+# Preserve original sounds locally in the verified source, but do not publish
+# unused samples with uncertain or per-file rights as repository/game assets.
+/upstream/NetHack-5.0.0/sound/wav/*.wav
+/upstream/NetHack-5.0.0/sound/wav/*.uu
+/work/
+/rust/target/
+/build/em-cache/
+/build/logs/
+/build/native/
+/build/source-check/
+/build/*.tar
+/build/*.tgz
+/tests/results/
+/web/*.save.json
+/.sites-runtime/
+/.codex-nethack-delivery.json

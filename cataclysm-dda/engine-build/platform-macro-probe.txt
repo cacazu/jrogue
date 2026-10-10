@@ -1,0 +1,3 @@
+
+#define __EMSCRIPTEN__ 1
+
