@@ -45,7 +45,7 @@ Visual review receipt `dcss-light-work/r4-visual-review.json` is pinned to `170a
 
 ## Actual installation and separate V3 gate
 
-Parent operation-d completed exit0 on 2026-10-03. Receipt SHA `a3f61d629643d3a671fc35645d1a3683474e7014008867e9a7bd780a0583deb7` records installed/resumed status and preserved `engine/history/text-v2-promotion-63dab3fbe5cd49d693634d99b3d8fccd`. The inventory has160 entries,118 changed and42 retained;115 source operations and4 bundle operations include retained DATA and must not be summed as119 changed files.
+Installed V2 uses the current runtime and the retained native-EH baseline described in [engine/BUILD.md](../engine/BUILD.md). Historical source and recovery receipts remain; redundant DATA/WASM copies have been removed after checking their hashes against retained runtime files. Historical installation receipts describe their original operation and do not provide a current complete rollback bundle.
 
 Recorded owned Node PID50252, created `2026-10-03T00:57:25.3912843Z`, owns127.0.0.1:4186. After promotion page HTTP200/3510bytes and manifest HTTP200/286802bytes matched manifest `0c2f3173a001f88900efa123207cc9168e3e5abcc1dff519f6f587405b1d9513`; COOP=same-origin and COEP=require-corp. This docs stage did not start or query the server.
 

@@ -1,6 +1,0 @@
-{
-  "errors": [
-    "AssertionError [ERR_ASSERTION]: Original all-quests winner branch omitted semantic ID game.message.player_quest.quest_check.congratulations\n    at retireOriginalWinner (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:363:39)\n    at file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:450:9"
-  ],
-  "consoleErrors": []
-}

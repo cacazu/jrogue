@@ -1,12 +1,14 @@
 # Reproduce installed DCSS V2
 
-Official DCSS0.34.1 is pinned to `1eebc1a2892e1c89776a0d7a10691f8dac8d9796`, with11 pinned submodules. Pristine upstream, original native source and unrelated games are retained. V2 passed the final ten fresh Chrome cases/62 labels and is now installed at `C:\Users\kit\gameme\jnethack\jrouge\dcss`, served at http://127.0.0.1:4186/. Operation-d preserved old V1 in `engine/history/text-v2-promotion-63dab3fbe5cd49d693634d99b3d8fccd`. This record describes installed V2 and retained actual evidence.
+Official DCSS0.34.1 is pinned to `1eebc1a2892e1c89776a0d7a10691f8dac8d9796`, with11 pinned submodules. Pristine upstream and original native source are retained. Installed V2 is served at http://127.0.0.1:4186/. Historical source and recovery receipts remain; obsolete backup copies of DATA/WASM that exactly match retained runtime files have been removed. Current runtimes, corresponding source, compiler caches and the full native-EH baseline objects below are retained for execution and rebuilding. Historical receipts describe the original complete backups, whose paths are no longer full runnable bundles.
 
 ## Environment and full baseline
 
 Official Emscripten6.0.8 at `C:\Users\kit\emsdk`, SDK Python3.13.3 and SDK Node24.19 are the executed tools. Rust dependencies are locked/offline. Git Perl and pinned PyYAML under engine/python are retained prerequisites. No new installer or credentials were used.
 
-Native-EH baseline `engine/build-jspi-wasm-eh` from `engine/work-wasm-eh` retains original `-fwasm-exceptions` flags including `-DWIZARD`. All333 units include Lua/SQLite/zlib/parser/lexer/generated vault metadata. Baseline manifest SHA `984f8a0abb84db4b6ccea02219b9059b435e1ff96a7dcb818e9c1c0413cf1834`. Legacy JS-EH/Asyncify and failed attempts remain historical. Full-graph entry points, from dcss:
+Native-EH baseline `engine/build-jspi-wasm-eh` from `engine/work-wasm-eh` retains original `-fwasm-exceptions` flags including `-DWIZARD`. All333 units include Lua/SQLite/zlib/parser/lexer/generated vault metadata. Baseline manifest SHA `984f8a0abb84db4b6ccea02219b9059b435e1ff96a7dcb818e9c1c0413cf1834`. The alternate Asyncify runtime at `engine/build` is also retained because the browser can select it. Full-graph entry points, from dcss:
+
+The full DATA copy is retained at `engine/build-jspi-wasm-eh/dcss.data`, and the font-free DATA copy at `engine/build-jspi/dcss.data`. Historical native-EH WASM copies with SHA `432ba14e7903ff3678c2c19342917c240f3dc82ce62a121acd7bb9e127671c1e` match `engine/build-jspi-wasm-eh/dcss.wasm`. The complete `engine/history/jspi-js-eh-20261002` bundle is retained because the promotion/recovery helper explicitly uses it.
 
 ```powershell
 $dcssPython = 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe'

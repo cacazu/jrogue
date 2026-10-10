@@ -1,6 +1,0 @@
-{
-  "errors": [
-    "AssertionError [ERR_ASSERTION]: Original detected quest boss not found by bounded native target panels: Sauron, the Sorcerer\n    at locateExistingQuestBoss (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:295:10)\n    at async resummonNativeBoss (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:316:3)\n    at async killNativeBoss (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:339:3)\n    at async file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-victory.mjs:440:23"
-  ],
-  "consoleErrors": []
-}

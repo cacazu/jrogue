@@ -1,6 +1,0 @@
-{
-  "errors": [
-    "AssertionError [ERR_ASSERTION]: Original birth_no_selling option is not visible\n    at setSellingAtBirth (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:210:10)\n    at async freshMageTown (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:222:3)\n    at async file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:531:24"
-  ],
-  "consoleErrors": []
-}

@@ -1,6 +1,0 @@
-{
-  "errors": [
-    "AssertionError [ERR_ASSERTION]: Original General Store1 must be uniquely visible\n\n0 !== 1\n\n    at routeToStore (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:273:10)\n    at enterGeneralStore (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:303:51)\n    at async shopFlow (file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:353:3)\n    at async file:///C:/Users/kit/Documents/Codex/2026-10-02/task-7/angband-port/tests/browser-gameflows.mjs:549:3"
-  ],
-  "consoleErrors": []
-}
