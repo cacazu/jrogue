@@ -7,7 +7,7 @@
 | [brogue-nihon](brogue-nihon/README.md) | Brogue: Community Edition 1.15.1 | Windows: `brogue-nihon/bin/brogue-nihon.cmd`。ビルドは [BUILD.md](brogue-nihon/BUILD.md) | [GNU AGPL v3](brogue-nihon/LICENSE.txt) |
 | [rogue-nihon](rogue-nihon/README.md) | 古典Rogue / RRP Rogue 5.4.4 | `rogue-nihon/` で `.\start.ps1`、ブラウザで `http://127.0.0.1:4173/` | [原典のBSD形式ライセンス](rogue-nihon/logic/LICENSE.TXT)、[依存物の通知](rogue-nihon/THIRD-PARTY-NOTICES.md) |
 
-RogueはCのゲームロジックとRustの表示・入力・プラットフォームを分けたWeb版です。日本語の本文、品名、怪物、ヘルプ、設定、終了画面と、入力途中の保存・復元に対応します。構造と検証範囲は作品内のREADMEを参照してください。[取得元・版・ハッシュ](rogue-nihon/docs/PROVENANCE-ja.md)も記録しています。
+RogueはCのゲームロジックとRustの表示・入力・プラットフォームを分けたWeb版です。日本語の本文、品名、怪物、ヘルプ、設定、終了画面と、入力途中の保存・復元に対応します。実装資料と検証方法は作品内のREADMEを参照してください。[原典とWeb版の仕様対応](rogue-nihon/docs/ORIGINAL-SPEC-ja.md)も記録しています。
 
 Rogueのローカル配信には、作品フォルダー外の開発・テスト用 [tools/server.mjs](tools/server.mjs) を使います。`rogue-nihon/start.ps1` が配信対象を指定して起動します。リポジトリ直下から直接起動する場合は `node tools/server.mjs --root rogue-nihon 4173` です。本番公開はゲームの静的ファイルを配信し、このツールを含めません。
 
@@ -17,6 +17,8 @@ BrogueはSDL版の英語・日本語表示切替に対応します。ゲーム�
 - Brogue source release: https://github.com/tmewett/BrogueCE/releases/tag/v1.15.1
 
 各作品の原著作権表示とライセンスを保持します。今後の作品も同じリポジトリ内に追加します。
+
+文書の残し方と配布対象に応じた通知の整理は [文書とライセンスの管理方針](docs/DOCS-AND-LICENSES-ja.md)、エージェント向けの索引は [AGENTS.md](AGENTS.md) を参照してください。
 
 ## Gitで管理するもの
 
