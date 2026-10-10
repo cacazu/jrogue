@@ -9,6 +9,8 @@
 
 RogueはCのゲームロジックとRustの表示・入力・プラットフォームを分けたWeb版です。日本語の本文、品名、怪物、ヘルプ、設定、終了画面と、入力途中の保存・復元に対応します。構造と検証範囲は作品内のREADMEを参照してください。[取得元・版・ハッシュ](rogue-nihon/docs/PROVENANCE-ja.md)も記録しています。
 
+Rogueのローカル配信には、作品フォルダー外の開発・テスト用 [tools/server.mjs](tools/server.mjs) を使います。`rogue-nihon/start.ps1` が配信対象を指定して起動します。リポジトリ直下から直接起動する場合は `node tools/server.mjs --root rogue-nihon 4173` です。本番公開はゲームの静的ファイルを配信し、このツールを含めません。
+
 BrogueはSDL版の英語・日本語表示切替に対応します。ゲームデータ、録画、診断出力は英語を保持します。[翻訳辞書と検証方法](brogue-nihon/locales/README.md)を参照してください。
 
 - Brogue upstream: https://github.com/tmewett/BrogueCE

@@ -1,3 +1,4 @@
+// Local development/test file server. Not part of the browser game or deployment.
 import http from "node:http";
 import https from "node:https";
 import { createReadStream, realpathSync } from "node:fs";
@@ -6,7 +7,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../rogue-nihon");
 const publicDirectories = ["web", "build", "locales", "docs", "distribution"];
 const mime = new Map([[".html", "text/html; charset=utf-8"], [".js", "text/javascript; charset=utf-8"], [".mjs", "text/javascript; charset=utf-8"], [".css", "text/css; charset=utf-8"], [".json", "application/json; charset=utf-8"], [".png", "image/png"], [".wasm", "application/wasm"], [".txt", "text/plain; charset=utf-8"], [".md", "text/plain; charset=utf-8"]]);
 
@@ -78,8 +79,8 @@ async function isSamePreview(url, root, tls) {
         response.headers["cross-origin-embedder-policy"] !== "require-corp") return false;
     if (response.headers["x-rogue-preview"]) return response.headers["x-rogue-preview"] === previewIdentity(root);
     // Servers started before the identity header was added can still serve the
-    // updated files. Verify the entry point, server source and build together.
-    const matches = await Promise.all(["web/index.html", "web/server.mjs", "build/build-manifest.json"].map(async file => {
+    // updated files. Verify the browser entry point, Worker and build together.
+    const matches = await Promise.all(["web/index.html", "web/worker.js", "build/build-manifest.json"].map(async file => {
       const [local, remote] = await Promise.all([readFile(path.join(root, file)), readPreviewResponse(new URL(file, url), "GET", tls)]);
       return remote.status === 200 && local.equals(remote.body);
     }));
@@ -105,16 +106,24 @@ export async function startPreviewServer({ root = defaultRoot, port = 4173, host
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const port = Number(process.env.ROGUE_PORT || process.argv[2] || 4173);
-  const host = process.env.ROGUE_HOST || process.argv[3] || "127.0.0.1";
-  const certificate = process.env.ROGUE_TLS_CERT || process.argv[4];
-  const privateKey = process.env.ROGUE_TLS_KEY || process.argv[5];
+  const arguments_ = process.argv.slice(2), rootIndex = arguments_.indexOf("--root");
+  let root = defaultRoot;
+  if (rootIndex !== -1) {
+    const selectedRoot = arguments_[rootIndex + 1];
+    if (!selectedRoot || selectedRoot.startsWith("--")) throw new Error("--root requires a game directory");
+    root = path.resolve(selectedRoot);
+    arguments_.splice(rootIndex, 2);
+  }
+  const port = Number(process.env.ROGUE_PORT || arguments_[0] || 4173);
+  const host = process.env.ROGUE_HOST || arguments_[1] || "127.0.0.1";
+  const certificate = process.env.ROGUE_TLS_CERT || arguments_[2];
+  const privateKey = process.env.ROGUE_TLS_KEY || arguments_[3];
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("Invalid port");
   if (Boolean(certificate) !== Boolean(privateKey)) throw new Error("TLS requires both a certificate and a private key");
   if (!certificate && !["127.0.0.1", "::1", "localhost"].includes(host)) throw new Error("LAN access requires HTTPS; use start.ps1 -Lan");
   const tls = certificate ? { cert: await readFile(certificate), key: await readFile(privateKey) } : undefined;
   try {
-    const { server, url, reused } = await startPreviewServer({ port, host, tls });
+    const { server, url, reused } = await startPreviewServer({ root, port, host, tls });
     if (reused) console.log("Rogueは既に起動しています。このURLをブラウザーで開いてください。");
     console.log("Rogue preview: " + url);
     if (server) {
