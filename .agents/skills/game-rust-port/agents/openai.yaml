@@ -1,0 +1,4 @@
+interface:
+  display_name: "ゲームのRust構造対応"
+  short_description: "原作のゲーム本体を保ち、表示・入力・環境依存部分をRustへ分離する"
+  default_prompt: "$game-rust-port を使って、対象ゲームの構造と根本原因を調べ、原作の挙動を保ったRust対応を実装・検証してください。"

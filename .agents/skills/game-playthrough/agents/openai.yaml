@@ -1,0 +1,4 @@
+interface:
+  display_name: "ゲーム攻略と操作記録"
+  short_description: "攻略情報を調べ、操作を記録しながらゲームのクリアまでプレイする"
+  default_prompt: "$game-playthrough を使って、対象ゲームの攻略情報を調べ、指定条件で操作を記録しながらクリアまでプレイしてください。"
