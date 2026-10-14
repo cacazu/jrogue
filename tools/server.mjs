@@ -101,7 +101,7 @@ export async function startPreviewServer({ root = defaultRoot, port = 4173, host
     if (error.code !== "EADDRINUSE") throw error;
     const url = urlFor(port);
     if (await isSamePreview(url, root, tls)) return { server: null, url, reused: true };
-    throw new Error(`ポート ${port} (${host}) は別のサーバーが使用しています。\nそのサーバーを終了するか、.\\start.ps1 -Port ${port < 65535 ? port + 1 : port - 1} で別のポートを指定してください。`);
+    throw new Error(`ポート ${port} (${host}) は別のサーバーが使用しています。\nそのサーバーを終了するか、node tools/server.mjs --root <game-directory> ${port < 65535 ? port + 1 : port - 1} で別のポートを指定してください。`);
   }
 }
 
@@ -120,7 +120,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const privateKey = process.env.ROGUE_TLS_KEY || arguments_[3];
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("Invalid port");
   if (Boolean(certificate) !== Boolean(privateKey)) throw new Error("TLS requires both a certificate and a private key");
-  if (!certificate && !["127.0.0.1", "::1", "localhost"].includes(host)) throw new Error("LAN access requires HTTPS; use start.ps1 -Lan");
+  if (!certificate && !["127.0.0.1", "::1", "localhost"].includes(host)) throw new Error("LAN access requires HTTPS; specify a certificate and private key");
   const tls = certificate ? { cert: await readFile(certificate), key: await readFile(privateKey) } : undefined;
   try {
     const { server, url, reused } = await startPreviewServer({ root, port, host, tls });
