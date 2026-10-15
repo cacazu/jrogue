@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.85"
 license = "CC-BY-SA-3.0"
 description = "Bounded deterministic migration of Cataclysm: DDA 0.I damage arithmetic"
-repository = "https://github.com/cacazu/jrogue"
+repository = "https://github.com/cacazu/roguelike-nihon"
 
 [lib]
 path = "src/lib.rs"

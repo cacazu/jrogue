@@ -18,7 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 ENGINE = ROOT / 'engine'
-SDK = Path(os.environ.get('DCSS_EMSDK', r'C:\Users\kit\emsdk'))
+SDK = Path(os.environ.get('DCSS_EMSDK', str(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))))
 PYTHON = SDK / 'python/3.13.3_64bit/python.exe'
 EMCC = SDK / 'upstream/emscripten/emcc.py'
 PERL = Path(r'C:\Program Files\Git\usr\bin\perl.exe')

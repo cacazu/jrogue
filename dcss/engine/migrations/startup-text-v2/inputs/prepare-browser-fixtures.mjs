@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-const root = path.dirname(fileURLToPath(import.meta.url)), game = 'C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const root = path.dirname(fileURLToPath(import.meta.url)), game = fileURLToPath(new URL('../../../..', import.meta.url));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex'), files = {};
 function emit(relative, bytes, base) {
   const file = path.join(root, relative); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, bytes);

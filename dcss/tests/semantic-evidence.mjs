@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Bounded catalog/source/host verification. Never invokes a compiler or browser.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,8 +22,8 @@ run('canned catalog source/schema probes', process.execPath, ['--max-old-space-s
 run('startup catalog source/schema probes', process.execPath, ['--max-old-space-size=128', 'tools/check-startup-catalogs.mjs', '--self-test']);
 run('independent localization source review', process.execPath, ['--max-old-space-size=128', 'tests/semantic/review-localization.mjs']);
 run('semantic host/projection stubs', process.execPath, ['--max-old-space-size=128', 'tests/semantic-protocol.mjs']);
-run('current C++ source patch receipt', String.raw`C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe`, ['tools/apply-semantic-patches.py', '--check']);
-run('read-only compiler cache accounting', String.raw`C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe`, ['-c',
+run('current C++ source patch receipt', resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe'), ['tools/apply-semantic-patches.py', '--check']);
+run('read-only compiler cache accounting', resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe'), ['-c',
   "import runpy,hashlib,json; m=runpy.run_path('tools/engine-build.py'); fp=m['compiler_fingerprint'](); pairs=m['units'](); valid=[]; pending=[]; " +
   "[(valid if dest.exists() and dest.with_suffix('.fingerprint').exists() and dest.with_suffix('.fingerprint').read_text()==hashlib.sha256((fp+hashlib.sha256(src.read_bytes()).hexdigest()).encode()).hexdigest() else pending).append(src.name) for src,dest in pairs]; " +
   "print(json.dumps({'compiler_fingerprint':fp,'units':len(pairs),'valid':len(valid),'outstanding':len(pending),'compiler_executed':False}))",

@@ -49,7 +49,7 @@ def declaration(text, scanner, symbol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--official-source", type=Path, default=ROOT.parent / "official-source-audit/NetHack-5.0.0")
-    parser.add_argument("--jnethack-checkout", type=Path, default=Path(r"C:\Users\kit\gameme\jnethack\jnethack\source"))
+    parser.add_argument("--jnethack-checkout", type=Path, default=Path(__file__).resolve().parents[2] / 'upstream/jnethack-alpha')
     opts = parser.parse_args()
     reviewed = module(HERE / "build-reviewed-translations.py", "phase4_review_reader")
     core = module(ROOT / "locales/build-gameplay-catalog.py", "phase4_dynamic_catalog_reader")

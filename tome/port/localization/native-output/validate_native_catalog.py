@@ -6,7 +6,7 @@ import re
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 FIELDS = re.compile(r"\{([a-z_][a-z0-9_]*)\}")
 
 

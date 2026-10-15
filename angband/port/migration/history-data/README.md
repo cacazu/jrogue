@@ -70,7 +70,7 @@ The UI projection ID is `player.sheet.generated_history.value`; its `history` pa
 Run from `angband-port`:
 
 ```text
-C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe migration/history-data/build_catalog.py --check
+python migration/history-data/build_catalog.py --check
 node --test tests/history-semantic-integration.test.mjs
 node --test tests/ui-semantic-integration.test.mjs
 ```

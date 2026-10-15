@@ -2,7 +2,7 @@
 from pathlib import Path
 import zipfile
 
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 ROOT = Path(__file__).resolve().parent
 SELECTED = {
     "engine/Game.lua": [(275, 299)],

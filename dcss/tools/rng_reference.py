@@ -5,7 +5,7 @@ with a standalone standard-library shim; upstream source bodies are copied from
 the pristine checkout. The file hashes in the resulting fixture pin the input.
 
 Run with the official emsdk Python, e.g.:
-  python tools/rng_reference.py --emsdk C:/Users/kit/emsdk
+  python tools/rng_reference.py --emsdk <SDK_ROOT>
 This compiles with official em++ and runs its standalone module with official
 emsdk Node. All generated files/caches are placed under dcss/.build/rng-reference.
 """

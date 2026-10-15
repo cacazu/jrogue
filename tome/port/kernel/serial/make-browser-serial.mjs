@@ -6,7 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const directory = path.dirname(fileURLToPath(import.meta.url));
-const upstreamRoot = process.argv[2] || 'C:/Users/kit/gameme/jnethack/jrouge/tome/upstream/t-engine4-src-1.7.6';
+const upstreamRoot = process.argv[2] || fileURLToPath(new URL('../../../upstream/t-engine4-src-1.7.6', import.meta.url));
 const upstreamPath = path.join(upstreamRoot, 'src/serial.c');
 const original = fs.readFileSync(upstreamPath);
 const upstream = original.toString('utf8');

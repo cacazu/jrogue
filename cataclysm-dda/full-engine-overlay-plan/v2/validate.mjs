@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Low-load validation only. No compiler, WASM, browser or process mutation.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -70,9 +72,9 @@ const expectedMacros = [
   '-DCDDA_TEXT_SNAPSHOT_BUILD_ID="' + plan.buildIdentity + '"',
 ];
 for (const command of plan.compileCommands) {
-  assert.equal(normalized(command.executable), 'C:/Users/kit/emsdk/python/3.13.3_64bit/python.exe');
+  assert.equal(normalized(command.executable), resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe'));
   assert.ok(normalized(command.cwd).startsWith(normalized(here) + '/'));
-  assert.equal(normalized(command.argv[0]), 'C:/Users/kit/emsdk/upstream/emscripten/em++.py');
+  assert.equal(normalized(command.argv[0]), resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/em++.py'));
   assert.ok(command.argv.includes('-Os'));
   assert.ok(!command.argv.includes('-O1'));
   for (const macro of expectedMacros) assert.equal(command.argv.filter(arg => arg === macro).length, 1);

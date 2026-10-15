@@ -22,8 +22,8 @@ provenance are not included.
 Source-only preparation and checks, from the shared workspace:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' nethack/tools/semantic-text/phase6-integration/prepare.py --freeze-inputs --prepare --phase7
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' nethack/tools/semantic-text/phase6-integration/check.py
+& 'python' nethack/tools/semantic-text/phase6-integration/prepare.py --freeze-inputs --prepare --phase7
+& 'python' nethack/tools/semantic-text/phase6-integration/check.py
 ```
 
 The explicit freeze records reviewed source hashes; a later mutation is rejected
@@ -35,7 +35,7 @@ After the parent releases the single heavy-job slot and has at least 2 GiB of
 physical and commit headroom, the exact staged build is:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' nethack/tools/semantic-text/phase6-integration/build.py --build --sdk 'C:\Users\kit\emsdk' --rust-lib nethack/build/phase6-rust/target/wasm32-unknown-emscripten/release/libnethack_layers.a --web-source nethack/tools/semantic-text/phase6-immutable-catalog/host-overlay --registered-catalog --phase7-buffers
+& 'python' nethack/tools/semantic-text/phase6-integration/build.py --build --sdk $env:EMSDK --rust-lib nethack/build/phase6-rust/target/wasm32-unknown-emscripten/release/libnethack_layers.a --web-source nethack/tools/semantic-text/phase6-immutable-catalog/host-overlay --registered-catalog --phase7-buffers
 ```
 
 This forces one outer/compiler job, task-local `EMCC_CORES=1`,
@@ -59,7 +59,7 @@ parity. After the staged build, the parent must repeat the exact original
 consumer gate from the `nethack` directory:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
+& 'python' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
 ```
 
 Artifacts are isolated in `build/phase6`; local browser root is

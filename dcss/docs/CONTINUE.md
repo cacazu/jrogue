@@ -2,7 +2,7 @@
 
 Read [STATUS.md](STATUS.md), [ARCHITECTURE.md](ARCHITECTURE.md), [FEATURE-AND-TEXT-INVENTORY.md](FEATURE-AND-TEXT-INVENTORY.md), [SEMANTIC-MIGRATION-BACKLOG.md](SEMANTIC-MIGRATION-BACKLOG.md) and applicable repository instructions. Own only dcss. Preserve pristine upstream, native originals, candidates, source receipts and unrelated games. The parent coordinates Git and one heavy job at a time.
 
-The installed tree `C:\Users\kit\gameme\jnethack\jrouge\dcss` and localhost:4186 serve V2. Operation-d preserved old V1 in the pinned history directory; installed source-recipe checks and post-install read-only review passed. Candidate `task-6\dcss-text-v2-trial` passed Rust 63, actual formatter 470, native six runs/36 assertions, 17 locale comparisons and the final ten fresh Chrome cases/62 labels. Authored lightweight 129 includes reservation 10; independent seven are separate; integrated 13 repeats the existing FIFO 3/reservation 10. Exact pins and actual dates are in STATUS.
+The installed tree `dcss` and localhost:4186 serve V2. Operation-d preserved old V1 in the pinned history directory; installed source-recipe checks and post-install read-only review passed. Candidate `task-6\dcss-text-v2-trial` passed Rust 63, actual formatter 470, native six runs/36 assertions, 17 locale comparisons and the final ten fresh Chrome cases/62 labels. Authored lightweight 129 includes reservation 10; independent seven are separate; integrated 13 repeats the existing FIFO 3/reservation 10. Exact pins and actual dates are in STATUS.
 
 ## Continue from retained delivery evidence
 

@@ -1,7 +1,8 @@
+import { fileURLToPath as localFilePath } from 'node:url';
 // Bounded read-only source excerpts; no recursive scan or code execution.
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
-const upstream = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+const upstream = localFilePath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const [, , file, ...queries] = process.argv;
 const lines = readFileSync(path.join(upstream, file), 'utf8').split(/\r?\n/);
 const selected = new Set();

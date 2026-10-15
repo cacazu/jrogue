@@ -35,6 +35,6 @@ ZIP add は `src/physfs.c:264` が `nil,error` を返す。限定調査で見つ
 
 独立検査は、82 EN/JA keys、named placeholders、92 原ソース式/行/関数 metadata、22 source hashes、7 unchanged Lua copies、外部引数に含む `%s` と braces の保持を確認した。CJK の実描画、実 native failure flow、browser、全ソース text coverage は未検証。
 
-再生成順は `scan_native_outputs.py`、`trace_lua_consumers.py`、`inspect_selected_routes.py`、`build_native_catalog.py`、`validate_native_catalog.py`。原ソースは `C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6` を読み、出力はこの作業フォルダーだけへ書く。
+再生成順は `scan_native_outputs.py`、`trace_lua_consumers.py`、`inspect_selected_routes.py`、`build_native_catalog.py`、`validate_native_catalog.py`。原ソースは `tome/upstream/t-engine4-src-1.7.6` を読み、出力はこの作業フォルダーだけへ書く。
 
 原 T-Engine C/Lua の著作権・ライセンスは pristine upstream と抽出ファイルの原ヘッダーに保持している。Lua 標準 C ライブラリの copyright notice は `src/lua/lua.h` 末尾、quoting macros は `src/lua/luaconf.h:201-202` にある。親担当の全体 license/source-availability inventory と併せて扱う。

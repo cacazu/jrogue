@@ -10,7 +10,7 @@ The full original engine linked successfully on 2026-10-02 at 18:59:40 UTC. All 
 
 The WASM is 134,832,388 bytes, SHA256 `3db7de7161c00e711828e219b148a376f15297c5fd6ee1213b14d10228a7f666`. The JS is 498,522 bytes, SHA256 `8e41e1903f220bbaf8831a215de66427b166741ca19f2fa01edc0995e0cc74b5`. Binary validation and generated JavaScript syntax passed; the seven official port archives and 17 actually linked SDK archives have recorded provenance. These artifacts contain no packaged gameplay data and are not an accepted playable game directory.
 
-The source tree remains pristine at `C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`. All generated headers, objects, downloaded compiler ports, logs, and output go into this directory. The installed official Emscripten SDK is read without global activation or installation.
+The source tree remains pristine at `cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`. All generated headers, objects, downloaded compiler ports, logs, and output go into this directory. The installed official Emscripten SDK is read without global activation or installation.
 
 Run from the task workspace:
 

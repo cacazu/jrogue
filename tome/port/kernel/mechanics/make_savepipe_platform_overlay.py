@@ -5,7 +5,7 @@ from pathlib import Path
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 ARCHIVE = "game/engines/te4-1.7.6.teae"
 MEMBER = "engine/SavefilePipe.lua"
 EXPECTED = "f1fe572b414dc9626c33fd71a7891d8cfaed2741a1cea405cc30e12dc0376e70"

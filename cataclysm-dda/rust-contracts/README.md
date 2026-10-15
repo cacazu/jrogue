@@ -19,7 +19,7 @@ Official upstream: [CleverRaven/Cataclysm-DDA](https://github.com/CleverRaven/Ca
 
 The pristine source supplied by the coordinating agent is under:
 
-`C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`
+`cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`
 
 Three complete upstream files were copied byte-for-byte for reproducible contract checks:
 

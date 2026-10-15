@@ -1,6 +1,6 @@
 # Cataclysm: DDA source inventory
 
-Source: `C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`
+Source: `cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`
 
 Official repository: https://github.com/CleverRaven/Cataclysm-DDA
 

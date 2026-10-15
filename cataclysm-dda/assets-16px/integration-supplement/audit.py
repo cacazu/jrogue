@@ -1,7 +1,7 @@
 import hashlib,json,re,zipfile
 from pathlib import Path
 from PIL import Image
-root=Path(__file__).resolve().parent;src=Path(r'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59/src')
+root=Path(__file__).resolve().parent;src=(Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59/src')
 # Verify native edge connectivity against engine enum + canonical branch results.
 header=(src/'cata_tiles.h').read_text('utf8');enum=re.search(r'enum class NEIGHBOUR\s*\{(.*?)\}',header,re.S).group(1);bits={name:int(value) for name,value in re.findall(r'(SOUTH|EAST|WEST|NORTH)\s*=\s*(\d+)',enum)};assert bits=={'SOUTH':1,'EAST':2,'WEST':4,'NORTH':8}
 engine_results={0:('unconnected',0),15:('center',0),1:('end_piece',0),2:('end_piece',1),8:('end_piece',2),4:('end_piece',3),9:('edge',0),6:('edge',1),3:('corner',0),10:('corner',1),12:('corner',2),5:('corner',3),7:('t_connection',0),11:('t_connection',1),14:('t_connection',2),13:('t_connection',3)}

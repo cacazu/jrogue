@@ -8,7 +8,7 @@ import { prepareV5Assets, installV5Assets } from './v5-loader.mjs';
 import { bindV5Policy, digestWords } from './policy-bridge.mjs';
 import { V5AssetError, formatV5Error, formatV5Message } from './v5-errors.mjs';
 const root = path.dirname(fileURLToPath(import.meta.url));
-const assetRoot = String.raw`C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\assets-16px\native-v5\tileset\CDDA16_Combined_Ready`;
+const assetRoot = fileURLToPath(new URL('../assets-16px/native-v5/tileset/CDDA16_Combined_Ready', import.meta.url));
 const buffers = ASSETS.map(asset => new Uint8Array(fs.readFileSync(path.join(assetRoot, asset.name))));
 const hash = data => createHash('sha256').update(data).digest('hex');
 for (const [index, asset] of ASSETS.entries()) {

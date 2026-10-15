@@ -6,8 +6,8 @@ The plan reads actual `premake4.lua`, `build/options.lua`, and `build/te4core.lu
 
 ```powershell
 & 'C:\Program Files\nodejs\node.exe' .\make-build-manifest.mjs `
-  --source 'C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6' `
-  --emsdk 'C:\Users\kit\emsdk' `
+  --source 'tome/upstream/t-engine4-src-1.7.6' `
+  --emsdk $env:EMSDK `
   --out .\output
 ```
 

@@ -37,10 +37,10 @@ Only a fully source-proven completed value may reach a Japanese whole-message te
 Run with the workspace Python:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\prepare.py
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\prepare.py --check
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\check.py
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\check.py --report
+& 'python' .\prepare.py
+& 'python' .\prepare.py --check
+& 'python' .\check.py
+& 'python' .\check.py --report
 ```
 
 The optional report command writes only `source-checks.results.json` here, including verified result fields and artifact hashes. The checks verify exact official source hashes; every literal token, ordinal, byte slice and line; ID/JSON/output bounds; independent unwrapping of return hooks to byte-identical original source; unchanged native predicate/RNG/helper argument tokens and counts; exact normalization of both opt-in macros to original control expressions; six original wrapper calls exactly once; inline ownership; no bridge state/name/RNG query or static-pointer registry; explicit excluded comments and deferrals; and deterministic generated artifacts. C compilation, executed lifetime/case/overwrite behavior, semantic callback parity, browser Japanese, and gameplay coverage remain integration work for the engine owner.

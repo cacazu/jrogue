@@ -7,6 +7,7 @@ The original engine/build/data, native objects, JS/WASM/data and pristine PDF
 remain untouched. This script is not a runtime or publication readiness test.
 """
 from __future__ import annotations
+import os
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -98,7 +99,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', required=True, type=Path, help='Installed dcss directory')
     parser.add_argument('--candidate', default='engine/build-jspi-wasm-eh', help='Immutable completed native-EH candidate under root')
-    parser.add_argument('--sdk', type=Path, default=Path(r'C:\Users\kit\emsdk'))
+    parser.add_argument('--sdk', type=Path, default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parent / 'generated')
     parser.add_argument('--repack', action='store_true', help='Later explicit packaging operation; default is read-only check')
     args = parser.parse_args()

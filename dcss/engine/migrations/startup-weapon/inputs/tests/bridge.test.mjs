@@ -8,7 +8,7 @@ import vm from 'node:vm';
 import { createStartupTextBridge, loadStartupTextBridge, STARTUP_TEXT_PIN as pin } from '../web/startup-text.mjs';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const installed = 'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\dcss';
+const installed = fileURLToPath(new URL('../../../../..', import.meta.url));
 const encode = new TextEncoder();
 const decode = new TextDecoder('utf-8', { fatal: true });
 const results = [];

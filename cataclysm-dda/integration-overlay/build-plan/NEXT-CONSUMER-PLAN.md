@@ -37,7 +37,7 @@ information and no incremental compilation bound load. The proposed
 entrypoint after a new explicit release is:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' integration-overlay/build-plan/run-next-consumers.py --parent-released-window
+& 'python' integration-overlay/build-plan/run-next-consumers.py --parent-released-window
 ```
 
 The wrapper imports the hash-pinned Windows job/identity guard already

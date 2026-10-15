@@ -4,7 +4,7 @@ import hashlib
 import json
 
 WORK = Path(__file__).resolve().parent.parent
-TOME = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome")
+TOME = Path(__file__).resolve().parents[3]
 shared = TOME / "port"
 checkpoint = json.loads((WORK / "localization-kernel-work/ROOT-CHECKPOINT.json").read_text(encoding="utf-8"))
 verified = 0

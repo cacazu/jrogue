@@ -8,7 +8,7 @@ import { avalanche, weatherSeed, npcKey, acceptNpcColor, collisionColor, bounded
 
 const own = path.dirname(fileURLToPath(import.meta.url));
 const upstream = process.env.CDDA_PRISTINE_ROOT ??
-  'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+  fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 let assertions = 0;
 function equal(actual, expected, label) { assert.deepEqual(actual, expected, label); ++assertions; }

@@ -4,6 +4,7 @@ Runs no SDK/compiler/native query, Node, browser, installer or network request.
 Only this directory receives the factual report; existing notices remain intact.
 """
 from __future__ import annotations
+import os
 from collections import Counter
 import hashlib
 import json
@@ -12,8 +13,8 @@ import re
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-SDK = Path(r'C:\Users\kit\emsdk\upstream\emscripten')
-RUSTUP = Path(r'C:\Users\kit\.rustup\toolchains')
+SDK = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
+RUSTUP = (Path(os.environ.get('RUSTUP_HOME', Path.home() / '.rustup')) / 'toolchains')
 
 
 def sha(value):

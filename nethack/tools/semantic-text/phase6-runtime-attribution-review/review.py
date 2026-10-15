@@ -5,6 +5,7 @@ are limited to immutable official Rust source files plus a referenced credits
 file; downloaded bytes are never executed.
 """
 from __future__ import annotations
+import os
 
 import argparse
 import hashlib
@@ -18,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-TOOLCHAIN = Path(r"C:\Users\kit\.rustup\toolchains\1.98.1-x86_64-pc-windows-gnu")
+TOOLCHAIN = (Path(os.environ.get('RUSTUP_HOME', Path.home() / '.rustup')) / 'toolchains/1.98.1-x86_64-pc-windows-gnu')
 SOURCE = TOOLCHAIN / "lib/rustlib/src/rust"
 COMMIT = "48a229ceaefd4985c50990b14116b6d856af0985"
 RAW = f"https://raw.githubusercontent.com/rust-lang/rust/{COMMIT}/"

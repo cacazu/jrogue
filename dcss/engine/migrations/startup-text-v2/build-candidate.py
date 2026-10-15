@@ -41,7 +41,7 @@ def main():
     parser.add_argument('--contract', type=Path, required=True)
     parser.add_argument('--contract-sha256', required=True, help='Explicit hash independently reviewed by root')
     parser.add_argument('--out', type=Path, default=Path('engine/candidates/startup-text-v2'))
-    parser.add_argument('--sdk', type=Path, default=Path(r'C:\Users\kit\emsdk'))
+    parser.add_argument('--sdk', type=Path, default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     args = parser.parse_args()
     root, patch, sdk = args.root.resolve(), args.patch.resolve(), args.sdk.resolve()
     assets = (args.assets_root or root).resolve()

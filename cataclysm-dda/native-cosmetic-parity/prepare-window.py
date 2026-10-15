@@ -1,4 +1,5 @@
 """Freeze parity commands and all source/tool/cache bytes; never start a build."""
+import os
 from pathlib import Path
 import argparse
 import hashlib
@@ -95,7 +96,7 @@ def main():
     require(Path(environment["EM_CONFIG"]).read_text(encoding="utf-8").splitlines()[-1] == "FROZEN_CACHE = True", "cache must remain frozen")
     add(environment["EM_CONFIG"])
     node = ordinary(options.node_executable)
-    require(str(node).casefold() == r"C:\Users\kit\emsdk\node\24.19.0_64bit\node.exe".casefold() and
+    require(str(node).casefold() == str((Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'node/24.19.0_64bit/node.exe')).casefold() and
             node.stat().st_size == 92_825_416 and digest(node) == SDK_NODE_SHA, "exact accepted official SDK Node")
     add(node)
     rust = quality["rustEnvironment"]

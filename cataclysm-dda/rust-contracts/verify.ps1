@@ -1,8 +1,8 @@
 # Serial, isolated verification. No download, Git operation, or upstream build.
 $ErrorActionPreference = 'Continue'
 Set-Location -LiteralPath $PSScriptRoot
-$cargoTool = 'C:\Users\kit\.cargo\bin\cargo.exe'
-$rustcTool = 'C:\Users\kit\.cargo\bin\rustc.exe'
+$cargoTool = (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\cargo.exe')
+$rustcTool = (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\rustc.exe')
 $verificationDir = Join-Path $PSScriptRoot 'verification'
 New-Item -ItemType Directory -Path $verificationDir -Force | Out-Null
 $checks = [Collections.Generic.List[object]]::new()

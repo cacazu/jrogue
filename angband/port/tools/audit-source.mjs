@@ -3,7 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const upstream=process.env.ANGBAND_UPSTREAM || 'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\angband\\upstream\\angband-4.2.6';
+const upstream=process.env.ANGBAND_UPSTREAM || fileURLToPath(new URL('../../upstream/angband-4.2.6', import.meta.url));
 async function walk(dir,prefix=''){const files=[];for(const entry of await readdir(dir,{withFileTypes:true})){const rel=prefix+entry.name;if(entry.isDirectory())files.push(...await walk(path.join(dir,entry.name),rel+'/'));else if(/\.(c|h|m|inc|rc)$/.test(entry.name))files.push(rel);}return files;}
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const records=[];

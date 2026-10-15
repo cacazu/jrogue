@@ -7,8 +7,8 @@ read-only extractor and its audit outputs. It changes no upstream/game files.
 Run with the trusted local Python interpreter:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' '.\inventory.py'
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' '.\analyze_inventory.py'
+& 'python' '.\inventory.py'
+& 'python' '.\analyze_inventory.py'
 ```
 
 `summary.json` is authoritative for the latest completed run. The files are:

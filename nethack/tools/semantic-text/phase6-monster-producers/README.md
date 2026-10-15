@@ -5,8 +5,8 @@ This directory contains an uncompiled proposal for public monster-name compositi
 Run finite preparation and source checks from the repository workspace:
 
 ```powershell
-C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe -X utf8 nethack/tools/semantic-text/phase6-monster-producers/prepare.py
-C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe -X utf8 nethack/tools/semantic-text/phase6-monster-producers/verify-source.py
+python -X utf8 nethack/tools/semantic-text/phase6-monster-producers/prepare.py
+python -X utf8 nethack/tools/semantic-text/phase6-monster-producers/verify-source.py
 ```
 
 The generator can read a previously composed `do_name.c` with `--source PATH`. It requires the existing original `nextmbuf` invalidator and replaces only the narrower stock ordinary-name observer. All outputs stay under this assigned directory. There is no apply/build/runtime entry point.

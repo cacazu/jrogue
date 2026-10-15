@@ -1,10 +1,11 @@
 """Compare recorded scoped file hashes with cached official archives; never extract."""
+import os
 from pathlib import Path
 import json,hashlib,re,tarfile
 from datetime import datetime,timezone
 ROOT=Path(__file__).resolve().parents[2]
 HERE=Path(__file__).resolve().parent
-SDK=Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+SDK=(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 AUDIT=HERE/"METADATA-DELTA-index000-SCOPED.json"
 raw=AUDIT.read_bytes()
 assert hashlib.sha256(raw).hexdigest()=="8d3deb1d161ab2d9238326987b0e97250f1f3b902e5398972d6eebf187dae1b6"

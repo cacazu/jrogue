@@ -39,7 +39,7 @@ records their concrete source traps.
 Run the isolated tests with the installed assets read-only:
 
 ```powershell
-& 'C:\Users\kit\emsdk\node\24.19.0_64bit\node.exe' --max-old-space-size=64 'C:\Users\kit\Documents\Codex\2026-10-02\task-6\dcss-startup-work\next-fixed-weapon-labels\tests.test.mjs'
+& 'node' --max-old-space-size=64 'C:\Users\kit\Documents\Codex\2026-10-02\task-6\dcss-startup-work\next-fixed-weapon-labels\tests.test.mjs'
 ```
 
 **99 source/mock checks pass.** They verify three exact byte inversions to the

@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-const installed='C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const installed=fileURLToPath(new URL('../..', import.meta.url));
 const out=dirname(fileURLToPath(import.meta.url));
 const source='1eebc1a2892e1c89776a0d7a10691f8dac8d9796';
 const inputs=new Map(),assertions=[],gaps=[];

@@ -6,7 +6,7 @@ import re
 import zipfile
 
 HERE = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 FILES = {
     "engine": ("game/engines/te4-1.7.6.teae", [
         "engine/init.lua", "config.lua", "engine/Module.lua", "engine/Birther.lua",

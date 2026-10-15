@@ -5,6 +5,7 @@ unchanged upstream Lua/PhysFS archives and the original SFMT snapshot wrapper.
 Unreferenced display callbacks are removed by the ordinary wasm linker, never
 replaced with gameplay or display mock symbols.
 """
+import os
 import json
 from pathlib import Path
 import subprocess
@@ -12,8 +13,8 @@ import time
 from make_core_state_overlay import generate
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
-SDK = Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
+SDK = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 NATIVE = ROOT.parent / "native-core-work"
 NODE = Path(r"C:\Program Files\nodejs\node.exe")
 

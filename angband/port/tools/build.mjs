@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import { readFile, mkdir, writeFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -5,7 +7,7 @@ import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fingerprintBuildInputs } from './build-inputs.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sdk = process.env.ANGBAND_SDK || 'C:\\Users\\kit\\emsdk';
+const sdk = process.env.ANGBAND_SDK || resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const python = path.join(sdk,'python','3.13.3_64bit','python.exe');
 const emcc = path.join(sdk,'upstream','emscripten','emcc.py');
 const build = path.join(root,'build');

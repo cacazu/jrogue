@@ -1,7 +1,7 @@
 $ErrorActionPreference='Stop'
 $drlTaskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$drlSharedRoot=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge\drl')
-$drlRepository=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge')
+$drlSharedRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+$drlRepository=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 if([IO.Path]::GetDirectoryName($drlSharedRoot) -ne $drlRepository -or [IO.Path]::GetFileName($drlSharedRoot) -ne 'drl'){throw 'DRL confinement failed'}
 if(!(Test-Path -LiteralPath (Join-Path $drlRepository '.git'))){throw 'Expected repository absent'}
 for($drlAncestor=$drlSharedRoot;$drlAncestor;$drlAncestor=[IO.Path]::GetDirectoryName($drlAncestor)){

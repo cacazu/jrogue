@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
-const installed = 'C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const installed = fileURLToPath(new URL('../../../..', import.meta.url));
 const archive = path.join(installed, 'engine/migration-staging/startup-fixed-weapon-labels');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const read = file => fs.readFileSync(file);

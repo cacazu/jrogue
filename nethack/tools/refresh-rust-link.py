@@ -15,8 +15,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
-SDK = Path(r"C:\Users\kit\emsdk")
-CARGO = Path(r"C:\Users\kit\.cargo\bin\cargo.exe")
+SDK = Path(os.environ.get('EMSDK', Path.home() / 'emsdk'))
+CARGO = (Path(os.environ.get('CARGO_HOME', Path.home() / '.cargo')) / 'bin/cargo.exe')
 
 
 def sha(path):

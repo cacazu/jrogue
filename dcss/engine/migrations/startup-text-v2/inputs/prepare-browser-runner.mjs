@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-const root=path.dirname(fileURLToPath(import.meta.url)),game='C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const root=path.dirname(fileURLToPath(import.meta.url)),game=fileURLToPath(new URL('../../../..', import.meta.url));
 let source=fs.readFileSync(path.join(game,'tests/controlled-core-browser.mjs'),'utf8');
 source=source.replace("import { verifyControlledGameFlow, verifyControlledSource, nativeFrameRows, classifyStartingWeaponMenu } from './controlled-gameplay-browser.mjs';",
   "import { verifyControlledSource, nativeFrameRows } from './controlled-gameplay-browser.mjs';\nimport { verifyNativeDynamicStartup } from './native-dynamic-startup-browser.mjs';");

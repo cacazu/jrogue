@@ -6,10 +6,10 @@ $taskProcess = Get-CimInstance Win32_Process -Filter 'ProcessId=39680'
 $taskCpu = Get-Process -Id 39680
 $taskMemory = Get-CimInstance Win32_PerfFormattedData_PerfOS_Memory
 $taskFiles = @(
-  'C:\Users\kit\emsdk\upstream\emscripten\tools\link.py',
-  'C:\Users\kit\emsdk\upstream\emscripten\tools\building.py',
-  'C:\Users\kit\emsdk\upstream\emscripten\src\settings.js',
-  'C:\Users\kit\emsdk\upstream\bin\wasm-opt.exe'
+  (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\emscripten\tools\link.py'),
+  (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\emscripten\tools\building.py'),
+  (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\emscripten\src\settings.js'),
+  (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\bin\wasm-opt.exe')
 )
 $taskPins = foreach ($taskFile in $taskFiles) {
   $taskStat = Get-Item -LiteralPath $taskFile
@@ -19,8 +19,8 @@ $taskLog = Get-Item -LiteralPath (Join-Path $taskBuildRoot 'logs\link-engine.log
 $taskWasm = Get-Item -LiteralPath (Join-Path $taskBuildRoot 'output\cataclysm-tiles.wasm')
 $taskCurrent = [ordered]@{
   observedUTC=$taskObserved.ToString('o')
-  sdkVersion=(Get-Content -LiteralPath 'C:\Users\kit\emsdk\upstream\emscripten\emscripten-version.txt' -Raw).Trim().Trim('"')
-  binaryenVersion=(& 'C:\Users\kit\emsdk\upstream\bin\wasm-opt.exe' --version | Out-String).Trim()
+  sdkVersion=(Get-Content -LiteralPath (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\emscripten\emscripten-version.txt') -Raw).Trim().Trim('"')
+  binaryenVersion=(& (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\bin\wasm-opt.exe') --version | Out-String).Trim()
   process=[ordered]@{
     pid=39680;parentPid=$taskProcess.ParentProcessId;commandLine=$taskProcess.CommandLine
     linkLaunchUTC='2026-10-02T15:17:58.9096822Z'
@@ -36,7 +36,7 @@ $taskCurrent = [ordered]@{
   secondObserved=[ordered]@{utc='2026-10-02T18:01:15.5780772Z';cpuSeconds=9615.21875;privateBytes=2238885888;workingSetBytes=479006720;readTransferCount=42396753;writeTransferCount=0;readOperations=10350;writeOperations=0;threads=1}
   measuredDelta=[ordered]@{seconds=166.4103877;cpuSeconds=163.96875;oneCoreUtilization=(163.96875/166.4103877);readBytes=0;writeBytes=0;privateByteChange=0}
   sdkFilePins=$taskPins
-  profilerAvailability=[ordered]@{wprExists=(Test-Path -LiteralPath 'C:\Windows\System32\wpr.exe');wasmOptPdbExists=(Test-Path -LiteralPath 'C:\Users\kit\emsdk\upstream\bin\wasm-opt.pdb');cdbOnPath=[bool](Get-Command cdb.exe -ErrorAction SilentlyContinue);windbgOnPath=[bool](Get-Command windbg.exe -ErrorAction SilentlyContinue);procdumpOnPath=[bool](Get-Command procdump.exe -ErrorAction SilentlyContinue)}
+  profilerAvailability=[ordered]@{wprExists=(Test-Path -LiteralPath 'C:\Windows\System32\wpr.exe');wasmOptPdbExists=(Test-Path -LiteralPath (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\bin\wasm-opt.pdb'));cdbOnPath=[bool](Get-Command cdb.exe -ErrorAction SilentlyContinue);windbgOnPath=[bool](Get-Command windbg.exe -ErrorAction SilentlyContinue);procdumpOnPath=[bool](Get-Command procdump.exe -ErrorAction SilentlyContinue)}
   limits=@('CPU and IO counters do not identify the active Binaryen pass or prove termination.','No debugger attachment, process interruption, ETW recording, duplicate link, or SDK mutation performed.','Zero IO is compatible with both in-memory useful optimizer work and a pathological loop.','Non-build work and overall compiler elapsed require owner session timestamps, not summed per-unit durations.')
 }
 $taskCurrent | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $taskDiagRoot 'observed-process.json') -Encoding utf8

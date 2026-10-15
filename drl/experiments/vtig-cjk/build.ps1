@@ -14,7 +14,7 @@ if ($Contract) {
   $wasm = 'text-contract-probe.wasm'
 } else { $source = 'probe.pas'; $wasm = 'vtig-cjk.wasm' }
 $args = @('-n','-Sc','-Twasip1','-CTwasmexceptions','-Xe','-dDRL_WASM','-dDRL_BROWSER',
-  '-FDC:\Users\kit\emsdk\upstream\bin',
+  ('-FD' + (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\bin')),
   ('-Fu'+(Join-Path $taskRoot 'toolchain\rtl-exnref')),
   ('-Fu'+(Join-Path $taskRoot 'core-overlay\fpcvalkyrie\src')),
   ('-Fu'+(Join-Path $taskRoot 'core-adapted\fpcvalkyrie\src')),

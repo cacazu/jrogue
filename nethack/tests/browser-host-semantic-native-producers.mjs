@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 /* Real Chrome + official NetHack WASM. No engine state is fabricated or edited. */
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -196,9 +198,9 @@ async function ballApply() {
 
 try {
   const identitySources=[
-    'C:/Users/kit/emsdk/upstream/emscripten/src/lib/libsyscall.js',
-    'C:/Users/kit/emsdk/upstream/emscripten/system/lib/libc/musl/src/unistd/getlogin.c',
-    'C:/Users/kit/emsdk/upstream/emscripten/system/lib/libc/musl/src/passwd/getpw_a.c',
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/src/lib/libsyscall.js'),
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/system/lib/libc/musl/src/unistd/getlogin.c'),
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/system/lib/libc/musl/src/passwd/getpw_a.c'),
     resolve(dirname(fileURLToPath(import.meta.url)),'../work/NetHack-5.0.0/sys/libnh/libnhmain.c'),
     resolve(dirname(fileURLToPath(import.meta.url)),'../work/NetHack-5.0.0/sys/libnh/sysconf')
   ];

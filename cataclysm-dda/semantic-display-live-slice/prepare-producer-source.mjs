@@ -63,7 +63,7 @@ for(const name of names){
   const dependencies=[...new Set(line.slice(separator+2).trim().split(/\s+/).map(x=>path.resolve(x)))];
   assert.equal(dependencies.some(x=>['input.h','input_context.h','help.h'].includes(path.basename(x))),false);
   for(const row of accepted.unchangedDependencies){
-    const original=path.join('C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59',row.file);
+    const original=path.join(fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url)),row.file);
     await pin(original,row);
   }
   for(const file of dependencies)await pin(file);

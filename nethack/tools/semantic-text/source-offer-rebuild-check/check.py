@@ -12,6 +12,8 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
+import shutil
+import os
 import re
 import sys
 
@@ -484,7 +486,7 @@ def main():
         sdk = args.sdk.resolve()
         external = [sdk / 'python/3.13.3_64bit/python.exe', sdk / 'upstream/emscripten/emcc.py',
                     sdk / 'upstream/bin/clang.exe', sdk / 'node/24.19.0_64bit/node.exe', sdk / '.emscripten',
-                    Path(r'C:\Users\kit\AppData\Local\Microsoft\WinGet\Packages\BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe\mingw64\bin\gcc.exe')]
+                    Path(os.environ.get('CC') or shutil.which('gcc') or str(Path(os.environ.get('LOCALAPPDATA', Path.home() / 'AppData/Local')) / 'Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/gcc.exe'))]
         sdk_status = [{'path': str(path), 'exists': path.is_file()} for path in external]
         errors += ['installed prerequisite missing: ' + str(path) for path in external if not path.is_file()]
     print(json.dumps({'status': 'source-prerequisites-verified' if not errors else 'blocked',

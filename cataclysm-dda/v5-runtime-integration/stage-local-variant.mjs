@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const source = path.join(root, 'preview');
-const game = String.raw`C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda`;
+const game = fileURLToPath(new URL('..', import.meta.url));
 const web = path.join(game, 'baseline-preview/web');
 const target = path.join(web, 'v5');
 if (process.argv.length !== 3 || !['--check', '--stage', '--verify'].includes(process.argv[2])) throw new Error('Use --check, --stage or --verify.');

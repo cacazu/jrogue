@@ -56,7 +56,7 @@ class MemoryStatus(ctypes.Structure):
  _fields_=[('dwLength',ctypes.c_uint32),('dwMemoryLoad',ctypes.c_uint32),('ullTotalPhys',ctypes.c_uint64),('ullAvailPhys',ctypes.c_uint64),('ullTotalPageFile',ctypes.c_uint64),('ullAvailPageFile',ctypes.c_uint64),('ullTotalVirtual',ctypes.c_uint64),('ullAvailVirtual',ctypes.c_uint64),('ullAvailExtendedVirtual',ctypes.c_uint64)]
 mem=MemoryStatus();mem.dwLength=ctypes.sizeof(mem);assert ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(mem));memory={'physical_available_bytes':mem.ullAvailPhys,'commit_available_bytes':mem.ullAvailPageFile,'physical_load_percent':mem.dwMemoryLoad};(root/'memory-final.json').write_text(json.dumps(memory,indent=2),'utf8')
 
-src=Path(r'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
+src=(Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
 source_records=json.loads((root/'inputs/source-files.json').read_text('utf8'));source_records=source_records['files'] if isinstance(source_records,dict) else source_records
 modified=[]
 for rec in source_records:

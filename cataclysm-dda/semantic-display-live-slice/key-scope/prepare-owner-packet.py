@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib,json,re
 ROOT=Path(__file__).resolve().parent.parent
 KEY=ROOT/'key-scope'
-UP=Path('C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
+UP=(Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
 COMMIT='7b2efa5cea38e4d4d97dd0e63b28b9148623da59'
 def require(c,m):
  if not c: raise RuntimeError(m)

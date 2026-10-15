@@ -37,7 +37,7 @@ assert.deepEqual(policy.newProfileOptions(), [ { name: 'USE_LANG', value: 'ja' }
   { name: 'TILES', value: 'cdda16_combined_ready' }, { name: 'OVERMAP_TILES', value: 'cdda16_combined_ready' } ]); assertions++;
 const loaded = await loadV5Policy({ url: new URL('http://127.0.0.1/policy.wasm'), bytes: bytes.length, sha256,
   fetchImpl: async () => new Response(bytes), cryptoImpl: webcrypto });
-const assetRoot = String.raw`C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\assets-16px\native-v5\tileset\CDDA16_Combined_Ready`;
+const assetRoot = fileURLToPath(new URL('../assets-16px/native-v5/tileset/CDDA16_Combined_Ready', import.meta.url));
 const prepared = await prepareV5Assets(loaded, { baseUrl: new URL('http://127.0.0.1/assets/'), cryptoImpl: webcrypto,
   fetchImpl: async url => new Response(fs.readFileSync(path.join(assetRoot, new URL(url).pathname.split('/').pop()))) });
 assert.equal(prepared.files.length, 6); assertions++;

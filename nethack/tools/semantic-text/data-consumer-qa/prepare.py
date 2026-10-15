@@ -414,7 +414,7 @@ def main() -> int:
     parser.add_argument("--run", action="store_true", help="Parent-serialized exact compiler/Node gate")
     parser.add_argument("--data-dir", type=Path, default=ROOT / "work" / "phase4" / "wasm-data")
     parser.add_argument("--run-name", default="phase4")
-    parser.add_argument("--sdk", type=Path, default=Path(r"C:\Users\kit\emsdk"))
+    parser.add_argument("--sdk", type=Path, default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     parser.add_argument("--node", type=Path, default=Path(r"C:\Program Files\nodejs\node.exe"))
     args = parser.parse_args()
     if not re.fullmatch(r"[a-zA-Z0-9_-]+", args.run_name):

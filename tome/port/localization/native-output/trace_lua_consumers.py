@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 import zipfile
 
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 ROOT = Path(__file__).resolve().parent
 PATTERN = re.compile(r"checkError|LuaError|core\.sound\.load|core\.serial\.new|core\.display\.newFont|fs\.zip|\bzip:add\(")
 

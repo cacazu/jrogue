@@ -22,7 +22,7 @@ The [thin owner](run-rust-window.py), SHA-256 `119a444966b54ac2cd4b9a77f18ef20f2
 After current independent review and the separate parent reservation, the exact completed owner command was:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\native-module-fixture\rust-build-plan\run-rust-window.py' --run --parent-released-window --runner-sha256 119a444966b54ac2cd4b9a77f18ef20f218d61eb2783dfe9a748225941bd56e8 --attempt-name native-json-rust-initial
+& 'python' -B 'integration-overlay\native-module-fixture\rust-build-plan\run-rust-window.py' --run --parent-released-window --runner-sha256 119a444966b54ac2cd4b9a77f18ef20f218d61eb2783dfe9a748225941bd56e8 --attempt-name native-json-rust-initial
 ```
 
 Every launch requires fresh 4 GiB available physical and 6 GiB exact commit. Available 7/9 GiB defers to browser recovery. The unnamed Windows job imposes a 1 GiB aggregate private cap; 250 ms samples impose a 1 GiB working-set stop and 2/2 GiB running floors, with 180 seconds maximum and one worker. Exact owned root identity, logs, all four exact test names/results, all nine raw native input hashes, terminal source-pin audit and closed owned job/root handles are recorded. No automatic retry follows failure, no-fit or uncertain cleanup. Unrelated applications remain outside ownership.

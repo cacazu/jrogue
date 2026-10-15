@@ -63,7 +63,7 @@ literal is explained away by those five calls.
 Run sequentially from the task workspace with the installed Python:
 
 ```powershell
-$catalogPython = 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe'
+$catalogPython = 'python'
 & $catalogPython -X utf8 catalog-reconcile\reconcile.py
 & $catalogPython -X utf8 catalog-reconcile\summarize.py
 & $catalogPython -X utf8 catalog-reconcile\handoff.py

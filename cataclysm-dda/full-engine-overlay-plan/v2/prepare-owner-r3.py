@@ -83,12 +83,12 @@ for port in comparison["ports"]:
     notice=HERE.parents[1]/"baseline-preview/web/notices/compiler-ports"/{
         "harfbuzz":"HarfBuzz-COPYING.txt","libpng":"libpng-LICENSE.txt","zlib":"zlib-LICENSE.txt"}[port["name"]]
     require(module.pin(notice)["sha256"]==port["license"]["sha256"],"copied notice differs from official archive")
-override=Path(r"C:\Users\kit\emsdk\upstream\emscripten\tools\ports\zlib\zconf.h")
+override=(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten/tools/ports/zlib/zconf.h')
 for file in [runner,Path(__file__),HERE/"compare-scoped-port-archives.py",HERE/"run-owner-window-r2.py",HERE/"OWNER-PINS-r2.json",
              HERE/"METADATA-DELTA-index000-SCOPED.json",comparison_path,override]:
     record=module.pin(file)
     records[record["path"].lower()]=record
-png_override=Path(r"C:\Users\kit\emsdk\upstream\emscripten\tools\ports\libpng\pnglibconf.h")
+png_override=(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten/tools/ports/libpng/pnglibconf.h')
 record=module.pin(png_override)
 records[record["path"].lower()]=record
 full_port_files=0

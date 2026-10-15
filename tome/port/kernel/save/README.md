@@ -40,9 +40,9 @@ No new ZIP C source or minizip reader library is required. The upstream bundles 
 Run these own source-generation scripts in order after the existing birth driver or original VFS input manifest changes:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' 'save-resume-work\make_resume_driver.py'
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' 'save-resume-work\prepare_browser_inputs.py'
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' 'save-resume-work\prepare_deliverables.py'
+& 'python' 'save-resume-work\make_resume_driver.py'
+& 'python' 'save-resume-work\prepare_browser_inputs.py'
+& 'python' 'save-resume-work\prepare_deliverables.py'
 ```
 
 The final script reads the authorized pristine source directory to verify staged source identity and hashes this source bundle. It must run before the first durable save so the compatibility key is stable. No Lua/engine/build/browser runs are performed by those scripts. A later bundle change intentionally rejects old adapter generations unless an explicit migration is implemented.

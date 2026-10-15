@@ -109,7 +109,7 @@ output("i18n/en.json",en);output("i18n/ja.json",ja)
 output("i18n/manifest.json",{"schema":1,"default_language":"ja","coverage_scope":"Only explicit new adapter text IDs under save-resume-work; not the original game catalog","ids":len(ids),"ui_ids":sum(k.startswith("save.ui.") for k in ids),"developer_diagnostic_ids":sum(not k.startswith("save.ui.") for k in ids),"parameter_policy":"No adapter catalog placeholders; original names and diagnostic details are not translated","catalogs":{"en":"en.json","ja":"ja.json"},"runtime_validation":"Not executed; source-only catalog generation"})
 
 # Verify staged reads against actual official pristine sources before attribution.
-upstream=Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream")
+upstream=(Path(__file__).resolve().parents[3] / 'upstream')
 actual=upstream/"unpacked/game"
 records=[]
 for virtual,original,staged in [

@@ -1,6 +1,6 @@
 # Cataclysm: DDA migration architecture
 
-This project owns only `jrouge/cataclysm-dda`. The existing Rogue, Brogue,
+This project owns only `cataclysm-dda/`. The existing Rogue, Brogue,
 native games, repository root, and other delegated games stay outside its scope.
 
 The user's actual plan was read from

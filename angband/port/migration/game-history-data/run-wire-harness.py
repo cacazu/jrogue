@@ -4,7 +4,7 @@ from pathlib import Path
 import hashlib,json,os,re,subprocess,tempfile
 root=Path(__file__).resolve().parents[2]
 family=root/'migration/game-history-data'
-sdk=Path(os.environ.get('ANGBAND_SDK',r'C:\Users\kit\emsdk'))
+sdk=Path(os.environ.get('ANGBAND_SDK',str(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))))
 work=Path(tempfile.gettempdir())/'angband-history-wire-harness'
 work.mkdir(parents=True,exist_ok=True)
 def read(p):return p.read_text(encoding='utf-8')

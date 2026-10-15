@@ -10,7 +10,7 @@ from candidate_common import base
 
 HERE = Path(__file__).resolve().parent
 STAGE = HERE.parent
-GAME = Path(r'C:\Users\kit\gameme\jnethack\jrouge\dcss')
+GAME = Path(__file__).resolve().parents[3]
 
 class Guards(unittest.TestCase):
     def test_syntax(self):

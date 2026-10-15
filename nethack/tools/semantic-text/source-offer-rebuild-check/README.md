@@ -13,7 +13,7 @@ python -X utf8 tools/semantic-text/source-offer-rebuild-check/check.py --package
 On the original supported Windows SDK layout, the optional presence check is:
 
 ```powershell
-python -X utf8 tools/semantic-text/source-offer-rebuild-check/check.py --package-layout --sdk C:\Users\kit\emsdk
+python -X utf8 tools/semantic-text/source-offer-rebuild-check/check.py --package-layout --sdk $env:EMSDK
 ```
 
 The default check verifies every recorded required file and the composer lock, every selected Rust `include_str!`/`include_bytes!` target, the pinned Lua source file set, the existing Rust proof's exact source/fixture/log bindings, and, when present after extraction, every member hash in `build/packaged-input-manifest.json`. A missing or changed input is a failure. Completed Rust proof inputs are guarded as stable inputs. Ongoing engine/compiler/data/browser outputs are excluded from the source-prerequisite freeze; their final bytes must be captured by the packaged member snapshot. An evidence directory selection alone does not establish that its validation gate passed. The check does not refresh the existing composer lock. `--record` is reserved for the source reviewer; it writes only this audit directory and must not be used to approve a changed extraction.
@@ -37,14 +37,14 @@ An actual build additionally requires the installed matching Emscripten 6.0.8 di
 After installing those prerequisites and releasing an appropriate build slot, these are the relevant commands, **not executed by this audit**:
 
 ```powershell
-$env:EM_CONFIG = 'C:\Users\kit\emsdk\.emscripten'
-$env:EMSDK = 'C:\Users\kit\emsdk'
-$env:PATH = 'C:\Users\kit\emsdk\upstream\emscripten;' + $env:PATH
+$env:EM_CONFIG = '$env:EMSDK\.emscripten'
+$env:EMSDK = $env:EMSDK
+$env:PATH = '$env:EMSDK\upstream\emscripten;' + $env:PATH
 $env:CARGO_PROFILE_RELEASE_CODEGEN_UNITS = '1'
 Push-Location tools/semantic-text/phase6-immutable-catalog/rust-copy
 cargo build --offline --locked --release --jobs 1 --target wasm32-unknown-emscripten
 Pop-Location
-python -X utf8 tools/semantic-text/phase6-integration/build.py --build --phase7 --registered-catalog --sdk C:\Users\kit\emsdk --rust-lib tools/semantic-text/phase6-immutable-catalog/rust-copy/target/wasm32-unknown-emscripten/release/libnethack_layers.a --web-source tools/semantic-text/phase6-immutable-catalog/host-overlay
+python -X utf8 tools/semantic-text/phase6-integration/build.py --build --phase7 --registered-catalog --sdk $env:EMSDK --rust-lib tools/semantic-text/phase6-immutable-catalog/rust-copy/target/wasm32-unknown-emscripten/release/libnethack_layers.a --web-source tools/semantic-text/phase6-immutable-catalog/host-overlay
 ```
 
 Target makedefs regenerates offsets using the original target libc and original inputs; copying old CRLF offsets or converting generated files by text replacement is insufficient. Date-dependent generated data, absolute diagnostic source paths, SDK versions, and cold-cache system-library builds prevent a claim of byte-identical binaries from these commands alone. A successful source closure check also does not prove the complete Japanese text scope or native/browser runtime behavior.

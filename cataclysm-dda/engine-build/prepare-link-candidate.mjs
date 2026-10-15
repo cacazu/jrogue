@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -28,7 +30,7 @@ if(outputIndex===0)throw new Error('Missing original output argument');
 const candidateOutput=path.join(candidateRoot,'output','cataclysm-tiles.js');
 fs.mkdirSync(path.dirname(candidateOutput),{recursive:true});
 changes.push({index:outputIndex,from:args[outputIndex],to:candidateOutput,reason:'Separate output; preserves current artifacts'});args[outputIndex]=candidateOutput;
-const sdkLinkPath='C:/Users/kit/emsdk/upstream/emscripten/tools/link.py';
+const sdkLinkPath=resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/tools/link.py');
 const sdkLink=fs.readFileSync(sdkLinkPath,'utf8').split(/\r?\n/);
 fs.writeFileSync(path.join(candidateRoot,'sdk-pass-selection.txt'),[
   'Trusted installed Emscripten 6.0.8 tools/link.py SHA256 '+sha(fs.readFileSync(sdkLinkPath)),
@@ -37,7 +39,7 @@ fs.writeFileSync(path.join(candidateRoot,'sdk-pass-selection.txt'),[
 ].join('\n')+'\n');
 const candidate={schemaVersion:1,status:'prepared-not-executed',createdUtc:new Date().toISOString(),
   requiresParentHeavyStageCoordination:true,existingPidPreserved:39680,
-  executable:'C:/Users/kit/emsdk/python/3.13.3_64bit/python.exe',argv:[original.tool,...args],cwd:root,
+  executable:resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe'),argv:[original.tool,...args],cwd:root,
   environmentOverrides:{EM_CONFIG:frozenConfig,EM_CACHE:original.EM_CACHE,EM_PORTS:original.EM_PORTS,EMCC_CORES:'1',EMCC_BATCH_BUILD:'0',BINARYEN_CORES:'1'},
   configChanges:{original:original.EM_CONFIG,candidate:frozenConfig,frozenCache:true,portsAndLibraryPathsUnchanged:true},
   unsetEnvironment:['EMSDK','EMSDK_NODE','EMSDK_PYTHON'],argumentChanges:changes,
@@ -52,7 +54,7 @@ const candidate={schemaVersion:1,status:'prepared-not-executed',createdUtc:new D
 };
 const candidatePath=path.join(candidateRoot,'link-candidate.json');fs.writeFileSync(candidatePath,JSON.stringify(candidate,null,2)+'\n');
 
-const binaryPath='C:/Users/kit/emsdk/upstream/bin/wasm-opt.exe',pe=fs.readFileSync(binaryPath);
+const binaryPath=resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/bin/wasm-opt.exe'),pe=fs.readFileSync(binaryPath);
 const peOffset=pe.readUInt32LE(0x3c);
 if(pe.toString('ascii',peOffset,peOffset+4)!=='PE\0\0')throw new Error('Unexpected PE');
 const coff=peOffset+4,sectionCount=pe.readUInt16LE(coff+2),optionalSize=pe.readUInt16LE(coff+16),optional=coff+20;

@@ -3,7 +3,7 @@ import csv,hashlib,json,math,re,shutil,zipfile
 from collections import Counter,defaultdict
 from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont
-root=Path(__file__).resolve().parent;base=root.parent/'native-v4';src=Path(r'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
+root=Path(__file__).resolve().parent;base=root.parent/'native-v4';src=Path(str((Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')))
 for folder in ['source','sprites','source-grid','tileset']:(root/folder).mkdir(parents=True,exist_ok=True)
 palette={'.':'00000000','X':'151b24ff','G':'9aa5aaff','J':'68737cff','P':'29313bff','S':'e8dcc0ff','Y':'f2bc68ff','Q':'b35636ff','R':'8b664bff','C':'acd1cdff','T':'6c9293ff','L':'909567ff','q':'873e32ff'}
 sources=[]

@@ -7,7 +7,7 @@ import { createHash, webcrypto } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const prior = path.dirname(root);
-const installed = process.env.DCSS_REPOSITORY || 'C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const installed = process.env.DCSS_REPOSITORY || fileURLToPath(new URL('../../..', import.meta.url));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const read = (base, relative) => fs.readFileSync(path.join(base, relative));
 const normalized = bytes => bytes.toString('utf8').replace(/\r\n/g, '\n');

@@ -11,7 +11,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const task = fileURLToPath(new URL('../', import.meta.url));
-const shared = 'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\drl';
+const shared = fileURLToPath(new URL('..', import.meta.url));
 const dist = path.join(shared, 'port/dist');
 const receipt = path.join(task, 'docs/SHARED-LOCAL-BROWSER-EVIDENCE.json');
 const output = path.join(task, 'docs/shared-local-browser');

@@ -1,7 +1,9 @@
+param([Parameter(Mandatory)][string]$Destination)
 $ErrorActionPreference='Stop'
 $drlTaskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$drlDestination=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge\drl')
-$drlExpectedParent=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge')
+$drlDestination=[IO.Path]::GetFullPath($Destination)
+$drlExpectedParent=[IO.Path]::GetDirectoryName($drlDestination)
+if ($drlTaskRoot -eq $drlDestination) { throw 'Source and destination must be different folders' }
 if ([IO.Path]::GetDirectoryName($drlDestination) -ne $drlExpectedParent -or [IO.Path]::GetFileName($drlDestination) -ne 'drl') { throw 'DRL destination confinement failed' }
 if (!(Test-Path -LiteralPath (Join-Path $drlExpectedParent '.git'))) { throw 'Expected shared repository is absent' }
 $drlRoots=@('docs','tools','localization','core-overlay','port/src','port/tests','port/web','port/locales','port/licenses','port/tools','experiments/lua-wasi','experiments/vtig-cjk','experiments/state-probe','toolchain/wasm-probe')

@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {isNativeInitialStartupMenu,nativeMenuEntityHotkey} from './tests/native-dynamic-startup-browser.mjs';
 const root=path.dirname(fileURLToPath(import.meta.url));
-const game='C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const game=fileURLToPath(new URL('../../../..', import.meta.url));
 const sourceRoot=path.join(game,'upstream/crawl-ref/source');
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const records=[];

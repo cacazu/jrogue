@@ -17,7 +17,7 @@ The PDF embeds six Type1 font subsets. Five URW subsets contain a GPL notice and
 Run from the `dcss` repository directory. The current helper is `tools/font_free_startup_package.py`, SHA-256 `52e44e62ea2ed5b8d13de2b862401b2899b3c13fa08df2074257d38b167ec921`; no task-6 authoring path is needed. Use the installed Emscripten **6.0.8** SDK and its Python **3.13.3**; change the SDK variable if the verified installation was relocated.
 
 ```powershell
-$dcssSdk = 'C:\Users\kit\emsdk'
+$dcssSdk = $env:EMSDK
 $dcssPython = Join-Path $dcssSdk 'python\3.13.3_64bit\python.exe'
 & $dcssPython .\tools\font_free_startup_package.py --root . --sdk $dcssSdk --check
 ```

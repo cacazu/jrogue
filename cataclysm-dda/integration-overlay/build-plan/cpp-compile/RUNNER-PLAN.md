@@ -73,8 +73,8 @@ cannot start after a failed stage or cleanup audit.
 Use these source-only commands from the task-8 workspace:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\build-plan\cpp-compile\run-compile-window.py'
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\build-plan\cpp-compile\test-runner-source.py'
+& 'python' -B 'integration-overlay\build-plan\cpp-compile\run-compile-window.py'
+& 'python' -B 'integration-overlay\build-plan\cpp-compile\test-runner-source.py'
 ```
 
 The following exact command completed the corrected compile-only trial. The flag
@@ -83,7 +83,7 @@ first confirms no other owned Chrome/compiler job occupies that slot, then
 invoked the separately reserved fresh attempt name:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\build-plan\cpp-compile\run-compile-window.py' --run --parent-released-window --runner-sha256 0ed16674c31ab9335b75c71afc8c73b717398f4cbd56613840ee2266e64ea395 --attempt-name cpp2-corrected-preflight
+& 'python' -B 'integration-overlay\build-plan\cpp-compile\run-compile-window.py' --run --parent-released-window --runner-sha256 0ed16674c31ab9335b75c71afc8c73b717398f4cbd56613840ee2266e64ea395 --attempt-name cpp2-corrected-preflight
 ```
 
 Exact two `-c` argv arrays are retained in `compile-plan.json`. No linking,

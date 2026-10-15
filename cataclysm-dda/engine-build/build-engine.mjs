@@ -1,3 +1,6 @@
+import { fileURLToPath as localFilePath } from 'node:url';
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -5,8 +8,8 @@ import os from 'node:os';
 import {spawn} from 'node:child_process';
 
 const buildRoot = path.dirname(new URL(import.meta.url).pathname.replace(/^\/(\w:)/, '$1'));
-const upstream = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
-const sdk = 'C:/Users/kit/emsdk';
+const upstream = localFilePath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
+const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const py = sdk + '/python/3.13.3_64bit/python.exe';
 const emcc = sdk + '/upstream/emscripten/emcc.py';
 const emxx = sdk + '/upstream/emscripten/em++.py';

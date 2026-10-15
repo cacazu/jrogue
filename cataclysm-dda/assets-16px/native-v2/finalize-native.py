@@ -5,7 +5,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 
 root=Path(__file__).resolve().parent
-upstream=Path(r'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
+upstream=(Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
 sources=json.loads((root/'inputs/source-files.json').read_text('utf8'))
 render=json.loads((root/'inputs/render-source-hashes.json').read_text('utf8'))
 changed=[]

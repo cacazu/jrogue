@@ -1,7 +1,8 @@
+import { fileURLToPath as localFilePath } from 'node:url';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const commit = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
-const root = `C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-${commit}/`;
+const root = localFilePath(new URL(`../upstream/Cataclysm-DDA-${commit}/`, import.meta.url));
 const specs = [['src/main_menu.cpp', [[531, 537], [590, 595], [1001, 1015]]], ['src/game.cpp', [[594, 606], [787, 801]]]];
 const sourceFiles = [];
 for (const [path, ranges] of specs) {

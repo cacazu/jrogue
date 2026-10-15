@@ -4,6 +4,7 @@ Default invocation prepares Python/C source only. --build is reserved for the
 parent's released heavy-job slot. Current/Phase4 source and runtimes are read-only.
 """
 from __future__ import annotations
+import os
 import argparse
 import difflib
 import hashlib
@@ -175,7 +176,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prepare",action="store_true")
     parser.add_argument("--build",action="store_true")
-    parser.add_argument("--sdk",type=Path,default=Path(r"C:\Users\kit\emsdk"))
+    parser.add_argument("--sdk",type=Path,default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     parser.add_argument("--rust-lib",type=Path)
     parser.add_argument("--web-source",type=Path,help="Reviewed complete isolated frontend source directory; default current web")
     parser.add_argument("--registered-catalog",action="store_true",help="Export reviewed immutable-catalog Rust API from selected isolated library")

@@ -20,5 +20,5 @@ Errors in fixtures produce failed cases and exit code 1. Failed hash/data/execut
 To reproduce the lightweight source checkpoint without running any runtime:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 nethack/tools/semantic-text/phase6-immutable-catalog/tests/prepare-source-checkpoint.py
+& 'python' -X utf8 nethack/tools/semantic-text/phase6-immutable-catalog/tests/prepare-source-checkpoint.py
 ```

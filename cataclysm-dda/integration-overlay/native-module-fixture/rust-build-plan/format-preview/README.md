@@ -5,7 +5,7 @@ The exact [plan](preview-plan.json) SHA-256 is `561db92461331284e73d8dc48d266e3e
 After independent source review and the separate root reservation, the completed command was:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\native-module-fixture\rust-build-plan\format-preview\run-preview.py' --run --parent-released-window --runner-sha256 ae1318e191ffef746eeade86f9b8a670744f12e85bbcd3fda0ce3dbda8185d33 --attempt-name formatting-preview-initial
+& 'python' -B 'integration-overlay\native-module-fixture\rust-build-plan\format-preview\run-preview.py' --run --parent-released-window --runner-sha256 ae1318e191ffef746eeade86f9b8a670744f12e85bbcd3fda0ce3dbda8185d33 --attempt-name formatting-preview-initial
 ```
 
 The only child command is the pinned installed GNU `rustfmt.exe`, with `--edition 2024 --config-path <owned rustfmt.toml> --config skip_children=true <attempt/work/src/lib.rs>`. Edition 2024 is read from the exact original Cargo manifest. The explicit owned config uses Unix newlines. The stable tool warned that `make_backup = false` is unsupported; no backup was produced, and verified workcopy membership is exactly `src/lib.rs`. The original config and warning are retained as execution provenance. A new per-attempt workcopy is created only after launch is selected. It starts with the exact accepted initial bytes; no original source path appears in the formatter argv.

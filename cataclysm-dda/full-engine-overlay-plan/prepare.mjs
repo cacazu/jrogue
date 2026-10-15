@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Preparation only: source copies, exact dependency evidence and command records.
 // Never spawns a process, imports WebAssembly or changes an accepted engine.
 import assert from 'node:assert/strict';
@@ -153,7 +155,7 @@ for (const file of ordered) {
   const success = compileResults.findLast(result => result.source === file);
   assert.ok(success && success.code === 0, 'successful source result');
   const log = read(success.logPath), command = JSON.parse(log.toString('utf8').split('\n', 1)[0]);
-  assert.equal(command.tool, baseline.upstream ? 'C:/Users/kit/emsdk/upstream/emscripten/em++.py' : '');
+  assert.equal(command.tool, baseline.upstream ? resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/em++.py') : '');
   assert.deepEqual(command.args, baselineArgs(file), 'exact successful original compile flags');
   if (!reasons.length) {
     const objectBytes = read(object);

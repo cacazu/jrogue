@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import zipfile
 HERE=Path(__file__).resolve().parent
-UPSTREAM=Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM=(Path(__file__).resolve().parents[4] / 'upstream/t-engine4-src-1.7.6')
 def sha(data): return hashlib.sha256(data).hexdigest()
 def main():
     spec=importlib.util.spec_from_file_location('observer_generator',HERE/'make_map_capture_overlay.py')

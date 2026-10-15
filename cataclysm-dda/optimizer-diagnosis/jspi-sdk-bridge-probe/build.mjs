@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { root, sdk, python, receipt, bounded, pin } from './common.mjs';
@@ -13,7 +15,16 @@ try {
   for (const record of sdkPins) if ((await pin(record.path)).sha256 !== record.sha256) throw new Error('Audited SDK bytes changed: ' + record.path);
   const build = path.join(root, 'build'); await mkdir(build, { recursive: true });
   const config = path.join(build, '.emscripten');
-  await writeFile(config, "NODE_JS = 'C:/Users/kit/emsdk/node/24.19.0_64bit/node.exe'\nPYTHON = 'C:/Users/kit/emsdk/python/3.13.3_64bit/python.exe'\nLLVM_ROOT = 'C:/Users/kit/emsdk/upstream/bin'\nBINARYEN_ROOT = 'C:/Users/kit/emsdk/upstream'\nEMSCRIPTEN_ROOT = 'C:/Users/kit/emsdk/upstream/emscripten'\nCACHE = 'C:/Users/kit/emsdk/upstream/emscripten/cache'\nFROZEN_CACHE = True\n");
+  const sdkRoot = process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk');
+  const settings = {
+    NODE_JS: path.join(sdkRoot, 'node/24.19.0_64bit/node.exe'),
+    PYTHON: python,
+    LLVM_ROOT: path.join(sdkRoot, 'upstream/bin'),
+    BINARYEN_ROOT: path.join(sdkRoot, 'upstream'),
+    EMSCRIPTEN_ROOT: sdk,
+    CACHE: path.join(sdk, 'cache'),
+  };
+  await writeFile(config, Object.entries(settings).map(([key, value]) => `${key} = ${JSON.stringify(value)}`).join('\n') + '\nFROZEN_CACHE = True\n');
   const env = { ...process.env, EM_CONFIG: config, EMCC_CORES: '1', EMCC_BATCH_BUILD: '0' };
   const compiler = path.join(sdk, 'em++.py');
   const flags = ['-std=c++17', '-Os', '-fexceptions', '-sDISABLE_EXCEPTION_CATCHING=0'];

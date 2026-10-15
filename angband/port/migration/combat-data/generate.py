@@ -12,7 +12,7 @@ import unicodedata
 import argparse
 
 HERE = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\angband\upstream\angband-4.2.6")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/angband-4.2.6')
 COMMIT = "f3082213b73f3e463e3d0d60bff4b00462beae6e"
 PREFIX = "angband.combat."
 CHECK_MODE = False

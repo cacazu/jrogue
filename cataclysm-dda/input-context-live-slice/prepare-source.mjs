@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.dirname(HERE);
-export const UPSTREAM = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+export const UPSTREAM = fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 export const COMMIT = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
 export const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 export const pin = filename => { const bytes = fs.readFileSync(filename); return {path:path.resolve(filename),bytes:bytes.length,sha256:sha(bytes)}; };

@@ -16,7 +16,7 @@ The DRL tree snapshot is nontruncated: **274 files / 33,607,601 bytes**, with **
 
 The upstream [CI workflow](https://raw.githubusercontent.com/chaosforgeorg/drl/0_10_11a/.github/workflows/ci.yml) checks out mutable Valkyrie `development`. This project locks an explicit matching release tag instead. That is an auditable input choice, not proof that the official release binary used exactly this engine revision. The native recipe requires Free Pascal/Lazarus and Lua 5.1; it can build WAD rules from source.
 
-Pristine acquisitions remain separate from adapted source and Rust display/input/platform code. The destination is the existing local workspace `C:\Users\kit\gameme\jnethack\jrouge\drl`; its spelling is intentional. The initial checkpoint was copied and hash verified; continuing original-core integration changes still require synchronization. Other games and the shared Git index are outside this task's ownership.
+Pristine acquisitions remain separate from adapted source and Rust display/input/platform code. The destination is the existing local workspace `drl`; its spelling is intentional. The initial checkpoint was copied and hash verified; continuing original-core integration changes still require synchronization. Other games and the shared Git index are outside this task's ownership.
 
 ## License boundary
 

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import re
 
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 ROOT = Path(__file__).resolve().parent
 APIS = re.compile(r"\b(luaL_error|luaL_argerror|luaL_argcheck|luaL_checkstack|lua_pushfstring|lua_pushstring|lua_pushliteral|fprintf|printf|puts|new_lua_error)\s*\(")
 FUNCTIONS = re.compile(r"^[ \t]*(?:(?:static|inline|extern|const)\s+)*[A-Za-z_][\w \t*]+?[ \t*]([A-Za-z_]\w*)\s*\([^;{}]*?\)\s*\{", re.MULTILINE)

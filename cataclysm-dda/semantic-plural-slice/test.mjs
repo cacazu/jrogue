@@ -1,3 +1,4 @@
+import { fileURLToPath as localFilePath } from 'node:url';
 import assert from 'node:assert/strict';
 import {readFileSync, writeFileSync} from 'node:fs';
 import path from 'node:path';
@@ -142,7 +143,7 @@ test('plural literal brace escaping preserves both forms and Japanese text', () 
 });
 
 test('all source pins and original definition files retain exact recorded fingerprints', () => {
-  const upstream = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-' + SOURCE_COMMIT;
+  const upstream = localFilePath(new URL('../upstream/Cataclysm-DDA-', import.meta.url)) + SOURCE_COMMIT;
   for (const [file, pin] of Object.entries(inventory.sourcePins)) assert.equal(sha256(readFileSync(path.join(upstream, file))), pin.sha256);
   for (const [file, hash] of Object.entries(inventory.definitionFileSha256)) assert.equal(sha256(readFileSync(path.join(upstream, file))), hash);
 });

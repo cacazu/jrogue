@@ -37,7 +37,7 @@ checkpoint.remaining_runtime_gates=[
 checkpoint.site_url=null;checkpoint.local_browser_verified=false;
 await writeFile(path.join(root,'docs/CURRENT-CHECKPOINT.json'),JSON.stringify(checkpoint,null,2)+'\n');
 const delivery={schema:2,created_at:checkpoint.recorded_utc,
-  workspace:'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\drl',game:'DRL',
+  workspace:fileURLToPath(new URL('..', import.meta.url)),game:'DRL',
   stage:'original Pascal/Lua basic browser, combat and autorun flows verified; death/source receipts listed separately; full campaign/state/localization pending',
   architecture:'original Pascal/Lua logic; Rust display/input/platform',
   delivery_scope:checkpoint.delivery_scope,external_deployment_requested:false,

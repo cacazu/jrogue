@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
-const game = 'C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const game = fileURLToPath(new URL('../../../..', import.meta.url));
 const hud = path.join(root, '../dcss-native-path-work');
 const dynamic = process.env.DCSS_DYNAMIC_STAGE ?? path.join(root, '../dcss-dynamic-schema-work');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');

@@ -4,7 +4,7 @@ import json
 import shutil
 
 WORK=Path(__file__).resolve().parent.parent
-TOME=Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome")
+TOME=Path(__file__).resolve().parents[3]
 PORT=WORK/"tome-port"
 expected=TOME.resolve()
 destination=(TOME/"port").resolve()

@@ -2,6 +2,7 @@
 
 Only evidence writes target the adjacent writable staging directory.
 """
+import os
 from pathlib import Path
 import argparse
 import json
@@ -11,7 +12,7 @@ from candidate_common import base
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,required=True)
-    parser.add_argument('--sdk',type=Path,default=Path(r'C:\Users\kit\emsdk'))
+    parser.add_argument('--sdk',type=Path,default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     args=parser.parse_args()
     started=time.monotonic()
     manifest=base.validate_native_baseline(args.root.resolve(),args.sdk.resolve())

@@ -6,13 +6,13 @@ unchanged. Added 2026-10-02; preserve the upstream NGPL notices.
 Run these Python-only checks from the nethack directory:
 
 ```powershell
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\instrument-semantic-phase4.py
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\semantic-text\phase4\prepare-impossible.py
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\semantic-text\phase4\prepare-dynamic-literals.py
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\semantic-text\phase4\audit-frozen-visibility.py
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\test-semantic-phase4.py
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\build-upstream.py --phase4-semantic-text --prepare-only --jobs 1
-& C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe tools\test-combined-semantic.py
+& python tools\instrument-semantic-phase4.py
+& python tools\semantic-text\phase4\prepare-impossible.py
+& python tools\semantic-text\phase4\prepare-dynamic-literals.py
+& python tools\semantic-text\phase4\audit-frozen-visibility.py
+& python tools\test-semantic-phase4.py
+& python tools\build-upstream.py --phase4-semantic-text --prepare-only --jobs 1
+& python tools\test-combined-semantic.py
 ```
 
 The handoff is `../phase4-generated/`:

@@ -1,4 +1,5 @@
 """Read bounded original save/render sources; retain unchanged Lua evidence."""
+import os
 import hashlib
 import json
 from pathlib import Path
@@ -6,7 +7,7 @@ import re
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 SELECTED = {
     "game/engines/te4-1.7.6.teae": ["engine/Savefile.lua", "engine/SavefilePipe.lua", "engine/Game.lua", "engine/Module.lua", "engine/class.lua", "engine/Entity.lua", "engine/interface/ActorTemporaryEffects.lua", "engine/GameEnergyBased.lua", "engine/GameTurnBased.lua", "engine/Map.lua", "engine/Particles.lua", "engine/interface/GameSound.lua", "engine/Level.lua", "engine/Zone.lua", "engine/interface/ActorFOV.lua"],
     "game/modules/tome-1.7.6.team": ["mod/class/Game.lua", "mod/class/World.lua", "mod/class/Actor.lua", "mod/class/Player.lua"],
@@ -29,7 +30,7 @@ def main():
     for name in ["src/main.c", "src/core_lua.c", "src/serial.c", "src/particles.c", "src/particles.h", "src/map.c", "src/map.h", "src/wait.c", "src/wfc/lua_wfc.cpp", "src/wfc/wfc.hpp", "src/libtcod_import/noise_c.c"]:
         data = (SOURCE / name).read_bytes()
         records.append({"source": name, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data), "evidence": "pristine file read; not copied"})
-    sdk_file = Path(r"C:\Users\kit\emsdk\upstream\emscripten\src\lib\libidbfs.js")
+    sdk_file = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten/src/lib/libidbfs.js')
     data = sdk_file.read_bytes()
     records.append({"source": str(sdk_file), "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data), "evidence": "SDK 6.0.8 IDBFS transaction source read; not copied"})
     (ROOT / "source-provenance.json").write_text(json.dumps({"source_ref": "tome-1.7.6", "files": records}, indent=2) + "\n", encoding="utf-8")

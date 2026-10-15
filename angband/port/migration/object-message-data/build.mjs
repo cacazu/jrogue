@@ -14,7 +14,7 @@ for(const row of rows){
  if(!row.ja||row.ja.includes('\uFFFD')||row.en===row.ja)throw Error('Unreviewed Japanese '+row.id);
  en[row.id]=row.en;ja[row.id]=row.ja;entries[row.id]={parameters:row.parameters};
 }
-const upstream='C:/Users/kit/gameme/jnethack/jrouge/angband/upstream/angband-4.2.6';
+const upstream=fileURLToPath(new URL('../../../upstream/angband-4.2.6', import.meta.url));
 const sourceFiles=[...new Set([...reviewed.map(r=>r.source.file.replace('logic/','src/')),'src/list-equip-slots.h','lib/gamedata/body.txt'])];
 const source_hashes=sourceFiles.map(file=>{const bytes=fs.readFileSync(path.join(upstream,file));return{file,bytes:bytes.length,sha256:crypto.createHash('sha256').update(bytes).digest('hex')}});
 for(const[name,value]of Object.entries({'en.json':en,'ja.json':ja,'schema.json':{schema_version:1,entries},'source-manifest.json':{schema_version:1,upstream_commit:'f3082213b73f3e463e3d0d60bff4b00462beae6e',source_hashes,source_callsites:reviewed,entries:rows,status:'reviewed_source_catalog',complete_game_translation:false}}))fs.writeFileSync(path.join(directory,name),JSON.stringify(value,null,2)+'\n');

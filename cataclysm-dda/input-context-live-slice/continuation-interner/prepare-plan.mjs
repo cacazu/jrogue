@@ -18,7 +18,7 @@ demand(proof.status==='original-member-compile-passed-interner-link-dependency-b
 add(proof.compiledObject);add(proof.dependencyFile);add(proof.terminal);add(pin(proofName));
 const internerObject=path.join(ROOT,'engine-build/objects/string_id.o');
 const interner=pin(internerObject);demand(interner.bytes===18239&&interner.sha256==='6e1540527a927e3d43fe3d884f1790b06f32a60a74c52c78aea115884f61ff13','actual original interner object changed');add(interner);
-const upstream=path.join('C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-'+old.sourceCommit,'src');
+const upstream=path.join(fileURLToPath(new URL('../../upstream/Cataclysm-DDA-', import.meta.url))+old.sourceCommit,'src');
 const tree=JSON.parse(fs.readFileSync(path.join(ROOT,'audit/github-stable-tree.json'),'utf8'));
 for(const n of ['string_id.cpp','string_id.h']){
  const name=path.join(upstream,n),bytes=fs.readFileSync(name);

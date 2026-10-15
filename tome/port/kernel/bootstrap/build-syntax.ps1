@@ -1,11 +1,11 @@
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
-$sourceRoot = 'C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6'
-$compiler = 'C:\Users\kit\emsdk\upstream\emscripten\emcc.exe'
+$sourceRoot = (Join-Path $PSScriptRoot '..\..\..\upstream\t-engine4-src-1.7.6')
+$compiler = (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) 'upstream\emscripten\emcc.exe')
 $buildRoot = Join-Path $PSScriptRoot 'syntax-build'
 New-Item -ItemType Directory -Path $buildRoot -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $taskRoot 'lua-work\stdio_physfs_adapter.c') -Destination (Join-Path $buildRoot 'stdio_physfs_adapter.c')
-$env:EM_CONFIG = 'C:\Users\kit\emsdk\.emscripten'
+$env:EM_CONFIG = (Join-Path $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }) '.emscripten')
 $env:EM_CACHE = Join-Path $buildRoot 'em-cache'
 $arguments = @((Get-ChildItem -LiteralPath (Join-Path $sourceRoot 'src\lua') -Filter '*.c' -File | Where-Object { $_.Name -notin @('luac.c', 'print.c') }).FullName)
 $arguments += @((Join-Path $PSScriptRoot 'syntax_main.c'), (Join-Path $buildRoot 'stdio_physfs_adapter.c'))

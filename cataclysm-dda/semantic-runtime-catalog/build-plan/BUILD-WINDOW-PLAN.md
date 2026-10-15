@@ -24,7 +24,7 @@ The exact compiler/test arguments are documented in the plan, rather than
 run directly without the guard. The released run used:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' semantic-runtime-catalog/run-consumer-window.py --parent-released-window
+& 'python' semantic-runtime-catalog/run-consumer-window.py --parent-released-window
 ```
 
 Cargo uses the installed GNU 1.98.1 toolchain and self-contained native
@@ -43,7 +43,7 @@ compilation. Its failed attempt is retained. Parent-authorized scoped SDK
 escalation retried only the two native stages under the same guard:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' semantic-runtime-catalog/run-consumer-window.py --parent-released-window --start-stage native-cpp-selector-fixture-build --attempt-name native-retry
+& 'python' semantic-runtime-catalog/run-consumer-window.py --parent-released-window --start-stage native-cpp-selector-fixture-build --attempt-name native-retry
 ```
 
 No ACL, security or global SDK changes were made. Future compiler runs need

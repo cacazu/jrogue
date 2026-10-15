@@ -4,7 +4,7 @@ This independent, reversible overlay replaces exactly three native gameplay-RNG 
 
 `SOURCE-CHECKS.json` retains the historical lightweight Node preparation checks. The later reserved native Rust window passed **5/5 real std-only helper tests**; [current proof](build-plan/consumer-verification.json) records exact commands, compiled source/lock hashes and guarded resource measurements. The tests execute synthetic golden/bounds/equality/interleave cases on the unchanged `rust/src/lib.rs` through an isolated manifest whose only difference is its library path. The native C++ patch/helper and real caller paths remain uncompiled and unconnected. No browser, native-helper parity, full extraction, packing, Git or active engine modification occurred. No Site or hosted deployment is prepared.
 
-The original source is retained at `C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`. `source-pins.json` records the official repository, version, and exact bytes/SHA-256 of ten consulted files, independently matched against `../determinism-audit/SOURCE-MANIFEST.json`. Nothing in this overlay downloads a different game, implements gameplay, translates names, or loads assets.
+The original source is retained at `cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59`. `source-pins.json` records the official repository, version, and exact bytes/SHA-256 of ten consulted files, independently matched against `../determinism-audit/SOURCE-MANIFEST.json`. Nothing in this overlay downloads a different game, implements gameplay, translates names, or loads assets.
 
 | Native site | Confined output and exact source binding | Explicit observed inputs |
 |---|---|---|

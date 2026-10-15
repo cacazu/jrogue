@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const port = path.resolve(directory, '../..');
-const upstream = process.env.ANGBAND_PRISTINE ?? 'C:/Users/kit/gameme/jnethack/jrouge/angband/upstream/angband-4.2.6';
+const upstream = process.env.ANGBAND_PRISTINE ?? fileURLToPath(new URL('../../../upstream/angband-4.2.6', import.meta.url));
 const read = name => JSON.parse(fs.readFileSync(path.join(directory, name), 'utf8'));
 const inventory = read('inventory.json'), manifest = read('source-manifest.json');
 const en = read('en.json'), ja = read('ja.json'), schema = read('schema.json');

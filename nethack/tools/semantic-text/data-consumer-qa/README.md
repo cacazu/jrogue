@@ -3,7 +3,7 @@ The gate executes NetHack 5.0.0's original data consumers against the actual pac
 From the `nethack` staging directory, after the parent confirms a fresh resource gate and drained browser/compiler jobs:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/semantic-text/data-consumer-qa/prepare.py --run --run-name phase4
+& 'python' -X utf8 tools/semantic-text/data-consumer-qa/prepare.py --run --run-name phase4
 ```
 
 The parent wraps this command with `tools/run-monitored.py`. The script itself enforces one Emscripten/Binaryen worker and disables Windows expanded batch commands. Exit 0 means every consumer assertion passed; exit 2 means the process completed and found data parity failures. Compilation or execution failure retains its command and output log. Use a fresh run name for another execution; existing execution evidence is never overwritten.
@@ -23,7 +23,7 @@ The existing native Windows `makedefs` files contain CRLF, and their physical of
 After the parent generates and packages the Phase6 assets, rerun this same original consumer gate with the new archive:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
+& 'python' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
 ```
 
 `run-phase6.py` binds actual Phase6 working headers and target flags. It requires the executed original generator manifest, all seven original generator C hashes, all seven untouched official data input hashes, pre-generation header hashes, compiled utility JS/WASM hashes, exact output hashes, LF bytes for all six generated assets, and byte equality between those outputs and actual packaged members. It also certifies all physical encyclopedia index/count/EOF records while leaving encyclopedia reader runtime parity explicitly unproved.

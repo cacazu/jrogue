@@ -7,9 +7,9 @@ This is an isolated, source-only preparation against official NetHack 5.0.0 comm
 Run the three finite source-only scripts, in order, from the workspace root:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/census.py
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/prepare.py
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/verify-source.py
+& 'python' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/census.py
+& 'python' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/prepare.py
+& 'python' -B -X utf8 nethack/tools/semantic-text/phase7-buffer-producers/verify-source.py
 ```
 
 The scripts read the pristine official tree and existing fixed inventories. Writes are confined to this directory. `generated/census-summary.json` records input/source hashes and groups every original producer and unresolved output by API, destination kind, source file and function. Full token spans, exact original argument expressions and declared typed unions are in the detailed JSON files.

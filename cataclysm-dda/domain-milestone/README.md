@@ -96,9 +96,9 @@ this coherent milestone; their mechanics are not counted as migrated.
 Reproduce on this Windows executor from this directory:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\tools\build_reference.py --upstream 'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59' --emsdk 'C:\Users\kit\emsdk'
-& 'C:\Users\kit\.cargo\bin\cargo.exe' fmt
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' .\tools\verify_differential.py --node 'C:\Program Files\nodejs\node.exe' --cargo 'C:\Users\kit\.cargo\bin\cargo.exe'
+& 'python' .\tools\build_reference.py --upstream '../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59' --emsdk $env:EMSDK
+& 'cargo' fmt
+& 'python' .\tools\verify_differential.py --node 'node' --cargo 'cargo'
 ```
 
 The Emscripten cache stays under `build/emcache`; it never shares another agent's

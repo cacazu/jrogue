@@ -8,7 +8,7 @@ import { pipeline } from 'node:stream/promises';
 import { fileURLToPath } from 'node:url';
 
 const ownRoot = path.dirname(fileURLToPath(import.meta.url));
-const FIXED_DESTINATION = 'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\cataclysm-dda\\baseline-preview\\web';
+const FIXED_DESTINATION = fileURLToPath(new URL('web', import.meta.url));
 const MANIFEST_SHA256 = 'eb09bac0ddaf7373b411bcfe7a60d21e4fd4775689e4e7437e07be0283360f39';
 const BUFFER_BYTES = 64 * 1024;
 const hashBytes = bytes => crypto.createHash('sha256').update(bytes).digest('hex');

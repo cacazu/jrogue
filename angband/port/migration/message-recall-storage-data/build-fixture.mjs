@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -5,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '../..');
-const sdk = process.env.ANGBAND_SDK || 'C:\\Users\\kit\\emsdk';
+const sdk = process.env.ANGBAND_SDK || resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const python = path.join(sdk, 'python', '3.13.3_64bit', 'python.exe');
 const emcc = path.join(sdk, 'upstream', 'emscripten', 'emcc.py');
 const env = { ...process.env, EM_CONFIG: path.join(sdk, '.emscripten'), EM_CACHE: path.join(root, 'build', 'em-cache'), EMCC_CORES: '1', BINARYEN_CORES: '1' };

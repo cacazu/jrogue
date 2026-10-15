@@ -11,7 +11,7 @@ This is the five-function subset required by the retained source. Additional GLU
 Compile the adapter as C, then add its object to the final game link:
 
 ```powershell
-& 'C:\Users\kit\emsdk\upstream\emscripten\emcc.exe' `
+& '$env:EMSDK\upstream\emscripten\emcc.exe' `
   -std=c11 -O2 -Wall -Wextra -Werror `
   -c .\tome_glu_quadric.c -o .\tome_glu_quadric.o
 ```
@@ -23,7 +23,7 @@ The game's final `em++` link requires `-sLEGACY_GL_EMULATION=1` and `-lm`, in ad
 Production compilation passed with Emscripten 6.0.8 and `-Wall -Wextra -Werror`; the object is 2,235 bytes. `llvm-nm --defined-only` reports exactly the five requested external symbols. The separate test module is 25,928 bytes, keeping this check small during the parent memory hold.
 
 ```powershell
-& 'C:\Users\kit\emsdk\upstream\emscripten\emcc.exe' `
+& '$env:EMSDK\upstream\emscripten\emcc.exe' `
   -std=c11 -O1 -Wall -Wextra -Werror `
   .\tome_glu_quadric.c .\test_quadric.c `
   -sENVIRONMENT=node -sEXIT_RUNTIME=1 -sWASM_ASYNC_COMPILATION=0 `

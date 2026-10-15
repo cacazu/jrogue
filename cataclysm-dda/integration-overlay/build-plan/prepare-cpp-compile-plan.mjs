@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Bounded source-only preparation; no compiler/process/network invocation.
 import assert from 'node:assert/strict';
 import {readFileSync, writeFileSync, mkdirSync, existsSync, statSync, readdirSync} from 'node:fs';
@@ -63,7 +65,7 @@ assert.ok(!/FROZEN_CACHE/.test(configInput));
 const configPath = path.join(destination, '.emscripten');
 writeFileSync(configPath, configInput + '\nFROZEN_CACHE = True\n');
 const cache = path.resolve(log.EM_CACHE), ports = path.resolve(log.EM_PORTS);
-assert.equal(bytes(path.join(cache, 'sanity.txt')).toString('utf8').trim(), '6.0.8|C:/Users/kit/emsdk/upstream/bin');
+assert.equal(bytes(path.join(cache, 'sanity.txt')).toString('utf8').trim(), '6.0.8|' + resolveLocalPath(process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk'), 'upstream/bin').replaceAll('\\', '/'));
 const cacheIncludes = path.join(cache, 'sysroot/include');
 for (const header of ['SDL2/SDL.h', 'SDL2/SDL_image.h', 'SDL2/SDL_ttf.h', 'emscripten.h', 'c++/v1/string', 'c++/v1/vector', 'c++/v1/array', 'c++/v1/memory', 'c++/v1/stdexcept']) assert.ok(existsSync(path.join(cacheIncludes, header)), 'frozen baseline include missing: ' + header);
 const baselineGeneratedDirectory = path.resolve(ROOT, 'engine-build/generated');
@@ -72,7 +74,7 @@ const includePins = ['SDL2/SDL.h', 'SDL2/SDL_image.h', 'SDL2/SDL_ttf.h', 'emscri
 const patchHash = source.patch.sha256;
 const buildId = 'cdda-input-snapshot-compilecheck-v1-p' + patchHash.slice(0, 16) + '-f' + sha(JSON.stringify(baselineFlags)).slice(0, 16) + '-sdk6.0.8';
 const buildDefine = '-DCDDA_BROWSER_INPUT_SNAPSHOT_BUILD_ID="' + buildId + '"';
-const sdk = 'C:/Users/kit/emsdk';
+const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const executable = path.resolve(sdk, 'python/3.13.3_64bit/python.exe');
 const environment = {EM_CONFIG: configPath, EM_CACHE: cache, EM_PORTS: ports, EMSDK_PYTHON: executable,
   EMCC_CORES: '1', EMCC_BATCH_BUILD: '0', BINARYEN_CORES: '1'};

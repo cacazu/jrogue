@@ -3,6 +3,7 @@
 This is a measured baseline, not yet a production browser platform adapter.
 Original POSIX selectors preserve upstream branches for the compile/link probe.
 """
+import os
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
@@ -13,7 +14,7 @@ import time
 
 ROOT = Path(__file__).resolve().parent
 PLAN = ROOT.parent / "build-plan-work/output/sources-ready.json"
-EMSDK = Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+EMSDK = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 
 def build(unit):
     output = ROOT / "full-build" / unit["objectRelative"]

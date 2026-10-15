@@ -1,4 +1,5 @@
 """Source-only single-file rustfmt preview plan; never launch or copy back."""
+import os
 from pathlib import Path
 import hashlib
 import json
@@ -65,7 +66,7 @@ for path in [RUST / "rust-consumer-plan.json", RUST / "run-rust-window.py", RUST
     collect(pin(path), records)
 collect(rustfmt, records)
 collect(pin(ROOT / "integration-overlay/build-plan/cpp-compile/run-compile-window.py"), records)
-python = pin(Path("C:/Users/kit/emsdk/python/3.13.3_64bit/python.exe"))
+python = pin((Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'python/3.13.3_64bit/python.exe'))
 collect(python, records)
 for item in records.values():
     assert pin(item["path"]) == item

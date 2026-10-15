@@ -10,7 +10,7 @@ import {fileURLToPath} from 'node:url';
 
 export async function createTomeServer() {
   const here=path.dirname(fileURLToPath(import.meta.url));
-  const portRoot='C:\\Users\\kit\\gameme\\jnethack\\jrouge\\tome\\port';
+  const portRoot=fileURLToPath(new URL('../..', import.meta.url));
   const cli=path.join(portRoot,'kernel/bootstrap/run-local.mjs');
   const child=spawn(process.execPath,[cli,'--port','0'],{
     cwd:portRoot,windowsHide:true,stdio:['ignore','pipe','pipe']});

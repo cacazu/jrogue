@@ -8,7 +8,7 @@ import {validId, literalTemplate, validateCatalog, renderLiteralEntry} from './m
 export const DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.dirname(DIRECTORY);
 export const SOURCE_COMMIT = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
-export const UPSTREAM = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-' + SOURCE_COMMIT;
+export const UPSTREAM = fileURLToPath(new URL('../upstream/Cataclysm-DDA-', import.meta.url)) + SOURCE_COMMIT;
 export const INPUTS = [
   'ja-current/en.json', 'ja-current/ja.json', 'ja-current/reviewed-current-additions.json',
   'ja-current/semantic-id-registry.json', 'catalog-reconcile/output/current-source-gaps.json',

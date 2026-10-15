@@ -1,11 +1,12 @@
 """Link original project static archives, matching Premake archive semantics."""
+import os
 import json
 from pathlib import Path
 import subprocess
 import time
 
 ROOT=Path(__file__).resolve().parent
-SDK=Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+SDK=(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 report=json.loads((ROOT/"full-build-results.json").read_text())
 groups={}
 for unit in report["units"]:

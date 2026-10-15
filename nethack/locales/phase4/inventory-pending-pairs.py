@@ -130,7 +130,7 @@ def dynamic_origins(data, official):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--jnethack", type=Path, default=Path(r"C:\Users\kit\gameme\jnethack\jnethack\source"))
+    parser.add_argument("--jnethack", type=Path, default=Path(__file__).resolve().parents[2] / 'upstream/jnethack-alpha')
     parser.add_argument("--official-source", type=Path, default=LOCALES.parent.parent / "official-source-audit/NetHack-5.0.0")
     args = parser.parse_args()
     protected = [LOCALES / n for n in ["gameplay-core.json", "gameplay-core.en.json", "gameplay-core.ja.json", "gameplay-core.metadata.json", "build-gameplay-catalog.py", "gameplay-reuse-calls.py", "gameplay-quest-authored.ja.json"]]

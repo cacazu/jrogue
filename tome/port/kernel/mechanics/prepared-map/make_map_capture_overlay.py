@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 HERE=Path(__file__).resolve().parent
-UPSTREAM=Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM=(Path(__file__).resolve().parents[4] / 'upstream/t-engine4-src-1.7.6')
 ORIGINAL_SHA="7b0a56f096faad003551da02e7073948c390cf5fc6c646ac594855881ee69917"
 def sha(data): return hashlib.sha256(data).hexdigest()
 changes=[]

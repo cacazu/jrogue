@@ -1,8 +1,9 @@
-param([string]$Destination='C:\Users\kit\gameme\jnethack\jrouge\drl')
+param([Parameter(Mandatory)][string]$Destination)
 $ErrorActionPreference='Stop'
 $drlRuntimeRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $drlRuntimeDestination=[IO.Path]::GetFullPath($Destination)
-$drlRuntimeParent=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge')
+$drlRuntimeParent=[IO.Path]::GetDirectoryName($drlRuntimeDestination)
+if ($drlRuntimeRoot -eq $drlRuntimeDestination) { throw 'Source and destination must be different folders' }
 if([IO.Path]::GetDirectoryName($drlRuntimeDestination) -ne $drlRuntimeParent -or [IO.Path]::GetFileName($drlRuntimeDestination) -ne 'drl'){throw 'Runtime destination must be the authorized shared DRL folder'}
 if(!(Test-Path -LiteralPath (Join-Path $drlRuntimeParent '.git'))){throw 'Expected shared repository is absent'}
 $drlDistSource=Join-Path $drlRuntimeRoot 'port/dist'

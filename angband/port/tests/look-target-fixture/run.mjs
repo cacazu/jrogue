@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -45,7 +47,7 @@ await writeFile(path.join(output,'fixture.c'),'#include "angband.h"\n#include "w
 if(process.argv.includes('--prepare-only')){
  console.log(JSON.stringify({prepared:true,output,sourceHashes:before,compilerRun:false}));process.exit(0);
 }
-const sdk=process.env.ANGBAND_SDK||'C:\\Users\\kit\\emsdk';
+const sdk=process.env.ANGBAND_SDK||resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const python=path.join(sdk,'python','3.13.3_64bit','python.exe'),emcc=path.join(sdk,'upstream','emscripten','emcc.py');
 const env={...process.env,EM_CONFIG:path.join(sdk,'.emscripten'),EM_CACHE:path.join(root,'build','em-cache'),EMSDK_PYTHON:path.join(sdk,'python','3.13.3_64bit','python.exe'),EMCC_CORES:'1',BINARYEN_CORES:'1'};
 function run(command,args,timeout){return new Promise((resolve,reject)=>{

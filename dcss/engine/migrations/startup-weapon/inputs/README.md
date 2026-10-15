@@ -27,8 +27,8 @@ Native locale is fixed for the session. Changing the main-thread language still 
 Run the bounded staging checks with the installed Node executable:
 
 ```powershell
-& 'C:\Users\kit\emsdk\node\24.19.0_64bit\node.exe' '.\prepare.mjs'
-& 'C:\Users\kit\emsdk\node\24.19.0_64bit\node.exe' '.\tests\bridge.test.mjs'
+& 'node' '.\prepare.mjs'
+& 'node' '.\tests\bridge.test.mjs'
 ```
 
 Parent integration must compare current installed hashes before merging. If host files changed, rebase the small reviewed edits rather than copying stale whole files. Publish `web/startup-text.mjs` at the documented path; the local HTTP server must serve the pinned boundary and all three startup catalog/receipt paths. Node native fixtures need the same preflight bridge initialized with a local read-only fetch adapter before `createDcssEngine`, then `dcssFormatStartup: bridge.format`. They must not bypass the formatter with a literal translation.

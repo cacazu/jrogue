@@ -9,7 +9,7 @@ import json
 import re
 
 WORK = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream')
 RAW = UPSTREAM / "t-engine4-src-1.7.6" / "game"
 UNPACKED = UPSTREAM / "unpacked" / "game"
 

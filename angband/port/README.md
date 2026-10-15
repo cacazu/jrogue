@@ -10,7 +10,7 @@ node tools/build.mjs
 node web/server.mjs
 ```
 
-ブラウザーで `http://127.0.0.1:4173/web/` を開きます。Node、Rust の `wasm32-unknown-emscripten` ターゲット、設定済み Emscripten SDK を使用します。SDK の既定位置は `C:\Users\kit\emsdk`、変更は `ANGBAND_SDK` 環境変数です。取得した configure/install は実行しません。
+ブラウザーで `http://127.0.0.1:4173/web/` を開きます。Node、Rust の `wasm32-unknown-emscripten` ターゲット、設定済み Emscripten SDK を使用します。SDK は `ANGBAND_SDK`、`EMSDK`、ユーザーホームの `emsdk/` の順に選びます。取得した configure/install は実行しません。
 
 成果物は HTML、WASM、元データ、英語・日本語 JSON、ライセンス、対応する `source.zip` です。今回の WEB 公開の範囲は Node によるローカル起動と実ブラウザー検証です。外部への公開は行っていません。[verification.json](verification.json) は直近に受け入れられた成果物の記録です。追加した表示・保存、通常プレイでの死亡、原作の知覚とアニメーションの代表的経路を、同じ最終エンジンで確認しています。配布物全体の受け入れは、この記録とビルド・パッケージの manifest で確認してください。過去の受け入れ結果を現在のソースや別のバイナリーへ流用しません。
 

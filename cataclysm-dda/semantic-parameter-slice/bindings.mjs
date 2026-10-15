@@ -1,6 +1,7 @@
+import { fileURLToPath as localFilePath } from 'node:url';
 // Source-reviewed roles, not new Rust ParameterKind variants or live producers.
 export const SOURCE_COMMIT = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
-export const UPSTREAM = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-' + SOURCE_COMMIT;
+export const UPSTREAM = localFilePath(new URL('../upstream/Cataclysm-DDA-', import.meta.url)) + SOURCE_COMMIT;
 export const CONVERTED = {
   'cdda.character_creation.profession.requirement_completed': {
     parameter: 'achievement_name', kind: 'term', count: 1,

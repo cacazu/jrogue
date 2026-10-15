@@ -9,8 +9,8 @@ The four catalog recipes use English `{original}` and Japanese `{inner}`, with e
 Run only the lightweight source checks with the already installed SDK Python:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' nethack/tools/semantic-text/phase5-grammar/test_prepare.py
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' nethack/tools/semantic-text/phase5-grammar/prepare.py
+& 'python' nethack/tools/semantic-text/phase5-grammar/test_prepare.py
+& 'python' nethack/tools/semantic-text/phase5-grammar/prepare.py
 ```
 
 The source checks prove reversible preservation, original native call/argument counts, allocation/case ordering, null/error returns, exact capacity evaluation, catalog unions, composition and rejection of changed anchors. They do not execute C and do not prove native behavior. Compilation, full phase4 composition and actual browser/native glass-orb regression with game/world/RNG checksums remain gated work for the next authorized build phase. Canonical upstream, current bridge, Rust, applied worktree and published/current web artifacts remain unchanged.

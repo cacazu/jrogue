@@ -1,4 +1,5 @@
 """Read only official cached port archives; never extract, import or build ports."""
+import os
 from pathlib import Path
 import hashlib
 import json
@@ -8,7 +9,7 @@ from datetime import datetime, timezone
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
-SDK = Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+SDK = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 EVIDENCE = HERE / "METADATA-DELTA-index000-SCOPED.json"
 
 def digest(data, algorithm="sha256"):

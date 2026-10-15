@@ -1,6 +1,6 @@
 param(
-    [string]$Upstream = 'C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6',
-    [string]$Emsdk = 'C:\Users\kit\emsdk'
+    [string]$Upstream = (Join-Path $PSScriptRoot '..\..\..\upstream\t-engine4-src-1.7.6'),
+    [string]$Emsdk = $(if ($env:EMSDK) { $env:EMSDK } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' })
 )
 $ErrorActionPreference = 'Stop'
 $rngWork = $PSScriptRoot
@@ -21,13 +21,13 @@ if ($LASTEXITCODE -ne 0) { throw "C reference execution failed: $LASTEXITCODE" }
 [IO.File]::WriteAllText((Join-Path $fixtureDir 'sfmt19937-reference.json'), ($fixture -join "`n") + "`n", [Text.UTF8Encoding]::new($false))
 $parsed = $fixture | ConvertFrom-Json
 if ($parsed.seeds.Count -ne 6 -or $parsed.seeds[0].words.Count -ne 2000) { throw 'Invalid C fixture output' }
-& 'C:\Users\kit\.cargo\bin\cargo.exe' test --offline --manifest-path (Join-Path $rngWork 'Cargo.toml')
+& (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\cargo.exe') test --offline --manifest-path (Join-Path $rngWork 'Cargo.toml')
 if ($LASTEXITCODE -ne 0) { throw "Rust differential tests failed: $LASTEXITCODE" }
-& 'C:\Users\kit\.cargo\bin\cargo.exe' fmt --check --manifest-path (Join-Path $rngWork 'Cargo.toml')
+& (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\cargo.exe') fmt --check --manifest-path (Join-Path $rngWork 'Cargo.toml')
 if ($LASTEXITCODE -ne 0) { throw "Rust formatting check failed: $LASTEXITCODE" }
-& 'C:\Users\kit\.cargo\bin\cargo.exe' clippy --offline --manifest-path (Join-Path $rngWork 'Cargo.toml') --all-targets -- -D warnings
+& (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\cargo.exe') clippy --offline --manifest-path (Join-Path $rngWork 'Cargo.toml') --all-targets -- -D warnings
 if ($LASTEXITCODE -ne 0) { throw "Rust lint check failed: $LASTEXITCODE" }
-& 'C:\Users\kit\.cargo\bin\cargo.exe' check --offline --target wasm32-unknown-unknown --manifest-path (Join-Path $rngWork 'Cargo.toml')
+& (Join-Path $(if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo' }) 'bin\cargo.exe') check --offline --target wasm32-unknown-unknown --manifest-path (Join-Path $rngWork 'Cargo.toml')
 if ($LASTEXITCODE -ne 0) { throw "Rust WebAssembly compilation failed: $LASTEXITCODE" }
 $sourceHashes = [ordered]@{}
 foreach ($sourceName in @('SFMT.c','SFMT.h','SFMT-params.h','SFMT-params19937.h','core_lua.c')) {

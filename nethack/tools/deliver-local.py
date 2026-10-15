@@ -12,8 +12,6 @@ from pathlib import Path
 import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY = Path(r"C:\Users\kit\gameme\jnethack\jrouge")
-TARGET = REPOSITORY / "nethack"
 
 
 def digest(path: Path) -> str:
@@ -24,9 +22,14 @@ def digest(path: Path) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--destination", type=Path, required=True, help="nethack folder in the destination repository")
     args = parser.parse_args()
-    if TARGET.resolve().parent != REPOSITORY.resolve() or TARGET.name != "nethack":
+    TARGET = args.destination.resolve()
+    REPOSITORY = TARGET.parent
+    if TARGET.name != "nethack" or not (REPOSITORY / ".git").exists():
         raise SystemExit("target is outside the explicitly owned nethack directory")
+    if ROOT.resolve() == TARGET.resolve():
+        raise SystemExit("source and destination are the same; this checkout is already the delivered project")
     marker = TARGET / ".codex-nethack-delivery.json"
     old: dict[str, str] = {}
     if TARGET.exists():

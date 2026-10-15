@@ -208,7 +208,7 @@ def utility_source(relative):
 def native_utilities():
     native = WORK / "native"
     native.mkdir(exist_ok=True)
-    gcc = Path(r"C:\Users\kit\AppData\Local\Microsoft\WinGet\Packages\BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe\mingw64\bin\gcc.exe")
+    gcc = Path(os.environ.get('CC') or shutil.which('gcc') or str(Path(os.environ.get('LOCALAPPDATA', Path.home() / 'AppData/Local')) / 'Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/gcc.exe'))
     env = dict(os.environ)
     env["PATH"] = str(gcc.parent) + os.pathsep + env.get("PATH", "")
     common = [gcc, "-O2", "-std=gnu11", "-DCROSSCOMPILE", "-D_CRT_SECURE_NO_WARNINGS",
@@ -391,7 +391,7 @@ def verify_data(sdk, env, data, files):
 def main():
     global WORK, SOURCE, BUILD, PHASE4_MODE
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sdk", type=Path, default=Path(r"C:\Users\kit\emsdk"))
+    parser.add_argument("--sdk", type=Path, default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--rust-lib", type=Path)
     parser.add_argument("--skip-native", action="store_true")

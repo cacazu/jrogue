@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Source/read-only dependency audit and owned plan/lock preparation only.
 // This module never imports child_process or invokes Cargo/compiler/browser.
 import assert from 'node:assert/strict';
@@ -28,7 +30,7 @@ function select(name) {
   selected.add(name); item.dependencies.forEach(select);
 }
 ['cdda-logic-contract', 'cdda-presentation', 'serde_json'].forEach(select);
-const registry = 'C:/Users/kit/.cargo/registry';
+const registry = resolveLocalPath((process.env.CARGO_HOME || resolveLocalPath(localHome(), '.cargo')), 'registry');
 const index = 'index.crates.io-1949cf8c6b5b557f';
 const dependencyPins = [];
 for (const name of [...selected].sort()) {
@@ -62,7 +64,7 @@ const projects = [
   {directory: 'semantic-runtime-catalog', name: 'cdda-source-literal-catalog-verification', test: 'catalog', expectedTests: 7},
   {directory: 'semantic-plural-slice', name: 'cdda-source-plural-slice-verification', test: 'plural', expectedTests: 5},
 ];
-const rustToolchain = 'C:/Users/kit/.rustup/toolchains/1.98.1-x86_64-pc-windows-gnu';
+const rustToolchain = resolveLocalPath((process.env.RUSTUP_HOME || resolveLocalPath(localHome(), '.rustup')), 'toolchains/1.98.1-x86_64-pc-windows-gnu');
 const cargo = path.join(rustToolchain, 'bin/cargo.exe'), rustc = path.join(rustToolchain, 'bin/rustc.exe');
 const nativeLinker = path.join(rustToolchain, 'lib/rustlib/x86_64-pc-windows-gnu/bin/self-contained/x86_64-w64-mingw32-gcc.exe');
 for (const file of [cargo, rustc, nativeLinker]) assert.ok(existsSync(file), 'installed native tool unavailable');
@@ -86,7 +88,7 @@ for (const project of projects) {
       '--test', project.test, '--', '--test-threads=1'], cwd: ROOT, expectedIntegrationTests: project.expectedTests,
     scope: 'actual existing Rust Catalog parser/formatter only; not original C++ producer/FFI or browser'});
 }
-const sdk = 'C:/Users/kit/emsdk';
+const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const configInput = readFileSync(path.join(sdk, '.emscripten'), 'utf8');
 const config = configInput.replaceAll('$CFGDIR', sdk) + '\nFROZEN_CACHE = True\n';
 const nativeDirectory = path.join(ROOT, 'semantic-plural-slice/build-plan');

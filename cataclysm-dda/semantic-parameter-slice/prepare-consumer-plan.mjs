@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Source/pin preparation only. No child process, Cargo, extraction or cache write.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -90,7 +92,7 @@ for (let directory = crateDirectory;; directory = path.dirname(directory)) {
   assert.ok(!fs.existsSync(path.join(directory, '.cargo/config')) && !fs.existsSync(path.join(directory, '.cargo/config.toml')));
   if (directory === path.dirname(directory)) break;
 }
-const cargoHome = 'C:\\Users\\kit\\.cargo';
+const cargoHome = resolveLocalPath((process.env.CARGO_HOME || resolveLocalPath(localHome(), '.cargo')), '');
 assert.ok(!fs.existsSync(path.join(cargoHome, 'config')) && !fs.existsSync(path.join(cargoHome, 'config.toml')));
 const environment = { ...base.rustEnvironment, CARGO_HOME: cargoHome };
 const targetDirectory = path.join(crateDirectory, 'target');

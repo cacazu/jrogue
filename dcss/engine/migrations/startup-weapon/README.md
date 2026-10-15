@@ -9,7 +9,7 @@ The build recipe accepts `--root`, `--patch`, `--out` and `--sdk`. Installed def
 From the installed migration directory, run read-only preflight:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' '.\reproduce-startup.py' --check
+& 'python' '.\reproduce-startup.py' --check
 ```
 
 Adding `--build` is the explicit later compilation/link operation. It uses one compiler worker and one Binaryen worker. Launch it hidden and attach `tools/engine-memory-monitor.ps1` to its root process; run no native engine or browser concurrently.
@@ -17,9 +17,9 @@ Adding `--build` is the explicit later compilation/link operation. It uses one c
 The packaging recipe accepts `--root`, `--candidate`, `--sdk` and `--output`. Its default candidate is the new reproduced candidate. It accepts only the exact original candidate or a candidate recording the reviewed reproduction helper, exact immutable 333-row baseline, one replacement at index 170, complete ordered link/response provenance, fixed startup source/library/Rust/catalog pins, and the original complete 1,449-file payload. It preserves 1,448 files and omits only the pinned unused `docs/quickstart.pdf`. WASM is copied unchanged; only the official generated data-loader body changes. Candidate-relative corresponding source paths remain explicitly tied to the preserved source candidate.
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' '.\reproduce-font-free-package.py' --check
+& 'python' '.\reproduce-font-free-package.py' --check
 # Only after successful build/check and a separately assigned packaging slot:
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' '.\reproduce-font-free-package.py' --repack
+& 'python' '.\reproduce-font-free-package.py' --repack
 ```
 
 For a check/repack of the original executed startup candidate, pass `--candidate engine/candidates/startup-weapon`. Packaging requires a nonexistent output child beneath this migration directory and refuses overwriting. It never installs or promotes output. Exact original candidate output hashes remain pinned; a reproduced candidate's new manifest/outputs are accepted only through the explicit reviewed reproduction contract and must receive new runtime evidence.

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 
 
 def sha(data):

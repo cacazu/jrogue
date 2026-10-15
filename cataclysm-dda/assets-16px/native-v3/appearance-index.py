@@ -4,7 +4,7 @@ from pathlib import Path
 from collections import defaultdict
 
 root=Path(__file__).resolve().parent
-src=Path(r'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
+src=(Path(__file__).resolve().parents[2] / 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59')
 inventory=json.loads((root/'inputs/inventory.json').read_text('utf8'))
 categories={'ITEM':'item','MONSTER':'monster','terrain':'terrain','furniture':'furniture','field_type':'field','trap':'trap','vehicle_part':'vehicle_part','overmap_terrain':'overmap_terrain'}
 records=defaultdict(list)

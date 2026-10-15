@@ -1,11 +1,13 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile, open, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 export const root = path.dirname(fileURLToPath(import.meta.url));
-export const sdk = 'C:/Users/kit/emsdk/upstream/emscripten';
-export const python = 'C:/Users/kit/emsdk/python/3.13.3_64bit/python.exe';
+export const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten');
+export const python = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe');
 export const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 export async function pin(file) { const bytes = await readFile(file); return { path: file, bytes: bytes.length, sha256: digest(bytes) }; }
 export async function receipt(phase) {

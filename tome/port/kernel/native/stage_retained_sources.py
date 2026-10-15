@@ -15,7 +15,7 @@ import shutil
 
 WORK = Path(__file__).resolve().parent.parent
 PORT = WORK / "tome-port"
-TOME = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome")
+TOME = Path(__file__).resolve().parents[3]
 UPSTREAM = TOME / "upstream"
 SOURCE_COMMIT = "624a67329fe2ad440c5b344785a9c73fcf22ae63"
 ALLOWED_EXTENSIONS = {

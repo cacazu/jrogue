@@ -1,12 +1,13 @@
 """Compile retained platform seams with real upstream and SDK headers."""
+import os
 import json
 from pathlib import Path
 import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
-EMCC = Path(r"C:\Users\kit\emsdk\upstream\emscripten\emcc.exe")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
+EMCC = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten/emcc.exe')
 
 
 def main():

@@ -1,13 +1,16 @@
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Curated copy only: never touch a shared Git index or another game's folder.
 const [source, destination] = process.argv.slice(2);
 if (!source || !destination) throw new Error('usage: node stage-delivery.mjs SOURCE CATACLYSM_DDA_DESTINATION');
 const root = path.resolve(source);
 const dest = path.resolve(destination);
-if (path.basename(dest).toLowerCase() !== 'cataclysm-dda' || path.basename(path.dirname(dest)).toLowerCase() !== 'jrouge') throw new Error('destination must be the explicitly requested jrouge/cataclysm-dda folder');
+const expectedDestination = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
+if (dest.toLowerCase() !== expectedDestination.toLowerCase()) throw new Error('destination must be this repository’s cataclysm-dda folder');
+if (root.toLowerCase() === dest.toLowerCase()) throw new Error('source and destination must be different folders');
 const directories = ['audit', 'docs', 'tools', 'inventory-tools', 'rust-contracts', 'domain-milestone', 'rng-adapter', 'ja-completion', 'catalog-reconcile', 'ja-current', 'baseline-preview', 'rust-browser-bridge', 'browser-qa', 'engine-build', 'integration-overlay', 'semantic-runtime-catalog', 'semantic-plural-slice', 'semantic-parameter-slice', 'cosmetic-purity-overlay', 'help-semantic-slice', 'presentation-snapshot-overlay', 'determinism-audit', 'optimizer-diagnosis', 'evidence', 'input-context-live-slice', 'semantic-display-live-slice', 'v5-runtime-integration', 'full-engine-overlay-plan', 'native-cosmetic-parity'];
 const roots = ['README.md', '.gitignore', 'acquisition.json', 'upstream-integrity.json', 'progress.json', 'completion-gates.json', 'publication-gates.json'];
 const excluded = new Set(['target', 'owned-target', 'owned-build', 'dist', 'node_modules', 'cache', 'ports', 'objects', 'generated', 'build', 'emcache', 'browser-profiles', 'profiles', '__pycache__', '.git', '.sites-runtime']);

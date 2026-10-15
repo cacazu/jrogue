@@ -19,9 +19,9 @@ The dream extension uses a separate catalogue. The exact source/tag route is che
 Run from this directory in one parent-monitored slot at a time:
 
 ```powershell
-& 'C:\Users\kit\.cargo\bin\cargo.exe' test --offline --jobs 1
-& 'C:\Users\kit\.cargo\bin\cargo.exe' clippy --offline --all-targets --jobs 1 -- -D warnings
-& 'C:\Users\kit\.cargo\bin\cargo.exe' build --offline --release --target wasm32-unknown-unknown --jobs 1
+& 'cargo' test --offline --jobs 1
+& 'cargo' clippy --offline --all-targets --jobs 1 -- -D warnings
+& 'cargo' build --offline --release --target wasm32-unknown-unknown --jobs 1
 & 'C:\Program Files\nodejs\node.exe' tests/wasm-bridge.test.mjs
 & 'C:\Program Files\nodejs\node.exe' tests/wasm-bridge.test.mjs --full-catalog
 ```

@@ -5,6 +5,7 @@ Default mode performs source/hash/physical-offset checks only.  --run belongs
 to the parent's sole monitored compiler/Node slot.  Phase4 evidence is read
 only and is never overwritten.
 """
+import os
 import argparse
 import importlib.util
 import json
@@ -71,7 +72,7 @@ def main():
     p.add_argument("--source-root", type=Path, default=qa.ROOT / "work/phase6/NetHack-5.0.0")
     p.add_argument("--data-dir", type=Path, default=qa.ROOT / "work/phase6/wasm-data")
     p.add_argument("--generator-manifest", type=Path, default=qa.ROOT / "build/phase6/target-data-manifest.json")
-    p.add_argument("--sdk", type=Path, default=Path(r"C:\Users\kit\emsdk"))
+    p.add_argument("--sdk", type=Path, default=Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))
     p.add_argument("--node", type=Path, default=Path(r"C:\Program Files\nodejs\node.exe"))
     a = p.parse_args()
     if not re.fullmatch(r"[a-zA-Z0-9_-]+", a.run_name) or a.run_name == "phase4":

@@ -19,9 +19,9 @@ and header sources include optional Borg, tests, and native platform frontends.
 All source and bundled assets remain in the pristine archive. The browser
 build packages gameplay data, help, customization, and ASCII screens only.
 
-The shared repository is https://github.com/cacazu/jrogue. Its established
-local directory remains `C:\Users\kit\gameme\jnethack\jrouge`; this task owns
-only the `angband` child. No shared-root Git index, commit, or push is performed.
+The shared repository is https://github.com/cacazu/roguelike-nihon.
+Angband source and tooling are under `angband/`; all local source paths are
+resolved relative to the scripts or supplied as arguments.
 
 ## License decisions
 

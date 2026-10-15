@@ -56,8 +56,8 @@ Generation accepts only the verified pristine source directory. It reads five
 small source files and writes only this directory:
 
 ```powershell
-node integration-overlay/generate-overlay.mjs --upstream 'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59'
-node integration-overlay/validate-source.mjs --upstream 'C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59'
+node integration-overlay/generate-overlay.mjs --upstream 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59'
+node integration-overlay/validate-source.mjs --upstream 'upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59'
 ```
 
 ## Integration after the reserved engine build

@@ -3,7 +3,7 @@ These adapters prepare acceptance of an isolated Phase6/7 runtime. They have not
 Root must finish the frozen full-engine build, then run the separate original-data-consumer gate:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
+& 'python' -X utf8 tools/semantic-text/data-consumer-qa/run-phase6.py --run --run-name phase6
 ```
 
 Root creates `build/phase6/data-consumer-binding.json` only after that gate passes. The binding requires `status: "passed"`, `candidate_engine_wasm_sha256`, `engine_manifest_sha256`, `archive_sha256`, `consumer_report_sha256`, `generator_manifest_sha256`, and `datafile_expected_actual_bytes`. The probe is a separate WASM program. Its SHA does not stand for the full engine; the binding identifies the exact embedded `nhdat`, target flags/headers and original reader scope. Encyclopedia reader execution and exhaustive coverage of all 148 assets remain pending.
@@ -11,7 +11,7 @@ Root creates `build/phase6/data-consumer-binding.json` only after that gate pass
 After the completed build and reader gate, these commands hash files without loading a game:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tests/prepare-phase6-acceptance-config.py
+& 'python' -X utf8 tests/prepare-phase6-acceptance-config.py
 ```
 
 Config preparation refuses to overwrite an existing frozen config and requires a fresh report directory under `build/phase6`. Choose a new `--output` and `--report-directory` for any rerun or changed artifact. Each suite exclusively reserves its own report and artifact targets before creating an engine or browser. The loader verifies 11 runtime files, all actual compiled C/Lua sources and headers, final engine/source/data manifests, inherited and new source-owner metadata, the public-appearance ledger, and optional Phase7 plan/adapters. It rejects an unbound native ID or conflicting original call. The reader also pins the exact consumer preparation, separate probe CJS/WASM binaries, raw archive, target macros and flags, shared headers, original reader bodies, every unique successful compiler unit, and the actual WASM-embedded archive/table plus its JS loader. It rehashes all bound inputs at completion. A configuration grants no execution permission.
@@ -20,19 +20,19 @@ Only after Root grants the serial slot and all prior jobs are closed, set the ta
 
 ```powershell
 $env:NETHACK_PARENT_SERIAL_SLOT = 'phase6'
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/compiled-resources.json --log build/phase6/acceptance/compiled.log --minimum-free-gib 2 -- 'C:\Program Files\nodejs\node.exe' --max-old-space-size=128 tools/semantic-text/phase6-immutable-catalog/tests/registered-catalog-wasm.mjs --stage-config build/phase6/acceptance-config.json
+& 'python' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/compiled-resources.json --log build/phase6/acceptance/compiled.log --minimum-free-gib 2 -- 'node' --max-old-space-size=128 tools/semantic-text/phase6-immutable-catalog/tests/registered-catalog-wasm.mjs --stage-config build/phase6/acceptance-config.json
 ```
 
 Drain the boundary tree and obtain the next parent slot before normal browser acceptance:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/browser-resources.json --log build/phase6/acceptance/browser.log --minimum-free-gib 2 -- 'C:\Program Files\nodejs\node.exe' --max-old-space-size=128 tests/browser-host-phase6-browser.mjs --stage-config build/phase6/acceptance-config.json
+& 'python' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/browser-resources.json --log build/phase6/acceptance/browser.log --minimum-free-gib 2 -- 'node' --max-old-space-size=128 tests/browser-host-phase6-browser.mjs --stage-config build/phase6/acceptance-config.json
 ```
 
 Drain that Node/server/Chrome tree before the next command. The monitor takes a fresh physical **and** commit headroom measurement before every tree:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/native-name-resources.json --log build/phase6/acceptance/native-name.log --minimum-free-gib 2 -- 'C:\Program Files\nodejs\node.exe' --max-old-space-size=128 tests/browser-host-phase6-name-producers.mjs --stage-config build/phase6/acceptance-config.json
+& 'python' -X utf8 tools/run-monitored.py --cwd . --report build/phase6/acceptance/native-name-resources.json --log build/phase6/acceptance/native-name.log --minimum-free-gib 2 -- 'node' --max-old-space-size=128 tests/browser-host-phase6-name-producers.mjs --stage-config build/phase6/acceptance-config.json
 Remove-Item Env:NETHACK_PARENT_SERIAL_SLOT
 ```
 

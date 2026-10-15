@@ -2,7 +2,7 @@
 
 The original Angband 4.2.6 name editor accepts **24 UTF8 input bytes** at its normal birth and `C` then `c` rename prompt. Its underlying player-name array has32 bytes, but the original editor also clamps its buffer against column80.
 
-This was checked independently against the pristine source at upstream commit `f3082213b73f3e463e3d0d60bff4b00462beae6e` in `C:\Users\kit\gameme\jnethack\jrouge\angband\upstream\angband-4.2.6\src` and the current annotated source. Both retain the same prompt and restriction.
+This was checked independently against the pristine source at upstream commit `f3082213b73f3e463e3d0d60bff4b00462beae6e` in `angband/upstream/angband-4.2.6/src` and the current annotated source. Both retain the same prompt and restriction.
 
 | Original source operation | Result |
 | --- | --- |

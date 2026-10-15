@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parent
 WORK = ROOT.parent
 BINDINGS = WORK / "kernel-bindings-work"
 PHASES = WORK / "particle-platform-work"
-SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
-SDK = Path(r"C:\Users\kit\emsdk\upstream\emscripten")
+SOURCE = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
+SDK = (Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')
 NODE = Path(r"C:\Program Files\nodejs\node.exe")
 
 TEST_MAIN = r'''

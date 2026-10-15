@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {STARTUP_TEXT_PIN as pin,createStartupTextBridge,expectedNativeDisplayText,validateNativeDisplayMessage,loadStartupTextBridge} from './web/startup-text.mjs';
 import {classifyStartingWeaponMenu,nativeFrameRows} from './tests/controlled-gameplay-browser.mjs';
 import {nativeMenuEntityHotkey,nativeCjkLabelCells} from './tests/native-dynamic-startup-browser.mjs';
-const root=path.dirname(fileURLToPath(import.meta.url)),game='C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const root=path.dirname(fileURLToPath(import.meta.url)),game=fileURLToPath(new URL('../../../..', import.meta.url));
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),read=relative=>fs.readFileSync(path.join(root,relative));
 const normalized=bytes=>bytes.toString('utf8').replace(/\r\n/g,'\n');
 const receipts=JSON.parse(read('source-receipts.json')),checks=[];

@@ -16,7 +16,7 @@ ROOT=Path(__file__).resolve().parent
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument("--emsdk",default=r"C:\Users\kit\emsdk\upstream\emscripten")
+    parser.add_argument("--emsdk",default=str((Path(os.environ.get('EMSDK', Path.home() / 'emsdk')) / 'upstream/emscripten')))
     parser.add_argument("--baseline-work",type=Path,default=ROOT)
     args=parser.parse_args()
     sdk=Path(args.emsdk)

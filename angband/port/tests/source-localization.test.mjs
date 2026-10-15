@@ -5,7 +5,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {stripRecentAnnotations} from './native-annotations.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const upstream=process.env.ANGBAND_UPSTREAM || 'C:\\Users\\kit\\gameme\\jnethack\\jrouge\\angband\\upstream\\angband-4.2.6';
+const upstream=process.env.ANGBAND_UPSTREAM || fileURLToPath(new URL('../../upstream/angband-4.2.6', import.meta.url));
 const normalized=s=>s.replaceAll('\r\n','\n');
 const stripCapture=s=>stripRecentAnnotations(s).replace(/\/\* AB_GAME_STATIC_BEGIN \*\/[\s\S]*?\/\* AB_GAME_STATIC_END \*\//g,'').replace(/\/\* AB_TEXT_CAPTURE_BEGIN \*\/[\s\S]*?\/\* AB_TEXT_CAPTURE_END \*\/(?:\r\n|\n)?/g,'');
 test('reviewed game IDs cover source callsites and both catalogs without parameter drift',async()=>{

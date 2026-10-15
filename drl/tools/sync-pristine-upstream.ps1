@@ -1,7 +1,9 @@
+param([Parameter(Mandatory)][string]$Destination)
 $ErrorActionPreference='Stop'
 $drlPristineTask=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$drlPristineTarget=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge\drl\upstream')
-$drlExpectedOwned=[IO.Path]::GetFullPath('C:\Users\kit\gameme\jnethack\jrouge\drl')
+$drlExpectedOwned=[IO.Path]::GetFullPath($Destination)
+if ([IO.Path]::GetFileName($drlExpectedOwned) -ne 'drl' -or $drlExpectedOwned -eq $drlPristineTask) { throw 'Select a different destination drl folder' }
+$drlPristineTarget=[IO.Path]::GetFullPath((Join-Path $drlExpectedOwned 'upstream'))
 if([IO.Path]::GetDirectoryName($drlPristineTarget) -ne $drlExpectedOwned){throw 'Pristine target escaped owned DRL folder'}
 $drlSources=@(
   @{name='drl';repository='https://github.com/chaosforgeorg/drl';commit='a6f965072b3a25b768c91dbced00367f1b57d865'},

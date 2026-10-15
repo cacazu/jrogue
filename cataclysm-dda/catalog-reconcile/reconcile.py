@@ -19,7 +19,7 @@ import sys
 from urllib.parse import quote
 
 COMMIT = "7b2efa5cea38e4d4d97dd0e63b28b9148623da59"
-DEFAULT_SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\upstream\Cataclysm-DDA-" + COMMIT)
+DEFAULT_SOURCE = Path(__file__).resolve().parents[1] / ('upstream/Cataclysm-DDA-' + COMMIT)
 DEFAULT_XGETTEXT = Path(r"C:\Program Files\Git\usr\bin\xgettext.exe")
 EXCLUDE_FILES = {
     "data/json/furniture_and_terrain/terrain-regional-pseudo.json",

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 // Source and completed evidence only. No browser, compiler, server, or dataset reads.
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const commit = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
-const upstream = `C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-${commit}`;
+const upstream = fileURLToPath(new URL(`../upstream/Cataclysm-DDA-${commit}`, import.meta.url));
 const specs = [
   ['src/main_menu.cpp', [[990, 1024]]],
   ['src/worldfactory.cpp', [[176, 200], [454, 475], [1494, 1535], [1697, 1705], [1749, 1755]]],

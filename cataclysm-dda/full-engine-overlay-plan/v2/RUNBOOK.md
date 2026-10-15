@@ -15,7 +15,7 @@ SCOPED-PORTS-ARCHIVE-COMPARISON.json verifies all 4,243 additionally visible fil
 
 Both scoped default owner modes and corrected serial default source validation passed. Main and independent API reviews clear the frozen source/pin/guard/transport wiring. Root subsequently released the sole compile slot for this exact scoped invocation:
 
-    & 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B -I 'full-engine-overlay-plan/v2/run-serial-compiles-r3-r2.py' --run --parent-released-window --driver-sha256 eb1c3ea187cac0c71de32f5649577b0fefa2956bbf38293d3ce0b72dd96ac75a --plan-sha256 34eccdc1e1199c5eb6837d432ae6ceb6de37b0991fc269db54425acf0675f5c2 --attempt-name v2-compile-r3-serial-initial
+    & 'python' -B -I 'full-engine-overlay-plan/v2/run-serial-compiles-r3-r2.py' --run --parent-released-window --driver-sha256 eb1c3ea187cac0c71de32f5649577b0fefa2956bbf38293d3ce0b72dd96ac75a --plan-sha256 34eccdc1e1199c5eb6837d432ae6ceb6de37b0991fc269db54425acf0675f5c2 --attempt-name v2-compile-r3-serial-initial
 
 The existing invocation is active as SDK session 93261; do not launch another copy. Actual progress is recorded by candidate-e3ff38d8bc59cf07ddbb48ce/evidence/compile-NNN-success.json and execution/v2-compile-r3-serial-initial/NNN.serial-step.json. Each SDK owner is called once per untouched index under unchanged commands/flags/macros; every success requires the exact owner receipt verifier and closed native job/root handles. Native owner freshCounters and guard freshGate are separate captures. PID and creation FILETIME retain decimal-string precision in compact reports. Existing outputs/receipts are never overwritten or automatically rerun.
 

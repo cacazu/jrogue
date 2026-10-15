@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../../catalog-reconcile/output/current-source-gaps-1.json'), 'utf8'));
-const root = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+const root = require('node:path').resolve(__dirname, '../../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59');
 const blocks = fs.readFileSync(root + '/lang/po/ja.po', 'utf8').split(/\r?\n\r?\n/);
 function parse(block) {
   const result = {}; let field;

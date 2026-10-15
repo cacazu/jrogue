@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const port = path.resolve(directory, '../..');
-const upstream = path.resolve(process.argv[2] ?? 'C:/Users/kit/gameme/jnethack/jrouge/angband/upstream/angband-4.2.6');
+const upstream = path.resolve(process.argv[2] ?? fileURLToPath(new URL('../../../upstream/angband-4.2.6', import.meta.url)));
 const commit = 'f3082213b73f3e463e3d0d60bff4b00462beae6e';
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const write = (name, value) => fs.writeFileSync(path.join(directory, name), JSON.stringify(value, null, 2) + '\n');

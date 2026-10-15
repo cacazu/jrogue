@@ -23,7 +23,7 @@ from pathlib import Path
 
 PIN = "25adee135c4bbd43ac8567664f600b565332435c"
 ORIGIN = "https://github.com/jnethack/jnethack-alpha.git"
-DEFAULT_CHECKOUT = Path(r"C:\Users\kit\gameme\jnethack\jnethack\source")
+DEFAULT_CHECKOUT = Path(__file__).resolve().parents[1] / 'upstream/jnethack-alpha'
 SINKS = frozenset(
     "pline pline_The You Your You_hear You_feel You_see You_cant There "
     "verbalize Norep raw_printf".split()

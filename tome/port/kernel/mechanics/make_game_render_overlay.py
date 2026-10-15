@@ -5,7 +5,7 @@ from pathlib import Path
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
 ARCHIVE = "game/modules/tome-1.7.6.team"
 MEMBER = "mod/class/Game.lua"
 EXPECTED_SHA256 = "dcd6dc85d9b2cf74741e82ac9156128b782193d23a459d53f7cda324b099092a"

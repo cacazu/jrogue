@@ -1,7 +1,8 @@
+import { tmpdir as localTemp } from 'node:os';
 import fs from'node:fs';import path from'node:path';import assert from'node:assert/strict';import{fileURLToPath}from'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const dir=path.join(root,'migration/ui-residual-message-data');
-const temp='C:/Users/kit/AppData/Local/Temp';
+const temp=localTemp();
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const inputs=read(temp+'/angband-ui-residual-authored/source-manifest.json');
 const lexical=read(temp+'/angband-ui-residual-catalog/source-rows.json');

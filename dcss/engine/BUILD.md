@@ -4,14 +4,14 @@ Official DCSS0.34.1 is pinned to `1eebc1a2892e1c89776a0d7a10691f8dac8d9796`, wit
 
 ## Environment and full baseline
 
-Official Emscripten6.0.8 at `C:\Users\kit\emsdk`, SDK Python3.13.3 and SDK Node24.19 are the executed tools. Rust dependencies are locked/offline. Git Perl and pinned PyYAML under engine/python are retained prerequisites. No new installer or credentials were used.
+Official Emscripten6.0.8 at `$env:EMSDK`, SDK Python3.13.3 and SDK Node24.19 are the executed tools. Rust dependencies are locked/offline. Git Perl and pinned PyYAML under engine/python are retained prerequisites. No new installer or credentials were used.
 
 Native-EH baseline `engine/build-jspi-wasm-eh` from `engine/work-wasm-eh` retains original `-fwasm-exceptions` flags including `-DWIZARD`. All333 units include Lua/SQLite/zlib/parser/lexer/generated vault metadata. Baseline manifest SHA `984f8a0abb84db4b6ccea02219b9059b435e1ff96a7dcb818e9c1c0413cf1834`. The alternate Asyncify runtime at `engine/build` is also retained because the browser can select it. Full-graph entry points, from dcss:
 
 The full DATA copy is retained at `engine/build-jspi-wasm-eh/dcss.data`, and the font-free DATA copy at `engine/build-jspi/dcss.data`. Historical native-EH WASM copies with SHA `432ba14e7903ff3678c2c19342917c240f3dc82ce62a121acd7bb9e127671c1e` match `engine/build-jspi-wasm-eh/dcss.wasm`. The complete `engine/history/jspi-js-eh-20261002` bundle is retained because the promotion/recovery helper explicitly uses it.
 
 ```powershell
-$dcssPython = 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe'
+$dcssPython = 'python'
 & $dcssPython -X utf8 .\tools\engine-build-jspi-eh.py --check
 & $dcssPython -X utf8 .\tools\engine-build-jspi-eh.py --build
 ```
@@ -23,7 +23,7 @@ The official SDK, pinned original source/submodules, generated headers and diagn
 `engine/migrations/startup-text-v2` contains the reviewed helper, contract and inputs. Installed contract SHA `3c85c5e3fa78ca223823e822e4a6d8de0b57e47828d2ec306bb94d4cb25a788c`; builder SHA `eac4ce9b861931a685c36b2aa411250a4ab319665e153a7816d798ed3ea3d938`. The actual installed checks used these installed inputs, without task-6 patch paths. From installed dcss:
 
 ```powershell
-$dcssPython = 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe'
+$dcssPython = 'python'
 $dcssRoot = (Get-Location).Path
 $dcssRecipe = Join-Path $dcssRoot 'engine/migrations/startup-text-v2'
 $dcssInputs = Join-Path $dcssRecipe 'inputs'

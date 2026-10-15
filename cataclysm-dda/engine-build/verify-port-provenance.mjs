@@ -1,9 +1,11 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
 const root = path.dirname(new URL(import.meta.url).pathname.replace(/^\/(\w:)/, '$1'));
-const recipeRoot = 'C:/Users/kit/emsdk/upstream/emscripten/tools/ports';
+const recipeRoot = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/tools/ports');
 const names = ['zlib', 'freetype', 'harfbuzz', 'libpng', 'sdl2', 'sdl2_image', 'sdl2_ttf'];
 const archives = fs.readdirSync(path.join(root, 'ports')).filter(n => /\.(zip|gz|xz)$/.test(n));
 const digest = (bytes, algorithm) => crypto.createHash(algorithm).update(bytes).digest('hex');

@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 // Text-only licensing receipts for the DCSS distribution. Added 2026-10-02.
 // GPL-3.0-or-later. No upstream code, installers or build tools are executed.
 import fs from 'node:fs';
@@ -7,10 +9,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const destination = path.join(root, 'licenses');
-const registry = 'C:/Users/kit/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f';
-const registryCache = 'C:/Users/kit/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f';
-const sysroot = 'C:/Users/kit/.rustup/toolchains/1.98.1-x86_64-pc-windows-gnu';
-const sdk = 'C:/Users/kit/emsdk/upstream/emscripten';
+const registry = resolveLocalPath((process.env.CARGO_HOME || resolveLocalPath(localHome(), '.cargo')), 'registry/src/index.crates.io-1949cf8c6b5b557f');
+const registryCache = resolveLocalPath((process.env.CARGO_HOME || resolveLocalPath(localHome(), '.cargo')), 'registry/cache/index.crates.io-1949cf8c6b5b557f');
+const sysroot = resolveLocalPath((process.env.RUSTUP_HOME || resolveLocalPath(localHome(), '.rustup')), 'toolchains/1.98.1-x86_64-pc-windows-gnu');
+const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten');
 const lockPath = path.join(root, 'port', 'Cargo.lock');
 const lockBytes = fs.readFileSync(lockPath);
 const sha = data => crypto.createHash('sha256').update(data).digest('hex');

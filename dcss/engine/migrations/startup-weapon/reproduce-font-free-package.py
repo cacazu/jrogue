@@ -10,6 +10,7 @@ The candidate, baseline sources/objects/artifacts and pristine PDF remain
 untouched. This script is not a runtime or publication readiness test.
 """
 from __future__ import annotations
+import os
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -322,7 +323,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root',type=Path,default=Path(__file__).resolve().parent.parents[2],help='Installed DCSS folder')
     parser.add_argument('--candidate',type=Path,default=Path('engine/candidates/startup-weapon-reproduced'),help='Exact original or reviewed reproduced candidate beneath engine/candidates')
-    parser.add_argument('--sdk', type=Path, default=Path(r'C:\Users\kit\emsdk'))
+    parser.add_argument('--sdk', type=Path, default=Path(str(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))))
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parent / 'generated-startup-font-free')
     parser.add_argument('--check', action='store_true', help='Explicit read-only validation (also the default)')
     parser.add_argument('--repack', action='store_true', help='Later explicit packaging operation; default is read-only check')

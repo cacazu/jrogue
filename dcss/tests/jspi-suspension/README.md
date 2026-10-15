@@ -31,10 +31,10 @@ compilations and links to one SDK compiler worker and one Binaryen worker.
 ```powershell
 $env:EMCC_CORES = '1'
 $env:BINARYEN_CORES = '1'
-$fixture = 'C:\Users\kit\gameme\jnethack\jrouge\dcss\tests\jspi-suspension'
-$sdkPython = 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe'
-$emxx = 'C:\Users\kit\emsdk\upstream\emscripten\em++.py'
-$sdkNode = 'C:\Users\kit\emsdk\node\24.19.0_64bit\node.exe'
+$fixture = 'dcss/tests/jspi-suspension'
+$sdkPython = 'python'
+$emxx = '$env:EMSDK\upstream\emscripten\em++.py'
+$sdkNode = 'node'
 $jsEh = Join-Path $fixture 'out\js-eh'
 $wasmEh = Join-Path $fixture 'out\wasm-eh'
 New-Item -ItemType Directory -Force -Path $jsEh,$wasmEh | Out-Null

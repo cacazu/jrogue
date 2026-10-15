@@ -4,15 +4,15 @@ The delivered browser artifacts contain the complete official C game, pinned Lua
 
 ## Existing Windows toolchain
 
-The build uses the existing official Emscripten 6.0.8 SDK at `C:\Users\kit\emsdk`, Rust 1.98.1 with `wasm32-unknown-emscripten`, and the installed Winlibs GCC for native makedefs/data-librarian utilities. No downloaded installer is executed; no SDK global activation or security change is required. SDK/cache variables are scoped to the build process. The script's `--help` lists supported options and tool paths.
+The build uses the existing official Emscripten 6.0.8 SDK at `$env:EMSDK`, Rust 1.98.1 with `wasm32-unknown-emscripten`, and the installed Winlibs GCC for native makedefs/data-librarian utilities. No downloaded installer is executed; no SDK global activation or security change is required. SDK/cache variables are scoped to the build process. The script's `--help` lists supported options and tool paths.
 
 From the project directory, build the adapter first:
 
 ```powershell
 Set-Location rust
-& 'C:\Users\kit\.cargo\bin\cargo.exe' build --offline --locked --release --target wasm32-unknown-emscripten
+& 'cargo' build --offline --locked --release --target wasm32-unknown-emscripten
 Set-Location ..
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' tools/build-upstream.py
+& 'python' tools/build-upstream.py
 ```
 
 `rust/.cargo/config.toml` points only this project at the exact vendored sources; original license files are included. The official Lua 5.4.8 source is downloaded only if absent and must match SHA-256 `4f18ddae154e793e46eeab727c59ef1c0c0c2b744e7b94219710d76f530629ae`. Dependency provenance is in `build/dependencies.json` and `build/rust-dependencies.json`.

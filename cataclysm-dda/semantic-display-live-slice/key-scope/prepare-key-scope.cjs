@@ -5,7 +5,7 @@ const assert = require('assert');
 const root = path.resolve('semantic-display-live-slice');
 const own = path.join(root, 'key-scope');
 const staged = path.join(root, 'build/sources/src');
-const upstream = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+const upstream = require('node:path').resolve(__dirname, '../../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59');
 const commit = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
 const sha = x => crypto.createHash('sha256').update(x).digest('hex');
 const norm = x => x.replace(/\r\n/g, '\n');

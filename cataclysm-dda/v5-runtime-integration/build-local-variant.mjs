@@ -6,7 +6,7 @@ import { ASSETS, SOURCE_COMMIT } from './asset-manifest.mjs';
 import { readAcceptedPolicy } from './read-accepted-policy.mjs';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const workspace = path.dirname(root);
-const assetRoot = String.raw`C:\Users\kit\gameme\jnethack\jrouge\cataclysm-dda\assets-16px\native-v5\tileset\CDDA16_Combined_Ready`;
+const assetRoot = fileURLToPath(new URL('../assets-16px/native-v5/tileset/CDDA16_Combined_Ready', import.meta.url));
 const output = path.join(root, 'preview');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 if (process.argv.length !== 4) throw new Error('Supply the exact reviewed success terminal path and digest.');

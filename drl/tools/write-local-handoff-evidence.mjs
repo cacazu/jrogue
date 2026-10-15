@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const task=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
-const repository=path.resolve('C:/Users/kit/gameme/jnethack/jrouge');
+const repository=path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const shared=path.join(repository,'drl');
 assert.equal((await realpath(repository)).toLowerCase(),repository.toLowerCase());
 const json=async relative=>JSON.parse(await readFile(path.join(task,relative),'utf8'));

@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -9,7 +11,7 @@ import { parsePackagingArgs, inspectEngineSelection, assertEngineSelectionUnchan
 const taskRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ownerRoot = path.join(taskRoot, 'baseline-preview');
 const webRoot = path.join(ownerRoot, 'web');
-const upstream = 'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+const upstream = fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const engineRoot = path.join(taskRoot, 'engine-build');
 const rustBridgeRoot = path.join(taskRoot, 'rust-browser-bridge');
 const rustBridgeDist = path.join(rustBridgeRoot, 'dist');
@@ -17,7 +19,7 @@ const rustBridgeWasm = path.join(rustBridgeDist, 'cdda_rust_browser_bridge.wasm'
 const expectedRustBridgeHash = '0dadaa2a2d1f133b39f0ee3265c9ba65d4a601c6ce274ae6d4b83f1b40d9d835';
 const expectedJapaneseMoHash = '336dc66ccd4d1e828832a38756cddcc165e0f1af917f546752b5655ff02705e7';
 const executeFile = promisify(execFile);
-const sdk = 'C:/Users/kit/emsdk';
+const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const python = sdk + '/python/3.13.3_64bit/python.exe';
 const packager = sdk + '/upstream/emscripten/tools/file_packager.py';
 const commit = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';

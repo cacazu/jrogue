@@ -5,6 +5,7 @@ Requires independently reviewed contract and builder hashes. No game execution,
 installation, promotion or runtime proof. GPL-3.0-or-later.
 """
 from __future__ import annotations
+import os
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -26,7 +27,7 @@ def main():
     parser.add_argument('--contract',type=Path,required=True)
     parser.add_argument('--contract-sha256',required=True)
     parser.add_argument('--builder-sha256',required=True)
-    parser.add_argument('--sdk', type=Path, default=Path(r'C:\Users\kit\emsdk'))
+    parser.add_argument('--sdk', type=Path, default=Path(str(Path(os.environ.get('EMSDK', Path.home() / 'emsdk')))))
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parent / 'generated-text-v2-font-free')
     parser.add_argument('--check', action='store_true', help='Explicit read-only validation (also the default)')
     parser.add_argument('--repack', action='store_true', help='Later explicit packaging operation; default is read-only check')

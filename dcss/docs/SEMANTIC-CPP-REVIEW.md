@@ -128,7 +128,7 @@ its normalized LF review preview is
 Default invocation is read-only. Run from the installed game directory:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' tools/apply-semantic-patches.py --check
+& 'python' tools/apply-semantic-patches.py --check
 ```
 
 The builder invokes the same tool with `--apply` after preparation, including

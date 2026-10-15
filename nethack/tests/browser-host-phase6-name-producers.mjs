@@ -1,3 +1,5 @@
+import { homedir as localHome } from 'node:os';
+import { resolve as resolveLocalPath } from 'node:path';
 /* Isolated Phase6/7 candidate acceptance. SOURCE PREPARATION ONLY until parent gated runtime execution.
  * Original gameplay commands only; frozen edec runtime/reports are never served or overwritten. */
 import assert from 'node:assert/strict';
@@ -370,10 +372,10 @@ async function nativeLookupPrompt() {
 
 try {
   const identitySources=[
-    'C:/Users/kit/emsdk/upstream/emscripten/system/lib/libc/emscripten_libc_stubs.c',
-    'C:/Users/kit/emsdk/upstream/emscripten/src/lib/libsyscall.js',
-    'C:/Users/kit/emsdk/upstream/emscripten/system/lib/libc/musl/src/unistd/getlogin.c',
-    'C:/Users/kit/emsdk/upstream/emscripten/system/lib/libc/musl/src/passwd/getpw_a.c',
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/system/lib/libc/emscripten_libc_stubs.c'),
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/src/lib/libsyscall.js'),
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/system/lib/libc/musl/src/unistd/getlogin.c'),
+    resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/system/lib/libc/musl/src/passwd/getpw_a.c'),
     resolve(stage.nativeSourceRoot,'sys/libnh/libnhmain.c'),
     resolve(stage.nativeSourceRoot,'sys/libnh/sysconf')
   ];

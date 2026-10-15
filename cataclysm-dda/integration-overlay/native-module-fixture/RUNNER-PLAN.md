@@ -12,7 +12,7 @@ Default `python -B run-fixture-window.py` passed 235 unique byte pins without lo
 The separately parent-authorized completed command was:
 
 ```powershell
-& 'C:\Users\kit\emsdk\python\3.13.3_64bit\python.exe' -B 'integration-overlay\native-module-fixture\run-fixture-window.py' --run --parent-released-window --runner-sha256 6eca62eb5cad1270fbceb4221cdb80dd23504d0b8bf7ecebb8fae905d9b6e651 --attempt-name snapshot-module-initial
+& 'python' -B 'integration-overlay\native-module-fixture\run-fixture-window.py' --run --parent-released-window --runner-sha256 6eca62eb5cad1270fbceb4221cdb80dd23504d0b8bf7ecebb8fae905d9b6e651 --attempt-name snapshot-module-initial
 ```
 
 This document grants no further execution authorization. The completed reservation used the sole owned heavy slot after earlier jobs closed. Fresh 7/9 GiB physical/exact-commit counters defer to browser recovery; otherwise every stage requires 4/6 GiB. The proven unnamed-job owner applies a kernel 1 GiB aggregate private cap, sampled 1 GiB working-set stop, 2/2 GiB running floors, 250 ms samples, 180 seconds per stage and one worker. Unrelated applications remain outside ownership.

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const root = path.dirname(fileURLToPath(import.meta.url));
-const game = 'C:/Users/kit/gameme/jnethack/jrouge/dcss';
+const game = fileURLToPath(new URL('../../../..', import.meta.url));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const read = relative => fs.readFileSync(path.join(game, relative));
 const fixed = JSON.parse(fs.readFileSync(path.join(root, 'fixed-source-receipts.json')));

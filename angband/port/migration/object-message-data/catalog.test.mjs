@@ -18,7 +18,7 @@ test('all 23 reserved original producers have reviewed Japanese and exact typed 
  }
 });
 test('each source hash binds an untouched official producer or canonical slot declaration',()=>{
- const pristine='C:/Users/kit/gameme/jnethack/jrouge/angband/upstream/angband-4.2.6',manifest=read('source-manifest.json');
+ const pristine=fileURLToPath(new URL('../../../upstream/angband-4.2.6', import.meta.url)),manifest=read('source-manifest.json');
  assert.equal(manifest.upstream_commit,'f3082213b73f3e463e3d0d60bff4b00462beae6e');assert.equal(manifest.source_hashes.length,8);
  for(const entry of manifest.source_hashes){const bytes=fs.readFileSync(path.join(pristine,entry.file));assert.equal(bytes.length,entry.bytes);assert.equal(sha(bytes),entry.sha256);}
 });

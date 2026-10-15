@@ -10,7 +10,7 @@ The EN/JA catalogs contain 456 IDs each: 409 without parameters and 47 with para
 
 ## Installed V2 artifact pins
 
-Installed root: `C:\Users\kit\gameme\jnethack\jrouge\dcss`. These installed pins match the browser-verified trial; the private V3 boundary is recorded separately below.
+Installed root: `dcss`. These installed pins match the browser-verified trial; the private V3 boundary is recorded separately below.
 
 | Artifact | Bytes | SHA-256 |
 |---|---:|---|

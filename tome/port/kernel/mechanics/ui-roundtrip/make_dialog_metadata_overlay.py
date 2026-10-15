@@ -11,7 +11,7 @@ from pathlib import Path
 import zipfile
 
 HERE = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
+UPSTREAM = (Path(__file__).resolve().parents[4] / 'upstream/t-engine4-src-1.7.6')
 MEMBER = "engine/ui/Dialog.lua"
 ORIGINAL_SHA256 = "c1fc95e83d7031073324d43fbdcfaef6a6cc1ace8bbd7cdb7ae31adaa3be60bd"
 SIGNATURE = b"function _M:yesnoPopup(title, text, fct, yes_text, no_text, no_leave, escape, preexit_fct)"

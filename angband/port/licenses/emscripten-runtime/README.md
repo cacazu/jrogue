@@ -1,7 +1,7 @@
 # Emscripten runtime notices
 
 These files were copied from the installed Emscripten **6.0.8** SDK at
-`C:\Users\kit\emsdk\upstream\emscripten`. They accompany runtime code and
+`$env:EMSDK\upstream\emscripten`. They accompany runtime code and
 JavaScript support emitted for the Angband browser build. Original notice files
 remain unchanged; `provenance.json` records their source paths, sizes, and
 verified SHA-256 hashes.

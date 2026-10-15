@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=dirname(fileURLToPath(import.meta.url)),prior=dirname(root);
-const installed='C:\\Users\\kit\\gameme\\jnethack\\jrouge\\dcss';
+const installed=fileURLToPath(new URL('../../..', import.meta.url));
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const sourcePins={
   'upstream/crawl-ref/source/newgame.cc':'b3186394e72e533d40fbf2e69d5b4b8a3b123f847a3a488ac49fb4252b92f10c',

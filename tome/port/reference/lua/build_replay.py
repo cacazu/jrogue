@@ -16,8 +16,8 @@ import zipfile
 
 
 HERE = Path(__file__).resolve().parent
-UPSTREAM = Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
-SDK = Path(r"C:\Users\kit\emsdk")
+UPSTREAM = (Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
+SDK = Path(os.environ.get('EMSDK', Path.home() / 'emsdk'))
 NODE = Path(r"C:\Program Files\nodejs\node.exe")
 COMBAT_SHA256 = "0cfaba3995f19a0ddb9e716b2ae8ab68e916c1e1784bb753f72b159bfd17af13"
 COMMIT = "624a67329fe2ad440c5b344785a9c73fcf22ae63"

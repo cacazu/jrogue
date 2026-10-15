@@ -1,4 +1,5 @@
 """Generate reviewed deltas and validate actual semantic Rust WASM sequentially."""
+import os
 import json
 from pathlib import Path
 import subprocess
@@ -9,7 +10,7 @@ ROOT=Path(__file__).resolve().parent
 WORK=ROOT.parent
 OUT=ROOT/"semantic-validation"
 NODE=r"C:\Program Files\nodejs\node.exe"
-CARGO=r"C:\Users\kit\.cargo\bin\cargo.exe"
+CARGO=str((Path(os.environ.get('CARGO_HOME', Path.home() / '.cargo')) / 'bin/cargo.exe'))
 
 def main():
     OUT.mkdir(exist_ok=True)

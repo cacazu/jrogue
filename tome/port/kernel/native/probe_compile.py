@@ -1,4 +1,5 @@
 """Compile the unchanged upstream core as an explicit portability probe."""
+import os
 import argparse
 import json
 import pathlib
@@ -6,8 +7,8 @@ import subprocess
 import time
 
 ROOT = pathlib.Path(__file__).resolve().parent
-SOURCE = pathlib.Path(r"C:\Users\kit\gameme\jnethack\jrouge\tome\upstream\t-engine4-src-1.7.6")
-EMCC = pathlib.Path(r"C:\Users\kit\emsdk\upstream\emscripten\emcc.exe")
+SOURCE = (pathlib.Path(__file__).resolve().parents[3] / 'upstream/t-engine4-src-1.7.6')
+EMCC = (pathlib.Path(os.environ.get('EMSDK', pathlib.Path.home() / 'emsdk')) / 'upstream/emscripten/emcc.exe')
 INCLUDES = ["src", "src/lua", "src/luasocket", "src/fov", "src/expat", "src/lxp", "src/libtcod_import", "src/physfs", "src/zlib", "src/bzip2"]
 
 def main():

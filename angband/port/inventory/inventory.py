@@ -16,7 +16,7 @@ import unicodedata
 import xml.etree.ElementTree as ET
 
 COMMIT = "f3082213b73f3e463e3d0d60bff4b00462beae6e"
-DEFAULT_SOURCE = Path(r"C:\Users\kit\gameme\jnethack\jrouge\angband\upstream\angband-4.2.6")
+DEFAULT_SOURCE = (Path(__file__).resolve().parents[2] / 'upstream/angband-4.2.6')
 C_EXTENSIONS = {".c", ".h", ".m", ".inc", ".rc"}
 TOKEN = re.compile(r'(?P<comment>/\*[\s\S]*?\*/|//[^\n]*)|(?P<space>\s+)|(?P<string>(?:u8|[LuU])?"(?:[^"\\]|\\[\s\S])*")|(?P<char>(?:[LuU])?\'(?:[^\'\\]|\\[\s\S])*\')|(?P<identifier>[A-Za-z_][A-Za-z_0-9]*)|(?P<number>\d[\w.]*)|(?P<punct>.)')
 FORMAT = re.compile(r'%(?:(\d+)\$)?([-+ #0]*)(\*|\d+)?(?:\.(\*|\d+))?(hh|ll|[hlLjzt])?([diuoxXfFeEgGaAcspn%])')
