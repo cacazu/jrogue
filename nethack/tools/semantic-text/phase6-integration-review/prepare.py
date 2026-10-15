@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 
@@ -162,7 +163,7 @@ def prepare(output: Path = HERE / "rust-copy") -> dict:
     # Read the existing offline vendor in place; no vendor/cache or global config writes.
     config = safe_output(output / ".cargo/config.toml")
     config.parent.mkdir(parents=True, exist_ok=True)
-    vendor = str((RUST / "vendor").resolve()).replace("\\", "/")
+    vendor = Path(os.path.relpath(RUST / "vendor", output)).as_posix()
     config.write_text('[source.crates-io]\nreplace-with = "vendored-sources"\n'
                       '[source.vendored-sources]\ndirectory = ' + json.dumps(vendor) + '\n', encoding="utf-8")
     for name, data in catalogs.items():

@@ -29,11 +29,12 @@ caps. Its receipts are historical evidence; the commands below cap future
 compilations and links to one SDK compiler worker and one Binaryen worker.
 
 ```powershell
+if (-not $env:EMSDK) { $env:EMSDK = Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }
 $env:EMCC_CORES = '1'
 $env:BINARYEN_CORES = '1'
 $fixture = 'dcss/tests/jspi-suspension'
 $sdkPython = 'python'
-$emxx = '$env:EMSDK\upstream\emscripten\em++.py'
+$emxx = Join-Path $env:EMSDK 'upstream\emscripten\em++.py'
 $sdkNode = 'node'
 $jsEh = Join-Path $fixture 'out\js-eh'
 $wasmEh = Join-Path $fixture 'out\wasm-eh'

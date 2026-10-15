@@ -29,7 +29,7 @@
     },
     {
       "path": "tools/build-upstream.py",
-      "sha256": "754bb2a8806da3de95a53d30da8cee6ece785a766286e320f17f87ddaa3da70c"
+      "sha256": "dee7430f7d8e8ecbb7e912495aeb99db2b57b1b37dff08b7ea4407db277c43ec"
     },
     {
       "path": "tools/instrument-semantic-phase4.py",
@@ -173,7 +173,7 @@
     },
     {
       "path": "tools/semantic-text/phase6-integration/build.py",
-      "sha256": "1b37cca431741e5cff49e8a4dd3e15bdf4424977d3440eff3e7177ee4b374832"
+      "sha256": "4572c94a16e6a7a162349ba468ff8112760bac09fbc8c467f958ce74e6fb7f7f"
     },
     {
       "path": "tools/semantic-text/phase6-integration/check.py",
@@ -205,7 +205,7 @@
     },
     {
       "path": "tools/semantic-text/phase6-integration-review/compatibility-preparation.json",
-      "sha256": "baa1ec9b1f561d5cccc03e9e1f55cdc97201f7c085045063af742882cff3d0b7"
+      "sha256": "2a9671420204b0706d82766741dc5e735dd85d6e0c706e8042abd2397cc79006"
     },
     {
       "path": "tools/semantic-text/phase6-monster-producers/bridge-extension.c.in",
@@ -339,5 +339,27 @@
       "path": "work/phase4/semantic-generated/source-manifest.json",
       "sha256": "e8da9e1782134322d82255a4d6db88661b6a1f42d8ba491de34a0c0cdcc8421b"
     }
-  ]
+  ],
+  "source_path_revision": {
+    "reason": "Source-only repository relocation and tool discovery; preserves historical compiled/runtime evidence with its original input-lock hash.",
+    "previous_inputs_lock_sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8",
+    "inputs": [
+      {
+        "path": "tools/build-upstream.py",
+        "previous_sha256": "754bb2a8806da3de95a53d30da8cee6ece785a766286e320f17f87ddaa3da70c",
+        "sha256": "dee7430f7d8e8ecbb7e912495aeb99db2b57b1b37dff08b7ea4407db277c43ec"
+      },
+      {
+        "path": "tools/semantic-text/phase6-integration/build.py",
+        "previous_sha256": "1b37cca431741e5cff49e8a4dd3e15bdf4424977d3440eff3e7177ee4b374832",
+        "sha256": "4572c94a16e6a7a162349ba468ff8112760bac09fbc8c467f958ce74e6fb7f7f"
+      },
+      {
+        "path": "tools/semantic-text/phase6-integration-review/compatibility-preparation.json",
+        "previous_sha256": "baa1ec9b1f561d5cccc03e9e1f55cdc97201f7c085045063af742882cff3d0b7",
+        "sha256": "2a9671420204b0706d82766741dc5e735dd85d6e0c706e8042abd2397cc79006"
+      }
+    ],
+    "runtime_evidence_revalidated": false
+  }
 }

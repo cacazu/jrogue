@@ -72,9 +72,9 @@ const expectedMacros = [
   '-DCDDA_TEXT_SNAPSHOT_BUILD_ID="' + plan.buildIdentity + '"',
 ];
 for (const command of plan.compileCommands) {
-  assert.equal(normalized(command.executable), resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe'));
+  assert.equal(normalized(command.executable), normalized(resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'python/3.13.3_64bit/python.exe')));
   assert.ok(normalized(command.cwd).startsWith(normalized(here) + '/'));
-  assert.equal(normalized(command.argv[0]), resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/em++.py'));
+  assert.equal(normalized(command.argv[0]), normalized(resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), 'upstream/emscripten/em++.py')));
   assert.ok(command.argv.includes('-Os'));
   assert.ok(!command.argv.includes('-O1'));
   for (const macro of expectedMacros) assert.equal(command.argv.filter(arg => arg === macro).length, 1);

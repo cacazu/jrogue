@@ -4,7 +4,7 @@
   "source_only": true,
   "compiler_executed": false,
   "archive_created_or_extracted": false,
-  "composer_inputs_lock_sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8",
+  "composer_inputs_lock_sha256": "f7a11eeb5acd74461ea44b3e3333b378be3cb0d97ce285c39a905e95d0d21c1d",
   "composer_lock_input_count": 84,
   "required_files": [
     {
@@ -129,8 +129,8 @@
     },
     {
       "path": "locales/build-gameplay-catalog.py",
-      "bytes": 47854,
-      "sha256": "18935b3ec09159c05f4f49e3ddd0c2fa444c298c6fcbb099fa56915048c47a49"
+      "bytes": 47864,
+      "sha256": "f4c5a6ea938a7715c62a03085a72574891fa4774d5182ef9c3853eb288fed9ff"
     },
     {
       "path": "locales/phase6/native-recipes.root-reviewed.json",
@@ -164,8 +164,8 @@
     },
     {
       "path": "tools/build-upstream.py",
-      "bytes": 31127,
-      "sha256": "754bb2a8806da3de95a53d30da8cee6ece785a766286e320f17f87ddaa3da70c"
+      "bytes": 31246,
+      "sha256": "dee7430f7d8e8ecbb7e912495aeb99db2b57b1b37dff08b7ea4407db277c43ec"
     },
     {
       "path": "tools/check-phase6-js-syntax.py",
@@ -174,8 +174,8 @@
     },
     {
       "path": "tools/deliver-local.py",
-      "bytes": 3684,
-      "sha256": "34a8c51503be7994efc231b3567acb0e4decf5610ce146e8acf86c620785890a"
+      "bytes": 3927,
+      "sha256": "cf82537f302cc2d078adf5343063f8e4fff729b52caac32b79bd5aa0785cf321"
     },
     {
       "path": "tools/instrument-semantic-phase4.py",
@@ -2789,8 +2789,8 @@
     },
     {
       "path": "tools/semantic-text/phase6-integration/build.py",
-      "bytes": 14268,
-      "sha256": "1b37cca431741e5cff49e8a4dd3e15bdf4424977d3440eff3e7177ee4b374832"
+      "bytes": 14303,
+      "sha256": "4572c94a16e6a7a162349ba468ff8112760bac09fbc8c467f958ce74e6fb7f7f"
     },
     {
       "path": "tools/semantic-text/phase6-integration/check.py",
@@ -2799,8 +2799,8 @@
     },
     {
       "path": "tools/semantic-text/phase6-integration/inputs.lock.json",
-      "bytes": 14981,
-      "sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8"
+      "bytes": 16131,
+      "sha256": "f7a11eeb5acd74461ea44b3e3333b378be3cb0d97ce285c39a905e95d0d21c1d"
     },
     {
       "path": "tools/semantic-text/phase6-integration/native-recipes.json",
@@ -2835,7 +2835,7 @@
     {
       "path": "tools/semantic-text/phase6-integration-review/compatibility-preparation.json",
       "bytes": 8626,
-      "sha256": "baa1ec9b1f561d5cccc03e9e1f55cdc97201f7c085045063af742882cff3d0b7"
+      "sha256": "2a9671420204b0706d82766741dc5e735dd85d6e0c706e8042abd2397cc79006"
     },
     {
       "path": "tools/semantic-text/phase6-monster-producers/bridge-extension.c.in",
@@ -19808,8 +19808,8 @@
     },
     {
       "path": "locales/build-gameplay-catalog.py",
-      "bytes": 47854,
-      "sha256": "18935b3ec09159c05f4f49e3ddd0c2fa444c298c6fcbb099fa56915048c47a49"
+      "bytes": 47864,
+      "sha256": "f4c5a6ea938a7715c62a03085a72574891fa4774d5182ef9c3853eb288fed9ff"
     },
     {
       "path": "tools/audit-source-package.py",
@@ -19823,8 +19823,8 @@
     },
     {
       "path": "tools/deliver-local.py",
-      "bytes": 3684,
-      "sha256": "34a8c51503be7994efc231b3567acb0e4decf5610ce146e8acf86c620785890a"
+      "bytes": 3927,
+      "sha256": "cf82537f302cc2d078adf5343063f8e4fff729b52caac32b79bd5aa0785cf321"
     },
     {
       "path": "tools/instrument-semantic-text.py",
@@ -19853,8 +19853,8 @@
     },
     {
       "path": "tools/semantic-text/phase6-integration/inputs.lock.json",
-      "bytes": 14981,
-      "sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8"
+      "bytes": 16131,
+      "sha256": "f7a11eeb5acd74461ea44b3e3333b378be3cb0d97ce285c39a905e95d0d21c1d"
     },
     {
       "path": "work/phase4/semantic-generated/audit.json",
@@ -19882,5 +19882,65 @@
     "Full engine/Rust rebuild",
     "Bit-identical rebuilt binaries or date-dependent data",
     "Runtime/text/gameplay coverage"
-  ]
+  ],
+  "source_path_revision": {
+    "reason": "Rebind current source inputs after verified relocation/tool-discovery changes; no compiled/runtime evidence is recertified.",
+    "inputs": [
+      {
+        "field": "required_files",
+        "path": "locales/build-gameplay-catalog.py",
+        "previous_sha256": "18935b3ec09159c05f4f49e3ddd0c2fa444c298c6fcbb099fa56915048c47a49",
+        "sha256": "f4c5a6ea938a7715c62a03085a72574891fa4774d5182ef9c3853eb288fed9ff"
+      },
+      {
+        "field": "required_files",
+        "path": "tools/build-upstream.py",
+        "previous_sha256": "754bb2a8806da3de95a53d30da8cee6ece785a766286e320f17f87ddaa3da70c",
+        "sha256": "dee7430f7d8e8ecbb7e912495aeb99db2b57b1b37dff08b7ea4407db277c43ec"
+      },
+      {
+        "field": "required_files",
+        "path": "tools/deliver-local.py",
+        "previous_sha256": "34a8c51503be7994efc231b3567acb0e4decf5610ce146e8acf86c620785890a",
+        "sha256": "cf82537f302cc2d078adf5343063f8e4fff729b52caac32b79bd5aa0785cf321"
+      },
+      {
+        "field": "required_files",
+        "path": "tools/semantic-text/phase6-integration/build.py",
+        "previous_sha256": "1b37cca431741e5cff49e8a4dd3e15bdf4424977d3440eff3e7177ee4b374832",
+        "sha256": "4572c94a16e6a7a162349ba468ff8112760bac09fbc8c467f958ce74e6fb7f7f"
+      },
+      {
+        "field": "required_files",
+        "path": "tools/semantic-text/phase6-integration/inputs.lock.json",
+        "previous_sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8",
+        "sha256": "f7a11eeb5acd74461ea44b3e3333b378be3cb0d97ce285c39a905e95d0d21c1d"
+      },
+      {
+        "field": "required_files",
+        "path": "tools/semantic-text/phase6-integration-review/compatibility-preparation.json",
+        "previous_sha256": "baa1ec9b1f561d5cccc03e9e1f55cdc97201f7c085045063af742882cff3d0b7",
+        "sha256": "2a9671420204b0706d82766741dc5e735dd85d6e0c706e8042abd2397cc79006"
+      },
+      {
+        "field": "additional_read_guards",
+        "path": "locales/build-gameplay-catalog.py",
+        "previous_sha256": "18935b3ec09159c05f4f49e3ddd0c2fa444c298c6fcbb099fa56915048c47a49",
+        "sha256": "f4c5a6ea938a7715c62a03085a72574891fa4774d5182ef9c3853eb288fed9ff"
+      },
+      {
+        "field": "additional_read_guards",
+        "path": "tools/deliver-local.py",
+        "previous_sha256": "34a8c51503be7994efc231b3567acb0e4decf5610ce146e8acf86c620785890a",
+        "sha256": "cf82537f302cc2d078adf5343063f8e4fff729b52caac32b79bd5aa0785cf321"
+      },
+      {
+        "field": "additional_read_guards",
+        "path": "tools/semantic-text/phase6-integration/inputs.lock.json",
+        "previous_sha256": "ce2b54ca05a7258519950277b1c19dc9c037eb5174be7938f882129b241734a8",
+        "sha256": "f7a11eeb5acd74461ea44b3e3333b378be3cb0d97ce285c39a905e95d0d21c1d"
+      }
+    ],
+    "runtime_evidence_revalidated": false
+  }
 }

@@ -4,9 +4,12 @@ The machine-readable plan is `output/emcc-build-manifest.json`. `output/sources-
 
 The plan reads actual `premake4.lua`, `build/options.lua`, and `build/te4core.lua`, verifies every selected pattern exists in those definitions, expands against acquired source, and records source hashes. No Premake/Lua/game code or repository installer runs. Outputs are isolated under this directory.
 
+Run from `tome/port/kernel/build-plan/`:
+
 ```powershell
-& 'C:\Program Files\nodejs\node.exe' .\make-build-manifest.mjs `
-  --source 'tome/upstream/t-engine4-src-1.7.6' `
+if (-not $env:EMSDK) { $env:EMSDK = Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }
+node .\make-build-manifest.mjs `
+  --source '../../../upstream/t-engine4-src-1.7.6' `
   --emsdk $env:EMSDK `
   --out .\output
 ```

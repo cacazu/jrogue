@@ -142,7 +142,7 @@
   "artifacts": [
     {
       "path": "census.py",
-      "sha256": "4f2ae155fb71f4a48e8c51da34ee59d5be9f27a362a29dceb3154528aaabcbe7"
+      "sha256": "a3f5f9325ef53494cc70f20f3fa779b3a95520a30e48bef51ccd72cf8e95bb92"
     },
     {
       "path": "prepare.py",
@@ -158,7 +158,7 @@
     },
     {
       "path": "generated/census-summary.json",
-      "sha256": "8f7b23308f3b577fd933aac1df692029bb1ad17255a50a77ddfe1c6779fa7ff8"
+      "sha256": "2b16aafa4c12e03af9c44e9cfdb8804de26bcc8c0e1b07eff945bcb7a06c6199"
     },
     {
       "path": "generated/prototype/source-audit.json",

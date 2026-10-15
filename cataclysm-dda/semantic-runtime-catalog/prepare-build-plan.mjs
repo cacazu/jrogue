@@ -90,7 +90,8 @@ for (const project of projects) {
 }
 const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const configInput = readFileSync(path.join(sdk, '.emscripten'), 'utf8');
-const config = configInput.replaceAll('$CFGDIR', sdk) + '\nFROZEN_CACHE = True\n';
+const sdkLiteral = JSON.stringify(sdk).slice(1, -1).replaceAll("'", "\\'");
+const config = configInput.replaceAll('$CFGDIR', () => sdkLiteral) + '\nFROZEN_CACHE = True\n';
 const nativeDirectory = path.join(ROOT, 'semantic-plural-slice/build-plan');
 mkdirSync(nativeDirectory, {recursive: true});
 const configPath = path.join(nativeDirectory, '.emscripten');

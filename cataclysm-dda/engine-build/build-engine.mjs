@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import os from 'node:os';
 import {spawn} from 'node:child_process';
 
-const buildRoot = path.dirname(new URL(import.meta.url).pathname.replace(/^\/(\w:)/, '$1'));
+const buildRoot = path.dirname(localFilePath(import.meta.url));
 const upstream = localFilePath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const sdk = resolveLocalPath((process.env.EMSDK || resolveLocalPath(localHome(), 'emsdk')), '');
 const py = sdk + '/python/3.13.3_64bit/python.exe';
@@ -21,7 +21,14 @@ const objects = path.join(buildRoot, 'objects');
 const output = path.join(buildRoot, 'output');
 for (const p of [logs, overlay, cache, ports, objects, output]) fs.mkdirSync(p, {recursive:true});
 const config = path.join(buildRoot, '.emscripten');
-fs.writeFileSync(config, `NODE_JS = '${sdk}/node/24.19.0_64bit/node.exe'\nPYTHON = '${py}'\nLLVM_ROOT = '${sdk}/upstream/bin'\nBINARYEN_ROOT = '${sdk}/upstream'\nEMSCRIPTEN_ROOT = '${sdk}/upstream/emscripten'\n`);
+const configValues = {
+ NODE_JS: path.join(sdk, 'node/24.19.0_64bit/node.exe'),
+ PYTHON: py,
+ LLVM_ROOT: path.join(sdk, 'upstream/bin'),
+ BINARYEN_ROOT: path.join(sdk, 'upstream'),
+ EMSCRIPTEN_ROOT: path.join(sdk, 'upstream/emscripten'),
+};
+fs.writeFileSync(config, Object.entries(configValues).map(([key, value]) => `${key} = ${JSON.stringify(value)}`).join('\n') + '\n');
 const env = {...process.env, EM_CONFIG:config, EM_CACHE:cache, EM_PORTS:ports, EMCC_CORES:process.env.EMCC_CORES||'1', EMCC_BATCH_BUILD:'0', BINARYEN_CORES:'1'};
 delete env.EMSDK;
 delete env.EMSDK_NODE;

@@ -158,8 +158,8 @@
     "locales\\gameplay-core.en.json": "f6d233e9fbb40b9dde7f48093d6a6465352a90398f09616dbd53e11fc4f0e8c0",
     "locales\\gameplay-core.ja.json": "c310a85ad05c35187af08067c07d1122b5a8fbccc701780452651446dd9b3d32",
     "locales\\gameplay-core.metadata.json": "c726171075c851e0eb7a916b9d2dbceeb1a8e8a6214e3e0f026b10a8d06fd647",
-    "locales\\build-gameplay-catalog.py": "18935b3ec09159c05f4f49e3ddd0c2fa444c298c6fcbb099fa56915048c47a49",
-    "locales\\gameplay-reuse-calls.py": "9f40814c1fd63fd9314d9a56c28848dbc88563e5cd525c9ba06102274704030e",
+    "locales\\build-gameplay-catalog.py": "f4c5a6ea938a7715c62a03085a72574891fa4774d5182ef9c3853eb288fed9ff",
+    "locales\\gameplay-reuse-calls.py": "8de04b6683f5c178485ac7abec611bec9e0f795dff82080810e49e6e7c638827",
     "locales\\gameplay-quest-authored.ja.json": "6f72bf637f9ded1569a7458deb9fa86062054fae575560b029b9529304a58019",
     "locales\\source-seed.en.json": "6cb1f0920d00545dcba3d5dedfc1885cc4bb4baf34d6d64e9b9a5e174a7564f5",
     "locales\\source-seed.ja.json": "646256a569375b96a41fb02f7544d4e8b9a603c2bc92076fbc0e10e60842ab60",
@@ -169,9 +169,9 @@
   },
   "proposal_sha256": {
     "reviewed-translations.json": "63224ccef796eb8290098bc5609228533452b783133e57951f59392abdc99d5c",
-    "reviewed-translations.metadata.json": "67f5b05ab3b334d6eed0c86fe06e277aac270508cd3abe91e71521fbe390a0cc",
+    "reviewed-translations.metadata.json": "2b2b849811867f5f33891a8f39fdf2512888297a6d7e38a7bac685a4b64d9831",
     "reviewed-dynamic-translations.json": "c7d481ac5f76d4a3df1d7f2faf071367ec15f1ede22cb426e844387ff3e7d622",
-    "reviewed-dynamic-translations.metadata.json": "480f6ce1141a7fd00cfe6eccf158d038e60b72af3c76933d9cea4ce15b408561"
+    "reviewed-dynamic-translations.metadata.json": "99396e98bca815490c5e130777b3cbb962ec0bf082e6c6f8ab93a63551340fdd"
   },
   "runtime_verified": false
 }

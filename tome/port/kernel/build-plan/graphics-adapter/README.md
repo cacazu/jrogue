@@ -11,7 +11,8 @@ This is the five-function subset required by the retained source. Additional GLU
 Compile the adapter as C, then add its object to the final game link:
 
 ```powershell
-& '$env:EMSDK\upstream\emscripten\emcc.exe' `
+if (-not $env:EMSDK) { $env:EMSDK = Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }
+& (Join-Path $env:EMSDK 'upstream\emscripten\emcc.exe') `
   -std=c11 -O2 -Wall -Wextra -Werror `
   -c .\tome_glu_quadric.c -o .\tome_glu_quadric.o
 ```
@@ -23,12 +24,12 @@ The game's final `em++` link requires `-sLEGACY_GL_EMULATION=1` and `-lm`, in ad
 Production compilation passed with Emscripten 6.0.8 and `-Wall -Wextra -Werror`; the object is 2,235 bytes. `llvm-nm --defined-only` reports exactly the five requested external symbols. The separate test module is 25,928 bytes, keeping this check small during the parent memory hold.
 
 ```powershell
-& '$env:EMSDK\upstream\emscripten\emcc.exe' `
+& (Join-Path $env:EMSDK 'upstream\emscripten\emcc.exe') `
   -std=c11 -O1 -Wall -Wextra -Werror `
   .\tome_glu_quadric.c .\test_quadric.c `
   -sENVIRONMENT=node -sEXIT_RUNTIME=1 -sWASM_ASYNC_COMPILATION=0 `
   -lm -o .\test_quadric.js
-& 'C:\Program Files\nodejs\node.exe' .\test_quadric.js
+node .\test_quadric.js
 ```
 
 The recorder test passed, exit 0. It checks all 8,064 nondegenerate outward triangles at the exact original 64×64 subdivision, sphere radius, smooth/flat/absent normals, polar UV mapping and seam equality, object state isolation, deterministic repeatability, invalid inputs, and zero radius. `evidence.json` records hashes, symbols, and the result. This verifies command geometry; the parent owns actual browser rendering with the full retained engine.

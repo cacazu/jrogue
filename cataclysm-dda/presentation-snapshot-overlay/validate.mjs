@@ -2,7 +2,7 @@ import fs from 'node:fs';import path from 'node:path';import crypto from 'node:c
 import{fileURLToPath}from'node:url';import{SOURCE_COMMIT,limits,encodeSnapshot,decodeSnapshot,nativeFirstCodepoint,nativeLineDecision}from'./model.mjs';
 import{copyOwnedTextSnapshot,publicationFromNotice}from'./host-copy.mjs';
 const own=path.dirname(fileURLToPath(import.meta.url));
-const upstream=process.env.CDDA_PRISTINE_ROOT??'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+const upstream=process.env.CDDA_PRISTINE_ROOT??fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');let assertions=0;
 const equal=(a,b,n)=>{assert.deepEqual(a,b,n);++assertions;},check=(a,n)=>{assert.ok(a,n);++assertions;};
 const rejected=(run,n)=>{assert.throws(run,undefined,n);++assertions;};
@@ -123,8 +123,8 @@ for(const notice of [{kind:1,availability:1,publicationLow:1,publicationHigh:0},
   {kind:2,availability:1,publicationLow:1.5,publicationHigh:0}])rejected(()=>publicationFromNotice(notice),'invalid notice');
 const rust=fs.readFileSync(path.join(own,'rust/src/lib.rs'),'utf8');
 check(rust.includes('raw_bytes: Vec<u8>')&&rust.includes('pub fn raw_bytes(&self) -> &[u8]'),'Rust retains immutable raw bytes');
-check(rust.includes('pub const fn full_canvas_complete(&self) -> bool { false }'),'Rust never claims full canvas');
-check(rust.includes('pub enum InputAuthority { NativeOnly }'),'Rust grants no input authority');
+check(/pub const fn full_canvas_complete\(&self\)\s*->\s*bool\s*\{\s*false\s*\}/.test(rust),'Rust never claims full canvas');
+check(/pub enum InputAuthority\s*\{\s*NativeOnly\s*,?\s*\}/.test(rust),'Rust grants no input authority');
 for(const key of ['native_compiled','rust_compiled','native_rust_connected','browser_tested','gameplay_render_purity_verified'])equal(prep[key],false,'unexecuted gates stay false');
 const rebuild=JSON.parse(fs.readFileSync(path.join(own,'REBUILD-EVIDENCE.json')));
 equal(rebuild.existing_translation_unit_rebuild_count,1,'one original TU');equal(rebuild.new_translation_unit_count,1,'one new TU');equal(rebuild.original_headers_modified,[],'no original header changes');

@@ -122,7 +122,7 @@
   },
   "config_adaptation": "Isolated offline vendor directory only; original config unchanged.",
   "isolated_artifact_sha256": {
-    ".cargo/config.toml": "529ba912df9bc50d451beb8c62433a42057f8bb49749e1c9e71d860e92660860",
+    ".cargo/config.toml": "88a5431e0a164d9d5eb244c16027f6944a7ebfd02d2a7f61038796ec304025a8",
     "Cargo.lock": "346914e6c44982022bdbbbbb7ecfdd8c46e40febb84fa18f121be04ee9438235",
     "Cargo.toml": "481950859daf453332abd081703fc63b27ee5437cbb510cb320c54c4a7b02418",
     "fixtures/baseline.json": "c79fe2a3e4b74811bf83c28e6defb63d44b25fb9a610b1931f055b88d11337d4",

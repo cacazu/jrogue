@@ -32,14 +32,14 @@ This command clones the protected foundation into `work/phase6` and writes deriv
 
 The additional `provenance.py` observer uses the Python standard library to record actual source/header/object and embed/link boundaries. Its optional previous compile evidence is not a substitute for object files: a fresh extraction regenerates them. `target-macros.c` reads the project's packaged configuration headers and the installed SDK's Emscripten header; target macro values require execution of the compiled observer and are not asserted by this source-only check. `target-data.cjs` has no new npm dependency. These helpers and the generated JSON evidence fall under the existing `tools` and `build/phase6` package selections.
 
-An actual build additionally requires the installed matching Emscripten 6.0.8 distribution, its Python 3.13.3 and Node 24.19.0 directory layout, installed Rust 1.98 with the `wasm32-unknown-emscripten` standard library, and the builder's hardcoded installed WinLibs UCRT GCC path. The archive contains Rust vendored dependencies and original native helper sources; it does not contain SDKs, compiler binaries, precompiled native helpers, or a warm SDK cache. Missing bundled Lua or its pinned manifest can cause the existing setup routine to attempt a download; the check fails before recommending an offline build when those inputs are absent or mismatched.
+An actual build additionally requires the installed matching Emscripten 6.0.8 distribution, its Python 3.13.3 and Node 24.19.0 directory layout, installed Rust 1.98 with the `wasm32-unknown-emscripten` standard library, and a native GCC selected by `CC`, PATH, or the installed WinLibs UCRT fallback. The archive contains Rust vendored dependencies and original native helper sources; it does not contain SDKs, compiler binaries, precompiled native helpers, or a warm SDK cache. Missing bundled Lua or its pinned manifest can cause the existing setup routine to attempt a download; the check fails before recommending an offline build when those inputs are absent or mismatched.
 
 After installing those prerequisites and releasing an appropriate build slot, these are the relevant commands, **not executed by this audit**:
 
 ```powershell
-$env:EM_CONFIG = '$env:EMSDK\.emscripten'
-$env:EMSDK = $env:EMSDK
-$env:PATH = '$env:EMSDK\upstream\emscripten;' + $env:PATH
+if (-not $env:EMSDK) { $env:EMSDK = Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }
+$env:EM_CONFIG = Join-Path $env:EMSDK '.emscripten'
+$env:PATH = (Join-Path $env:EMSDK 'upstream\emscripten') + [IO.Path]::PathSeparator + $env:PATH
 $env:CARGO_PROFILE_RELEASE_CODEGEN_UNITS = '1'
 Push-Location tools/semantic-text/phase6-immutable-catalog/rust-copy
 cargo build --offline --locked --release --jobs 1 --target wasm32-unknown-emscripten

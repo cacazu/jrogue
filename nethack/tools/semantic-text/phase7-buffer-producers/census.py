@@ -18,7 +18,7 @@ sys.dont_write_bytecode = True
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-SOURCE = ROOT.parent / "official-source-audit/NetHack-5.0.0"
+SOURCE = ROOT / "upstream/NetHack-5.0.0"
 INPUTS = {
     "native_producers": ROOT / "locales/phase6/native-producer-ledger.json",
     "dynamic_origins": ROOT / "locales/phase4/dynamic-origin-review.json",

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const own = path.dirname(fileURLToPath(import.meta.url)), staging = path.dirname(own);
 const upstream = process.env.CDDA_PRISTINE_ROOT ??
-  'C:/Users/kit/gameme/jnethack/jrouge/cataclysm-dda/upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
+  fileURLToPath(new URL('../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59', import.meta.url));
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const commit = '7b2efa5cea38e4d4d97dd0e63b28b9148623da59';
 const audit = JSON.parse(fs.readFileSync(path.join(staging,'determinism-audit/SOURCE-MANIFEST.json')));

@@ -90,7 +90,8 @@ Reproduce with installed trusted tools, one compile job, and the complete
 installed standard-library cache in **read-only frozen mode**:
 
 ```powershell
-& 'python' .\tools\build_verify.py --upstream '../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59' --emsdk $env:EMSDK --cache '$env:EMSDK\upstream\emscripten\cache' --frozen-cache --node 'node'
+if (-not $env:EMSDK) { $env:EMSDK = Join-Path ([Environment]::GetFolderPath('UserProfile')) 'emsdk' }
+python .\tools\build_verify.py --upstream '../upstream/Cataclysm-DDA-7b2efa5cea38e4d4d97dd0e63b28b9148623da59' --emsdk $env:EMSDK --cache (Join-Path $env:EMSDK 'upstream\emscripten\cache') --frozen-cache --node 'node'
 ```
 
 `FROZEN_CACHE=True` in task-local config skips cache sanity writes and rejects
